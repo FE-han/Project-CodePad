@@ -1,12 +1,31 @@
 import React from "react";
+import Header from "./components/Header";
+import { Route, Routes } from "react-router-dom";
+import IntroPage from "./pages/IntroPage";
+
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 function App() {
   return (
-    <div className="App">
-      <div>웹 런치패드 CodePad</div>
-      <div>웹 런치패드 CodePad</div>
-      <div>1/29 16시 32분 cicd</div>
-    </div>
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Header />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Routes>
+              <Route path={"/"} element={<IntroPage />} />
+              <Route path={"/intro"} element={<IntroPage />} />
+            </Routes>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 }
 
