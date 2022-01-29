@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 const HeaderStyles = makeStyles({
   root: {
     background: "gray",
-    height: 50,
   },
 });
 export function Header() {
