@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
+import SearchReasultPage from "./pages/SearchResultPage";
 
 import { makeStyles } from "@mui/styles";
 
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route path={"/"} element={<IntroPage />} />
             <Route path={"/intro"} element={<IntroPage />} />
+            <Route path={"/search"} element={<SearchReasultPage />} />
           </Routes>
         </div>
       </div>
