@@ -21,6 +21,7 @@ export function Header() {
       </button>
       <Link to={"/defaultpresets"}>DefaultPresetsLink</Link>
       <Link to={"/userpresets"}>UserPresetsLink</Link>
+      <Link to={"/mypresets"}>MyPresetLink</Link>
       <div>LOGIN</div>
     </div>
   );

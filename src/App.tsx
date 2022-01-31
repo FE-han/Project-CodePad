@@ -7,6 +7,7 @@ import SearchReasultPage from "./pages/SearchResultPage";
 import { makeStyles } from "@mui/styles";
 import DefaultPresetsPage from "./pages/DefaultPresetsPage";
 import UserPresetsPage from "./pages/UserPresetsPage";
+import MyPresetsPage from "./pages/MyPresetsPage";
 
 const AppStyles = makeStyles({
   root: {
@@ -32,6 +33,7 @@ function App() {
             <Route path={"/search"} element={<SearchReasultPage />} />
             <Route path={"/defaultpresets"} element={<DefaultPresetsPage />} />
             <Route path={"/userpresets"} element={<UserPresetsPage />} />
+            <Route path={"/mypresets"} element={<MyPresetsPage />} />
           </Routes>
         </div>
       </div>
