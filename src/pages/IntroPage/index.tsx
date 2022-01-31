@@ -8,6 +8,26 @@ const IntroPageStyles = makeStyles({
     margin: "0 auto 0 auto",
     width: "880px",
     height: "100%",
+
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gridTemplateAreas: `"top50 recentlyUsed artist"`,
+
+    "& > *": {
+      border: "1px solid gray",
+
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  top50: {
+    gridArea: "top50",
+  },
+  recentlyUsed: {
+    gridArea: "recentlyUsed",
+  },
+  artist: {
+    gridArea: "artist",
   },
 });
 
@@ -15,8 +35,18 @@ export function IntroPage() {
   const classes = IntroPageStyles();
   return (
     <div className={classes.root}>
-      대충 인트로 페이지 컴포넌트들 올 곳
-      <Link to={"/search"}>검색결과 페이지 이동버튼</Link>
+      <div className={classes.top50}>
+        CHART : TOP 50
+        {/* <Top50 /> */}
+      </div>
+      <div className={classes.recentlyUsed}>
+        Recently Used
+        {/* <RecentlyUsed /> */}
+      </div>
+      <div className={classes.artist}>
+        Artist Profiles
+        {/* <ArtistProfiles /> */}
+      </div>
     </div>
   );
 }

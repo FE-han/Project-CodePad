@@ -6,6 +6,7 @@ const HeaderStyles = makeStyles({
     background: "gray",
 
     display: "flex",
+    justifyContent: "space-around",
   },
 });
 export function Header() {
@@ -15,7 +16,8 @@ export function Header() {
     <div className={classes.root}>
       <Link to={"/intro"}>LOGO</Link>
       <input type="text" placeholder={"검색어를 입력해주세요"} />
-      <Link to={"/defaultpreset"}>PRESET</Link>
+      <Link to={"/defaultpresets"}>DefaultPresetsLink</Link>
+      <Link to={"/userpresets"}>UserPresetsLink</Link>
       <div>LOGIN</div>
     </div>
   );
