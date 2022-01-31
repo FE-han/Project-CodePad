@@ -1,12 +1,44 @@
 import React from "react";
+import Header from "./components/Header";
+import { Route, Routes } from "react-router-dom";
+import IntroPage from "./pages/IntroPage";
+import SearchReasultPage from "./pages/SearchResultPage";
+
+import { makeStyles } from "@mui/styles";
+import DefaultPresetsPage from "./pages/DefaultPresetsPage";
+import UserPresetsPage from "./pages/UserPresetsPage";
+import MyPresetsPage from "./pages/MyPresetsPage";
+import LikePresetsPage from "./pages/LikePresets";
+
+const AppStyles = makeStyles({
+  root: {
+    display: "grid",
+    gridTemplateRows: "50px auto",
+  },
+  contents: {
+    height: "calc(100vh - 50px)",
+  },
+});
 
 function App() {
+  const classes = AppStyles();
   return (
-    <div className="App">
-      <div>웹 런치패드 CodePad</div>
-      <div>웹 런치패드 CodePad</div>
-      <div>1/29 16시 32분 cicd</div>
-    </div>
+    <>
+      <div className={classes.root}>
+        <Header />
+
+        <div className={classes.contents}>
+          <Routes>
+            <Route path={"/"} element={<IntroPage />} />
+            <Route path={"/search"} element={<SearchReasultPage />} />
+            <Route path={"/defaultpresets"} element={<DefaultPresetsPage />} />
+            <Route path={"/userpresets"} element={<UserPresetsPage />} />
+            <Route path={"/mypresets"} element={<MyPresetsPage />} />
+            <Route path={"/likepresets"} element={<LikePresetsPage />} />
+          </Routes>
+        </div>
+      </div>
+    </>
   );
 }
 
