@@ -16,6 +16,9 @@ export function Header() {
     <div className={classes.root}>
       <Link to={"/intro"}>LOGO</Link>
       <input type="text" placeholder={"검색어를 입력해주세요"} />
+      <button>
+        <Link to={"/search"}>검색하기버튼</Link>
+      </button>
       <Link to={"/defaultpresets"}>DefaultPresetsLink</Link>
       <Link to={"/userpresets"}>UserPresetsLink</Link>
       <div>LOGIN</div>
