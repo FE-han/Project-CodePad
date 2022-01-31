@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <div className={classes.root}>
-      <Link to={"/intro"}>LOGO</Link>
+      <Link to={"/"}>LOGO</Link>
       <input type="text" placeholder={"검색어를 입력해주세요"} />
       <button>
         <Link to={"/search"}>검색하기버튼</Link>
@@ -23,6 +23,7 @@ export function Header() {
       <Link to={"/userpresets"}>UserPresetsLink</Link>
       <Link to={"/mypresets"}>MyPresetLink</Link>
       <div>LOGIN</div>
+      <Link to={"/likePresets"}>MyLikePresets</Link>
     </div>
   );
 }

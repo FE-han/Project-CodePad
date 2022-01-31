@@ -39,7 +39,7 @@ export function MyPresetsPage() {
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <Link to={"/intro"}>인트로 페이지 이동버튼</Link>
+        <Link to={"/"}>인트로 페이지 이동버튼</Link>
         런치패드 올곳
         {/* <LaunchPad /> */}
       </div>

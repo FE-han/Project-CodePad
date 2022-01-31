@@ -38,7 +38,7 @@ export function SearchResultPage() {
       <div className={classes.preset}>
         preset
         {/* <PresetSearchResult /> */}
-        <Link to={"/intro"}>인트로 페이지 이동버튼</Link>
+        <Link to={"/"}>인트로 페이지 이동버튼</Link>
       </div>
       <div className={classes.tag}>
         tag
