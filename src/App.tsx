@@ -2,29 +2,42 @@ import React from "react";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
+import SearchReasultPage from "./pages/SearchResultPage";
 
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
+import { makeStyles } from "@mui/styles";
+import DefaultPresetsPage from "./pages/DefaultPresetsPage";
+import UserPresetsPage from "./pages/UserPresetsPage";
+import MyPresetsPage from "./pages/MyPresetsPage";
+import LikePresetsPage from "./pages/LikePresets";
+
+const AppStyles = makeStyles({
+  root: {
+    display: "grid",
+    gridTemplateRows: "50px auto",
+  },
+  contents: {
+    height: "calc(100vh - 50px)",
+  },
+});
 
 function App() {
+  const classes = AppStyles();
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={0}>
-          <Grid item xs={12}>
-            <Header />
-          </Grid>
+      <div className={classes.root}>
+        <Header />
 
-          <Grid item xs={12}>
-            <Routes>
-              <Route path={"/"} element={<IntroPage />} />
-              <Route path={"/intro"} element={<IntroPage />} />
-            </Routes>
-          </Grid>
-        </Grid>
-      </Box>
+        <div className={classes.contents}>
+          <Routes>
+            <Route path={"/"} element={<IntroPage />} />
+            <Route path={"/search"} element={<SearchReasultPage />} />
+            <Route path={"/defaultpresets"} element={<DefaultPresetsPage />} />
+            <Route path={"/userpresets"} element={<UserPresetsPage />} />
+            <Route path={"/mypresets"} element={<MyPresetsPage />} />
+            <Route path={"/likepresets"} element={<LikePresetsPage />} />
+          </Routes>
+        </div>
+      </div>
     </>
   );
 }
