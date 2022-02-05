@@ -9,11 +9,10 @@ const LaunchPadButtonStyles = makeStyles({
     background: "blue",
     width: "100px",
     height: "100px",
-  },
-  centerBtn: {
-    background: "blue",
-    width: "100px",
-    height: "100px",
+
+    "&:active": {
+      background: "skyblue",
+    },
   },
 });
 
@@ -35,8 +34,12 @@ export function LaunchPadButton({
     <div className={classes.root}>
       <div
         className={classes.btn}
-        onClick={() => {
+        onMouseDown={() => {
           sound.play();
+        }}
+        onMouseUp={() => {
+          sound.pause();
+          sound.currentTime = 0;
         }}
       >
         {soundType}

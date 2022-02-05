@@ -1,5 +1,8 @@
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 
 const DefaultPresetsPageStyles = makeStyles({
@@ -36,10 +39,37 @@ const DefaultPresetsPageStyles = makeStyles({
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
+  const [defaultPresetData, setDefaultPresetData] = useState({});
+  const defaultPresetId = useParams();
+  const value = useSelector((state) => state);
+
+  async function asdf() {
+    setDefaultPresetData(
+      await getPreset({
+        presetId: "defaultPreset1",
+      })
+    );
+    console.log(defaultPresetData);
+  }
+
+  useEffect(() => {
+    console.log(value);
+
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    if (defaultPresetId.presetId === "enter") {
+      const nowPresetData = getPreset({
+        presetId: "defaultPreset1",
+      });
+      asdf();
+      console.log(nowPresetData);
+      setDefaultPresetData(nowPresetData);
+      return;
+    }
+  }, []);
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <Link to={"/"}>인트로 페이지 이동버튼</Link>
         <LaunchPad />
       </div>
       <div className={classes.togglePresetBtn}>

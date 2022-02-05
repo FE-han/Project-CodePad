@@ -24,3 +24,4 @@ yarn-error.log*
 
 # 음원 셈플
 /SoundSample
+*.wav
