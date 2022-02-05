@@ -1,5 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
+import UserInfo from "./components/UserInfo";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -44,8 +45,7 @@ export function UserPresetsPage() {
         {/* <LaunchPad /> */}
       </div>
       <div className={classes.userInfo}>
-        유저정보 올곳
-        {/* <UserInfo /> */}
+        <UserInfo />
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
