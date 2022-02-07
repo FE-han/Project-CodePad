@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
-import { initialPresetGenerator } from "../../components/LaunchPad/initialFormGenerator";
+import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 
 const DefaultPresetsPageStyles = makeStyles({

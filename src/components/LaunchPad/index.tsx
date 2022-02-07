@@ -1,13 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
-import {
-  LaunchPadScale,
-  Preset,
-  SoundSample,
-  SoundSampleLocation,
-} from "./types";
+import { Preset } from "./types";
 import LaunchPadButton from "./LaunchPadButton";
-import { AssistantDirection } from "@mui/icons-material";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -33,9 +27,10 @@ const LaunchPadStyles = makeStyles({
   },
   btnContainer: {
     display: "grid",
-    gridTemplateRows: "repeat(8, auto)",
-    gridTemplateColumns: "repeat(8, auto)",
-    gridGap: "10px",
+    //버튼 크기 기준 재정립 필요
+    gridTemplateRows: "repeat(8, 4vw)",
+    gridTemplateColumns: "repeat(8, 4vw)",
+    gridGap: "5px",
   },
 });
 

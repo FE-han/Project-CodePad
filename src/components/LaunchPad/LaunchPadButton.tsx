@@ -7,14 +7,32 @@ import { SoundSample } from "./types";
 
 const LaunchPadButtonStyles = makeStyles({
   root: {},
-  btn: {
+  button: {
     background: "blue",
-    width: "100px",
-    height: "100px",
+    width: "100%",
+    // minWidth: "60px",
+    height: "100%",
+    // minHeight: "60px",
+    position: "relative",
 
     "&:active": {
       background: "skyblue",
     },
+  },
+  buttonText: {
+    color: "white",
+
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  buttonIcon: {
+    position: "absolute",
+    bottom: 0,
+
+    color: "gray",
+    fontSize: "20px",
   },
 });
 
@@ -30,8 +48,7 @@ export function LaunchPadButton({
       //URL없을경우 에러컨트롤
       setSound("empty");
     } else {
-      const getSound = new Audio(soundSampleURL);
-      setSound(getSound);
+      setSound(new Audio(soundSampleURL));
     }
   }, []);
 
@@ -50,7 +67,6 @@ export function LaunchPadButton({
     evt: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (sound === "empty") {
-      console.log("음악이 없음");
       return;
     }
     sound.pause();
@@ -62,12 +78,14 @@ export function LaunchPadButton({
   return (
     <div className={classes.root}>
       <div
-        className={classes.btn}
-        onMouseDown={(evt) => handleSoundPlay(evt)}
-        onMouseUp={(evt) => handleSoundStop(evt)}
+        className={classes.button}
+        onMouseDown={handleSoundPlay}
+        onMouseUp={handleSoundStop}
       >
-        {soundType}
-        {buttonType === "ONESHOT" ? <ArrowRightAltIcon /> : <AutorenewIcon />}
+        <div className={classes.buttonText}>{soundType || "null"}</div>
+        <div className={classes.buttonIcon}>
+          {buttonType === "ONESHOT" ? <ArrowRightAltIcon /> : <AutorenewIcon />}
+        </div>
       </div>
     </div>
   );
