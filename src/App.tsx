@@ -13,7 +13,6 @@ import LikePresetsPage from "./pages/LikePresets";
 const AppStyles = makeStyles({
   root: {
     display: "grid",
-    gridTemplateRows: "50px auto",
   },
   contents: {
     height: "calc(100vh - 50px)",
