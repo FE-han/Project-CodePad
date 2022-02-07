@@ -5,13 +5,9 @@ export enum LaunchPadScale {
 
 export type OneShotSoundType = "FX" | "DRUM" | "PERC" | "VOCAL";
 export type LoopSoundType = "SYNTH" | "DRUMS" | "MELODIC" | "VOCAL" | "CHORD";
-export type SoundSampleLocation = {
-  x: number;
-  y: number;
-};
 
 export interface SoundSample {
-  location: SoundSampleLocation;
+  location: string;
   soundSampleId: string | null;
   soundSampleURL: string | null;
   buttonType: "ONESHOT" | "LOOP" | null;

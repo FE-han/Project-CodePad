@@ -82,10 +82,16 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
 
         <div className={classes.btnContainer}>
           {presetData.soundSamples.map(
-            ({ soundSampleId, soundSampleURL, buttonType, soundType }) => {
+            ({
+              soundSampleId,
+              soundSampleURL,
+              buttonType,
+              soundType,
+              location,
+            }) => {
               return (
                 <LaunchPadButton
-                  key={soundSampleId}
+                  key={soundSampleId + location}
                   soundSampleURL={soundSampleURL}
                   buttonType={buttonType}
                   soundType={soundType}

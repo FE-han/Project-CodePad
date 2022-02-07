@@ -1,12 +1,13 @@
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, Params, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 
+//스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
     background: "orange",
@@ -15,7 +16,7 @@ const DefaultPresetsPageStyles = makeStyles({
 
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "150px 350px 200px",
+    gridTemplateRows: "150px auto 200px",
     gridColumnGap: "100px",
     gridRowGap: "20px",
     gridTemplateAreas: `
@@ -46,31 +47,66 @@ export function DefaultPresetsPage() {
   );
   const defaultPresetId = useParams();
 
-  async function getInitialData() {
+  const setPresetId = (defaultPresetId: Readonly<Params<string>>) => {
+    switch (defaultPresetId.presetId) {
+      case "enter":
+        return "defaultPreset1";
+
+      case undefined:
+        return "defaultPreset1";
+
+      default:
+        return defaultPresetId.presetId;
+    }
+  };
+
+  const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset({
-      presetId: "defaultPreset1",
+    const newPresetData: Preset = await getPreset({
+      presetId: setPresetId(defaultPresetId),
     });
-    console.log(nowPresetData);
-    //무지성 덮어씌우기가 아니라, 비어있는 샘플들에 대해서는 넘어가야함
-    setDefaultPresetData(nowPresetData);
-    // setDefaultPresetData({
-    //   presetTitle: nowPresetData.presetTitle,
-    //   areaSize: nowPresetData.areaSize,
-    //   presetId: nowPresetData.presetId,
-    //   soundSamples: defaultPresetData.soundSamples.map(initialSoundSample => {
-    //     if (initialSoundSample.location === nowPresetData.)
-    //   })
-    // });
-  }
+    // setDefaultPresetData(newPresetData);
+
+    setNewPresetData(newPresetData);
+  };
+
+  const setNewPresetData = (newPresetData: Preset) => {
+    const newSoundSampleMap = newPresetData.soundSamples.reduce(
+      (newMap, soundSample) => {
+        newMap.set(soundSample.location, soundSample);
+        return newMap;
+      },
+      new Map()
+    );
+    const newSoundSamples = defaultPresetData.soundSamples.map(
+      (defaultSoundSample) => {
+        const newSoundSampleData = newSoundSampleMap.get(
+          defaultSoundSample.location
+        );
+        if (newSoundSampleData !== undefined) {
+          return newSoundSampleData;
+        }
+        return defaultSoundSample;
+      }
+    );
+
+    setDefaultPresetData({
+      presetTitle: newPresetData.presetTitle,
+      presetId: newPresetData.presetId,
+      areaSize: newPresetData.areaSize,
+      soundSamples: newSoundSamples,
+    });
+  };
 
   useEffect(() => {
     getInitialData();
+    console.log(defaultPresetData);
   }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
+        <button onClick={() => console.log(defaultPresetData)}></button>
         <LaunchPad presetData={defaultPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>

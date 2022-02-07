@@ -8,15 +8,16 @@ import { SoundSample } from "./types";
 const LaunchPadButtonStyles = makeStyles({
   root: {},
   button: {
-    background: "blue",
+    background: "skyblue",
     width: "100%",
     // minWidth: "60px",
     height: "100%",
     // minHeight: "60px",
     position: "relative",
+    cursor: "pointer",
 
     "&:active": {
-      background: "skyblue",
+      background: "green",
     },
   },
   buttonText: {
@@ -42,6 +43,7 @@ export function LaunchPadButton({
   soundType,
 }: Omit<SoundSample, "location" | "soundSampleId">) {
   const [sound, setSound] = useState<HTMLAudioElement | "empty">("empty");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (soundSampleURL === null) {
@@ -60,6 +62,8 @@ export function LaunchPadButton({
       return;
     }
     console.log(sound);
+    //https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+    //load되고있는 상황일때는 재생하지 못하게 동기적 처리가 필요 => load단에서 막아버리면 된다 여기서는 재생 바로 할 수 있게끔
     sound.play();
   };
 

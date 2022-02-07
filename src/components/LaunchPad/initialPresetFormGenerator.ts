@@ -1,11 +1,6 @@
-import {
-  LaunchPadScale,
-  Preset,
-  SoundSample,
-  SoundSampleLocation,
-} from "./types";
+import { LaunchPadScale, Preset, SoundSample } from "./types";
 
-function initialSoundSampleGenerator(location: SoundSampleLocation) {
+function initialSoundSampleGenerator(location: string) {
   const initialSoundSample: SoundSample = {
     location,
     soundSampleId: null,
@@ -28,8 +23,9 @@ export function initialPresetGenerator(scale: LaunchPadScale) {
   //일단 2중 for문으로 만듦. but, magicNumber를 제거하고 좋은코드로 수정해야함
   for (let x = 0; x < LaunchPadLength; x++) {
     for (let y = 0; y < LaunchPadLength; y++) {
-      initialPreset.soundSamples.push(initialSoundSampleGenerator({ x, y }));
+      initialPreset.soundSamples.push(initialSoundSampleGenerator(`${x}X${y}`));
     }
   }
+  console.log(initialPreset);
   return initialPreset;
 }
