@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import { ButtonType, LoopSoundType, OneShotSoundType } from "./buttonType";
+
+import { SoundSample } from "./types";
 
 const LaunchPadButtonStyles = makeStyles({
   root: {},
@@ -16,34 +18,56 @@ const LaunchPadButtonStyles = makeStyles({
   },
 });
 
-interface LaunchPadButtonProps {
-  soundPath: string;
-  buttonType: ButtonType;
-  soundType: LoopSoundType | OneShotSoundType;
-}
-
 export function LaunchPadButton({
-  soundPath,
+  soundSampleURL,
   buttonType,
   soundType,
-}: LaunchPadButtonProps) {
-  const sound = new Audio(soundPath);
+}: Omit<SoundSample, "location" | "soundSampleId">) {
+  const [sound, setSound] = useState<HTMLAudioElement | "empty">("empty");
 
-  const classes = LaunchPadButtonStyles(ButtonType);
+  useEffect(() => {
+    if (soundSampleURL === null) {
+      //URL없을경우 에러컨트롤
+      setSound("empty");
+    } else {
+      const getSound = new Audio(soundSampleURL);
+      setSound(getSound);
+    }
+  }, []);
+
+  const handleSoundPlay = (
+    evt: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (sound === "empty") {
+      console.log("음악이 없음");
+      return;
+    }
+    console.log(sound);
+    sound.play();
+  };
+
+  const handleSoundStop = (
+    evt: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (sound === "empty") {
+      console.log("음악이 없음");
+      return;
+    }
+    sound.pause();
+    sound.currentTime = 0;
+  };
+
+  const classes = LaunchPadButtonStyles();
+
   return (
     <div className={classes.root}>
       <div
         className={classes.btn}
-        onMouseDown={() => {
-          sound.play();
-        }}
-        onMouseUp={() => {
-          sound.pause();
-          sound.currentTime = 0;
-        }}
+        onMouseDown={(evt) => handleSoundPlay(evt)}
+        onMouseUp={(evt) => handleSoundStop(evt)}
       >
         {soundType}
-        {buttonType === "oneShot" ? <ArrowRightAltIcon /> : <AutorenewIcon />}
+        {buttonType === "ONESHOT" ? <ArrowRightAltIcon /> : <AutorenewIcon />}
       </div>
     </div>
   );

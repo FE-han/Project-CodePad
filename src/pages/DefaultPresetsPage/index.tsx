@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
+import { initialPresetGenerator } from "../../components/LaunchPad/initialFormGenerator";
+import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 
 const DefaultPresetsPageStyles = makeStyles({
   root: {
@@ -39,38 +41,37 @@ const DefaultPresetsPageStyles = makeStyles({
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
-  const [defaultPresetData, setDefaultPresetData] = useState({});
+  const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
+    initialPresetGenerator(LaunchPadScale.DEFAULT)
+  );
   const defaultPresetId = useParams();
-  const value = useSelector((state) => state);
 
-  async function asdf() {
-    setDefaultPresetData(
-      await getPreset({
-        presetId: "defaultPreset1",
-      })
-    );
-    console.log(defaultPresetData);
+  async function getInitialData() {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset({
+      presetId: "defaultPreset1",
+    });
+    console.log(nowPresetData);
+    //무지성 덮어씌우기가 아니라, 비어있는 샘플들에 대해서는 넘어가야함
+    setDefaultPresetData(nowPresetData);
+    // setDefaultPresetData({
+    //   presetTitle: nowPresetData.presetTitle,
+    //   areaSize: nowPresetData.areaSize,
+    //   presetId: nowPresetData.presetId,
+    //   soundSamples: defaultPresetData.soundSamples.map(initialSoundSample => {
+    //     if (initialSoundSample.location === nowPresetData.)
+    //   })
+    // });
   }
 
   useEffect(() => {
-    console.log(value);
-
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    if (defaultPresetId.presetId === "enter") {
-      const nowPresetData = getPreset({
-        presetId: "defaultPreset1",
-      });
-      asdf();
-      console.log(nowPresetData);
-      setDefaultPresetData(nowPresetData);
-      return;
-    }
+    getInitialData();
   }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <LaunchPad />
+        <LaunchPad presetData={defaultPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
         디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
