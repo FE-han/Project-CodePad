@@ -3,21 +3,14 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "./reset.css";
 import App from "./App";
-<<<<<<< HEAD
 import { Provider } from "react-redux";
 import { store } from "./modules/store";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
+  <Provider store={store}>
+    <BrowserRouter>
       <App />
-    </Provider>
-=======
-
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
-  </BrowserRouter>,
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );

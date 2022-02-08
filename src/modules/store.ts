@@ -1,21 +1,17 @@
-import { createStore, combineReducers, compose } from "redux";
-import getPresetReducer from "./actions/getPresetActions";
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
+import { reducers } from "./rootSlice";
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-  }
-}
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const reducers = {
-  getPresetReducer,
-};
-
-const rootReducer = () =>
+export const createRootReducer = () =>
   combineReducers({
     ...reducers,
   });
 
-export const store = createStore(rootReducer, composeEnhancers());
+export const store = configureStore({
+  reducer: createRootReducer(),
+});
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
