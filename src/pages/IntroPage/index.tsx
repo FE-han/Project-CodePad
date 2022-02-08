@@ -1,5 +1,8 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../modules/hooks";
+import { actions } from "../../modules/actions/exampleSlice";
 
 const IntroPageStyles = makeStyles({
   root: {
@@ -33,6 +36,7 @@ const IntroPageStyles = makeStyles({
 
 export function IntroPage() {
   const classes = IntroPageStyles();
+
   return (
     <div className={classes.root}>
       <div className={classes.top50}>

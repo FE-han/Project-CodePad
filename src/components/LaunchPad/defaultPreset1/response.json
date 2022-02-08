@@ -1,0 +1,44 @@
+{
+  "defaultPreset1": {
+    "presetTitle": "94 Neon Dreams",
+    "presetId": "12-34-56-12",
+    "areaSize": 64,
+    "soundSamples": [
+      {
+        "location": "0X1",
+        "soundSampleId": "neonDreamsKick2",
+        "soundSampleURL": "/Users/jeong-gyeonghun/Desktop/Coding/codepad_front/src/components/LaunchPad/defaultPreset1/SoundSample/94 Neon Dreams_Kick2.wav",
+        "buttonType": "ONESHOT",
+        "soundType": "DRUM"
+      },
+      {
+        "location": "1X1",
+        "soundSampleId": "neonDreamsSnare2",
+        "soundSampleURL": "/Users/jeong-gyeonghun/Desktop/Coding/codepad_front/src/components/LaunchPad/defaultPreset1/SoundSample/94 Neon Dreams_Snare2.wav",
+        "buttonType": "ONESHOT",
+        "soundType": "DRUM"
+      },
+      {
+        "location": "2X1",
+        "soundSampleId": "neonDreamsSynthBass2",
+        "soundSampleURL": "/Users/jeong-gyeonghun/Desktop/Coding/codepad_front/src/components/LaunchPad/defaultPreset1/SoundSample/94 Neon Dreams_Synth Bass2.wav",
+        "buttonType": "ONESHOT",
+        "soundType": "DRUM"
+      },
+      {
+        "location": "3X1",
+        "soundSampleId": "neonDreamsSynthChords2",
+        "soundSampleURL": "/Users/jeong-gyeonghun/Desktop/Coding/codepad_front/src/components/LaunchPad/defaultPreset1/SoundSample/94 Neon Dreams_Synth Chords2.wav",
+        "buttonType": "ONESHOT",
+        "soundType": "DRUM"
+      },
+      {
+        "location": "4X1",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "buttonType": "ONESHOT",
+        "soundType": "DRUM"
+      }
+    ]
+  }
+}
