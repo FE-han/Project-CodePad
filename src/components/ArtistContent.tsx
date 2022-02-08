@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { commonFont } from "../utils/CommonStyle";
 
-export default function PresetContent(props: { src: string; title: string }) {
+export default function Artist(props: { src: string; title: string }) {
   const classes = PresetContentStyles();
   return (
     <div className={classes.albumCoverContainer}>
@@ -23,6 +23,7 @@ const PresetContentStyles = makeStyles({
     height: "200px",
     backgroundColor: "red",
     marginBottom: "8px",
+    borderRadius: "50%",
   },
 
   albumCoverTitle: {

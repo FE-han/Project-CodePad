@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
+import { titleFont, pageBgColor, pageBoxShadow } from "../../utils/CommonStyle";
 import { Link } from "react-router-dom";
-import "../../assets/font.css";
+
 import CommunityContentsScrollList from "../../components/CommunityContentsScrollList";
 
 export default function introPage() {
@@ -23,7 +24,7 @@ export default function introPage() {
 
 const introPageStyles = makeStyles({
   root: {
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backgroundColor: `${pageBgColor}`,
 
     margin: "0 auto 0 auto",
     width: "75%",
@@ -34,7 +35,7 @@ const introPageStyles = makeStyles({
     gridTemplateColumns: "repeat(3, 1fr)",
     gridTemplateAreas: `"first second third"`,
 
-    boxShadow: `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`,
+    boxShadow: `${pageBoxShadow}`,
 
     "& > *": {
       display: "flex",
@@ -46,7 +47,7 @@ const introPageStyles = makeStyles({
         color: "indianred",
         marginTop: "56px",
         marginBottom: "56px",
-        fontFamily: `IBM Plex Sans Thai Looped, sans-serif`,
+        fontFamily: `${titleFont}`,
         fontSize: "26px",
         fontWeight: "bold",
         opacity: "65%",

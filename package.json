@@ -27,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "devServer": "npx json-server --port 3333 ./mock/presetList.json"
   },
   "eslintConfig": {
     "extends": [
