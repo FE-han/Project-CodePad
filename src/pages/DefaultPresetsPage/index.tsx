@@ -103,11 +103,25 @@ export function DefaultPresetsPage() {
     console.log(defaultPresetData);
   }, []);
 
+  //테스트 공간
+  const [files, setFiles] = useState<null | Array<File>>();
+
+  const handleSetFiles = (e) => {};
+
+  //
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
         <button onClick={() => console.log(defaultPresetData)}></button>
         <LaunchPad presetData={defaultPresetData} />
+
+        <div>
+          사운드 셈플 테스트 업로드 공간
+          <input type="file" multiple accept="audio/*" />
+          <button>사운드 셈플 업로드</button>
+          <button>파일 상태 로그찍기</button>
+        </div>
       </div>
       <div className={classes.togglePresetBtn}>
         디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
