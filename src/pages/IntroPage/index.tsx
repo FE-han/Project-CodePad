@@ -2,10 +2,13 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { titleFont, pageBgColor, pageBoxShadow } from "../../utils/CommonStyle";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../modules/hooks";
+import { actions } from "../../modules/actions/exampleSlice";
 
 import CommunityContentsScrollList from "../../components/CommunityContentsScrollList";
 
-export default function introPage() {
+export default function IntroPage() {
   const classes = introPageStyles();
   return (
     <div className={classes.root}>
