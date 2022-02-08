@@ -9,6 +9,7 @@ import DefaultPresetsPage from "./pages/DefaultPresetsPage";
 import UserPresetsPage from "./pages/UserPresetsPage";
 import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
+import RTKPage from "./pages/RTKPage";
 
 const AppStyles = makeStyles({
   root: {
@@ -38,6 +39,9 @@ function App() {
             <Route path={"/userpresets"} element={<UserPresetsPage />} />
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
+
+            {/* ReduxToolkit 예시용 페이지 */}
+            <Route path={"/example"} element={<RTKPage />} />
           </Routes>
         </div>
       </div>
