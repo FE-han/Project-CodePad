@@ -9,7 +9,11 @@ const UserPresetsPageStyles = makeStyles({
 
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
+<<<<<<< HEAD
     gridTemplateRows: "150px auto 200px",
+=======
+    gridTemplateRows: "150px 350px 200px",
+>>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
     gridColumnGap: "100px",
     gridRowGap: "20px",
     gridTemplateAreas: `

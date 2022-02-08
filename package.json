@@ -5,7 +5,10 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+<<<<<<< HEAD
     "@mui/icons-material": "^5.3.1",
+=======
+>>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
     "@mui/material": "^5.3.1",
     "@mui/styles": "^5.3.0",
     "@testing-library/jest-dom": "^5.16.1",
@@ -18,7 +21,10 @@
     "axios": "^0.25.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+<<<<<<< HEAD
     "react-redux": "^7.2.6",
+=======
+>>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",

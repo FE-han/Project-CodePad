@@ -31,10 +31,14 @@ function App() {
           <Routes>
             <Route path={"/"} element={<IntroPage />} />
             <Route path={"/search"} element={<SearchReasultPage />} />
+<<<<<<< HEAD
             <Route
               path={"/defaultpresets/:presetId"}
               element={<DefaultPresetsPage />}
             />
+=======
+            <Route path={"/defaultpresets"} element={<DefaultPresetsPage />} />
+>>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
             <Route path={"/userpresets"} element={<UserPresetsPage />} />
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
