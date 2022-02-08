@@ -4,7 +4,10 @@ import PresetContent from "./PresetContent";
 
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../modules/hooks";
-import { actions as getPresetContentDataActions } from "../../modules/actions/presetContentSlice";
+import {
+  actions,
+  actions as getPresetContentDataActions,
+} from "../../modules/actions/presetContentSlice";
 import { useEffect, useState } from "react";
 
 export interface PresetContentData {
@@ -66,13 +69,6 @@ export default function CommunityContentsScrollList(props: { title: string }) {
     <>
       <header>{props.title}</header>
       <div className={classes.ScrollListContainer}>
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
-        <PresetContent src="" title="test" />
         {buttonText(state.isLoading)}
       </div>
     </>
@@ -111,3 +107,63 @@ const ScrollListStyles = makeStyles({
     // },
   },
 });
+
+// 여기 밑은 예시용 내용
+// function 무한스크롤예시문장() {
+//   const state = useAppSelector(state => state.PresetList)
+//   const dispatch = useDispatch()
+
+//   const [isEnd, setIsEnd] = useState<boolean>(false)
+
+//   const watchSrollState = (nowIdx:number) => {
+//     if(nowIdx === endIdx) {
+//       setIsEnd(true)
+//     }
+//   }
+
+//   const asdf = async() => {
+//     const configdata = {page: nowPage+1
+//       limit: 10}
+//     if(isEnd){
+//       dispatch(actions.getPresetListPending(configdata))
+//     }
+
+//     const res = await makePresetScrollList(configdata)
+
+//     if (!res.success) {
+//       dispatch(actions.getPresetListRejectd())
+
+//       //Error handling
+//     }
+
+//     if (res.success) {
+//       dispatch(actions.getPresetListFulfilled(res.data))
+//     }
+//   }
+
+//   useEffect( () => {
+
+//     asdf()
+
+//   },[isEnd, setIsEnd])
+
+//   return (
+//     <>
+//     <div>
+//       여기는 무한 스크롤
+
+//       <div watchSrollState={watchSrollState}>
+//         {state.data.map(presetList => {
+//           return (
+//             <div key={presetList.id}>
+//               <PresetListElementComponent presetData={presetList.data}/>
+//             </div>
+//           )
+//         })}
+//         {state.isLoading ? <대충로딩중이라는컴포넌트 /> : null}
+//       </div>
+//     </div>
+
+//     </>
+//   )
+// }

@@ -10,6 +10,8 @@ export interface PresetContentDataState {
   author: string;
   userId: string;
   isLoading: boolean;
+
+  // data: array<PresetData>
 }
 
 //상태 초기값
@@ -20,6 +22,8 @@ const initialState: PresetContentDataState = {
   author: "",
   userId: "",
   isLoading: false,
+
+  // data: []
 };
 
 export const PresetContentSlice = createSlice({
