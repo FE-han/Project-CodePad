@@ -16,9 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-<<<<<<< HEAD
   "include": ["src", "customTypes/*"]
-=======
-  "include": ["src"]
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
 }

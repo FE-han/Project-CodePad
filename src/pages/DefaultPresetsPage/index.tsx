@@ -1,5 +1,4 @@
 import { makeStyles } from "@mui/styles";
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
@@ -9,10 +8,6 @@ import { initialPresetGenerator } from "../../components/LaunchPad/initialPreset
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
-=======
-import { Link } from "react-router-dom";
-
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
 const DefaultPresetsPageStyles = makeStyles({
   root: {
     background: "orange",
@@ -21,11 +16,7 @@ const DefaultPresetsPageStyles = makeStyles({
 
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-<<<<<<< HEAD
     gridTemplateRows: "150px auto 200px",
-=======
-    gridTemplateRows: "150px 350px 200px",
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
     gridColumnGap: "100px",
     gridRowGap: "20px",
     gridTemplateAreas: `
@@ -51,7 +42,6 @@ const DefaultPresetsPageStyles = makeStyles({
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
-<<<<<<< HEAD
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
@@ -118,14 +108,6 @@ export function DefaultPresetsPage() {
       <div className={classes.launchPad}>
         <button onClick={() => console.log(defaultPresetData)}></button>
         <LaunchPad presetData={defaultPresetData} />
-=======
-  return (
-    <div className={classes.root}>
-      <div className={classes.launchPad}>
-        <Link to={"/"}>인트로 페이지 이동버튼</Link>
-        런치패드 올곳
-        {/* <LaunchPad /> */}
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
       </div>
       <div className={classes.togglePresetBtn}>
         디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳

@@ -19,11 +19,7 @@ export function Header() {
       <button>
         <Link to={"/search"}>검색하기버튼</Link>
       </button>
-<<<<<<< HEAD
       <Link to={"/defaultpresets/enter"}>DefaultPresetsLink</Link>
-=======
-      <Link to={"/defaultpresets"}>DefaultPresetsLink</Link>
->>>>>>> 6a71dea9d30afc113df0337431646915b9fc1a87
       <Link to={"/userpresets"}>UserPresetsLink</Link>
       <Link to={"/mypresets"}>MyPresetLink</Link>
       <div>LOGIN</div>
