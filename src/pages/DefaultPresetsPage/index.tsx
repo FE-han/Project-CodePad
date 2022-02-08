@@ -1,5 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
+import PresetToggleButton from "../../components/PresetToggleButton";
 
 const DefaultPresetsPageStyles = makeStyles({
   root: {
@@ -43,8 +44,7 @@ export function DefaultPresetsPage() {
         {/* <LaunchPad /> */}
       </div>
       <div className={classes.togglePresetBtn}>
-        디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
-        {/* <PresetToggleBtn /> */}
+        <PresetToggleButton />
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
