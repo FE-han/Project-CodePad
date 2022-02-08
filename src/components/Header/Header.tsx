@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
 import * as React from "react";
@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { headerBgColor, headerBoxShadow } from "../utils/CommonStyle";
+import { headerBgColor, headerBoxShadow } from "../../utils/CommonStyle";
 
 export default function Header() {
   const classes = HeaderStyles();

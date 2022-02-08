@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { commonFont } from "../utils/CommonStyle";
+import { commonFont } from "../../utils/CommonStyle";
 
 export default function Artist(props: { src: string; title: string }) {
   const classes = PresetContentStyles();

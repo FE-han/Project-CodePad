@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../modules/hooks";
 import { actions } from "../../modules/actions/exampleSlice";
 
-import CommunityContentsScrollList from "../../components/CommunityContentsScrollList";
+import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 
 export default function IntroPage() {
   const classes = introPageStyles();
