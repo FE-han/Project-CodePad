@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { headerBgColor, headerBoxShadow } from "../utils/CommonStyle";
 
 export default function Header() {
   const classes = HeaderStyles();
@@ -34,7 +35,7 @@ export default function Header() {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
+        vertical: "bottom",
         horizontal: "right",
       }}
       id={menuId}
@@ -57,7 +58,10 @@ export default function Header() {
     <Box sx={{ zIndex: 0 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: "#D25F5F", opacity: "66%" }}
+        sx={{
+          backgroundColor: `${headerBgColor}`,
+          boxShadow: `${headerBoxShadow}`,
+        }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <img src={logo} className={classes.logo} alt="React" />
@@ -70,10 +74,13 @@ export default function Header() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}
+          >
             <IconButton size="small" color="inherit">
               Preset
             </IconButton>
+            <div className={classes.borderLine}></div>
             <IconButton
               size="large"
               edge="end"
@@ -133,6 +140,12 @@ const HeaderStyles = makeStyles({
 
   link: {
     textDecoration: "none",
+  },
+
+  borderLine: {
+    marginLeft: "10px",
+    height: "20px",
+    borderRight: `2px solid`,
   },
 });
 
