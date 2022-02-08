@@ -1,6 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 
+import { LoginModal } from "./Modal";
+import { useState } from "react";
+
 const HeaderStyles = makeStyles({
   root: {
     background: "gray",
@@ -9,9 +12,15 @@ const HeaderStyles = makeStyles({
     justifyContent: "space-around",
   },
 });
+
 export function Header() {
   const classes = HeaderStyles();
 
+  const [open, setOpen] = useState(true);
+
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={classes.root}>
       <Link to={"/"}>LOGO</Link>
@@ -23,6 +32,7 @@ export function Header() {
       <Link to={"/userpresets"}>UserPresetsLink</Link>
       <Link to={"/mypresets"}>MyPresetLink</Link>
       <div>LOGIN</div>
+      <LoginModal open={true} onClose={onClose}></LoginModal>
       <Link to={"/likePresets"}>MyLikePresets</Link>
     </div>
   );
