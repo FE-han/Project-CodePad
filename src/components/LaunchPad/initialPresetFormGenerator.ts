@@ -3,10 +3,6 @@ import { LaunchPadScale, Preset, SoundSample } from "./types";
 function initialSoundSampleGenerator(location: string) {
   const initialSoundSample: SoundSample = {
     location,
-    soundSampleId: null,
-    soundSampleURL: null,
-    buttonType: null,
-    soundType: null,
   };
   return initialSoundSample;
 }
@@ -14,8 +10,8 @@ function initialSoundSampleGenerator(location: string) {
 export function initialPresetGenerator(scale: LaunchPadScale) {
   const LaunchPadLength = Math.sqrt(scale);
   const initialPreset: Preset = {
-    presetTitle: "none",
-    presetId: "none",
+    presetTitle: "untitled",
+    presetId: "unsaved",
     areaSize: scale,
     soundSamples: [],
   };

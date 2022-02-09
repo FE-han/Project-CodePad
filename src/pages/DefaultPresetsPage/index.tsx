@@ -1,12 +1,13 @@
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link, Params, useParams } from "react-router-dom";
-import { getPreset } from "../../api/getPreset";
+import { useDispatch } from "react-redux";
+import { Params, useParams } from "react-router-dom";
+import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
+import { actions } from "../../modules/actions/getPresetSlice";
+import { useAppSelector } from "../../modules/hooks";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -47,29 +48,8 @@ export function DefaultPresetsPage() {
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const defaultPresetId = useParams();
-
-  const setPresetId = (defaultPresetId: Readonly<Params<string>>) => {
-    switch (defaultPresetId.presetId) {
-      case "enter":
-        return "defaultPreset1";
-
-      case undefined:
-        return "defaultPreset1";
-
-      default:
-        return defaultPresetId.presetId;
-    }
-  };
-
-  const getInitialData = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const newPresetData: Preset = await getPreset({
-      presetId: setPresetId(defaultPresetId),
-    });
-    // setDefaultPresetData(newPresetData);
-
-    setNewPresetData(newPresetData);
-  };
+  const dispatch = useDispatch();
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   const setNewPresetData = (newPresetData: Preset) => {
     const newSoundSampleMap = newPresetData.soundSamples.reduce(
@@ -99,78 +79,49 @@ export function DefaultPresetsPage() {
     });
   };
 
+  const handleGetPreset = async (params: PresetParams) => {
+    try {
+      const data = await getPreset(params);
+      dispatch(actions.getPresetDataFulfilled(data));
+    } catch (err) {
+      console.log(err);
+      dispatch(actions.getPresetDataRejected());
+    }
+  };
+
   useEffect(() => {
-    getInitialData();
-  }, []);
+    // 1. 페이지 렌더시 프리셋 데이터 가져오는 액션 pending
+    // 2. 액션이 pending 되면 로딩중 문구가 나타남
+    dispatch(
+      actions.getPresetDataPending({
+        //useParams에서(defaultPresetId) 가져올값들
+        userId: "inputUserId",
+        presetId: "inputPresetId",
+      })
+    );
 
-  //테스트 공간
-  const [file, setFile] = useState<null | File>(null);
-
-  const handleSetFiles = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if (evt.target.files === null) {
-      console.log("파일이 업로드되지 않았음");
-      return;
-    }
-    const firstFile = evt.target.files[0];
-    console.log("선택한 파일", firstFile);
-
-    setFile(firstFile);
-  };
-
-  const sendData = async (file: File | null | undefined) => {
-    if (file === null || file === undefined) {
-      console.log("file을 인식하지 못했음");
-      return;
-    }
-
-    console.log("파일이 넘어옴", file);
-
-    const formData = new FormData();
-
-    formData.append("audio", file, file.name);
-
-    const res = await axios.post("http://localhost:4100/multer", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    // 3. api 요청을 보내고 값을 받아옴(결과값은 redux state에 저장)
+    handleGetPreset({
+      userId: state.userId,
+      presetId: state.presetId,
     });
-    console.log("axios결과", res);
-
-    setFile(null);
-  };
-
-  //
+    // 4. 받아온 api값을 fulfilled 액션에 dispatch해서 넣어줌
+    // 5. (자동)redux state값이 변화한것 반영해서 새로 리랜더링 된다
+    setNewPresetData({
+      presetId: state.presetId,
+      presetTitle: state.presetTitle,
+      areaSize: state.areaSize,
+      soundSamples: state.soundSamples,
+    });
+    // + 3에서 실패시 받은값의 status값을 이용해서 에러핸들링한다
+  }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <button onClick={() => console.log(defaultPresetData)}></button>
+        <button onClick={() => console.log(state)}>state값 확인</button>
         <LaunchPad presetData={defaultPresetData} />
-
-        <div>
-          사운드 셈플 테스트 업로드 공간
-          <input
-            type="file"
-            multiple
-            name="audio"
-            accept="audio/*"
-            onChange={handleSetFiles}
-          />
-          <button
-            onClick={() => {
-              sendData(file);
-            }}
-          >
-            사운드 셈플 업로드
-          </button>
-          <button
-            onClick={() => {
-              console.log(file);
-            }}
-          >
-            파일 상태 로그찍기
-          </button>
-        </div>
+        {state.isLoading ? "로딩중" : null}
       </div>
       <div className={classes.togglePresetBtn}>
         디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
