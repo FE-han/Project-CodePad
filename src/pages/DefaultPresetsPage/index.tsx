@@ -46,6 +46,11 @@ const DefaultPresetsPageStyles = makeStyles({
   },
   togglePresetBtn: {
     gridArea: "togglePresetBtn",
+    backgroundColor: "#8E8E8E",
+    display:"flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   presetList: {
     gridArea: "presetList",
@@ -69,6 +74,14 @@ const DefaultPresetsPageStyles = makeStyles({
   page:{
     paddingLeft: "90px",
   },
+  changePresets:{
+    backgroundColor: "#8E8E8E",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "70%",
+    justifyContent: "center",
+  }
 });
 
 
@@ -91,13 +104,7 @@ export function DefaultPresetsPage() {
         return defaultPresetId.presetId;
     }
   };
-  
-  function ButtonPresetMake(){
-    return (
-      <Link to="/mypresets">
-      </Link>
-    )
-  }
+
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
@@ -149,8 +156,14 @@ export function DefaultPresetsPage() {
         <LaunchPad presetData={defaultPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
-        디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳!!
-        {/* <PresetToggleBtn /> */}
+        <List className={classes.changePresets}>
+          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+            <ListItemText primary="Default presets"/>
+          </ListItemButton>
+          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+            <ListItemText primary="My presets"/>
+          </ListItemButton>
+        </List>
       </div>
       <div className={classes.presetList}>
         <div className={classes.pororoimage}>
@@ -158,7 +171,7 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.listStyle}>
           <List component="nav" sx={{width:"100%",maxWidth:"500px",height:"100%", display:"flex", alignItems:"center", flexDirection:"column", justifyContent:"space-between"} }>
-              <ListItemButton onClick={() => {'./mypresets'}} sx={{width: "100%", textAlign:"center", border: "1px solid white"}}>
+              <ListItemButton onClick={() => {'/mypresets'}} sx={{width: "100%", textAlign:"center", border: "1px solid white"}}>
                 <ListItemText primary="+"/>
               </ListItemButton>
               <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
