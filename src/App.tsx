@@ -11,6 +11,7 @@ import UserPresetsPage from "./pages/UserPresetsPage";
 import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
 import RTKPage from "./pages/RTKPage";
+import MyPresetsUpdatePage from "./pages/MyPresetsUpdatePage";
 
 const AppStyles = makeStyles({
   root: {
@@ -41,6 +42,7 @@ function App() {
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
+            <Route path={"/mypresets/update"} element={<MyPresetsUpdatePage />}/>
             {/* ReduxToolkit 예시용 페이지 */}
             <Route path={"/example"} element={<RTKPage />} />
           </Routes>
