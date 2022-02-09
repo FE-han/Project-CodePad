@@ -8,6 +8,7 @@ import { initialPresetGenerator } from "../../components/LaunchPad/initialPreset
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
+import { setNewPresetData } from "./setDefaultPresetData";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -51,33 +52,33 @@ export function DefaultPresetsPage() {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
 
-  const setNewPresetData = (newPresetData: Preset) => {
-    const newSoundSampleMap = newPresetData.soundSamples.reduce(
-      (newMap, soundSample) => {
-        newMap.set(soundSample.location, soundSample);
-        return newMap;
-      },
-      new Map()
-    );
-    const newSoundSamples = defaultPresetData.soundSamples.map(
-      (defaultSoundSample) => {
-        const newSoundSampleData = newSoundSampleMap.get(
-          defaultSoundSample.location
-        );
-        if (newSoundSampleData !== undefined) {
-          return newSoundSampleData;
-        }
-        return defaultSoundSample;
-      }
-    );
+  // const setNewPresetData = (newPresetData: Preset) => {
+  //   const newSoundSampleMap = newPresetData.soundSamples.reduce(
+  //     (newMap, soundSample) => {
+  //       newMap.set(soundSample.location, soundSample);
+  //       return newMap;
+  //     },
+  //     new Map()
+  //   );
+  //   const newSoundSamples = defaultPresetData.soundSamples.map(
+  //     (defaultSoundSample) => {
+  //       const newSoundSampleData = newSoundSampleMap.get(
+  //         defaultSoundSample.location
+  //       );
+  //       if (newSoundSampleData !== undefined) {
+  //         return newSoundSampleData;
+  //       }
+  //       return defaultSoundSample;
+  //     }
+  //   );
 
-    setDefaultPresetData({
-      presetTitle: newPresetData.presetTitle,
-      presetId: newPresetData.presetId,
-      areaSize: newPresetData.areaSize,
-      soundSamples: newSoundSamples,
-    });
-  };
+  //   setDefaultPresetData({
+  //     presetTitle: newPresetData.presetTitle,
+  //     presetId: newPresetData.presetId,
+  //     areaSize: newPresetData.areaSize,
+  //     soundSamples: newSoundSamples,
+  //   });
+  // };
 
   const handleGetPreset = async (params: PresetParams) => {
     try {
@@ -107,12 +108,17 @@ export function DefaultPresetsPage() {
     });
     // 4. 받아온 api값을 fulfilled 액션에 dispatch해서 넣어줌
     // 5. (자동)redux state값이 변화한것 반영해서 새로 리랜더링 된다
-    setNewPresetData({
-      presetId: state.presetId,
-      presetTitle: state.presetTitle,
-      areaSize: state.areaSize,
-      soundSamples: state.soundSamples,
-    });
+
+    setNewPresetData(
+      {
+        presetId: state.presetId,
+        presetTitle: state.presetTitle,
+        areaSize: state.areaSize,
+        soundSamples: state.soundSamples,
+      },
+      defaultPresetData,
+      setDefaultPresetData
+    );
     // + 3에서 실패시 받은값의 status값을 이용해서 에러핸들링한다
   }, []);
 
