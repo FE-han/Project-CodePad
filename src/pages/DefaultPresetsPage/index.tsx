@@ -52,34 +52,6 @@ export function DefaultPresetsPage() {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
 
-  // const setNewPresetData = (newPresetData: Preset) => {
-  //   const newSoundSampleMap = newPresetData.soundSamples.reduce(
-  //     (newMap, soundSample) => {
-  //       newMap.set(soundSample.location, soundSample);
-  //       return newMap;
-  //     },
-  //     new Map()
-  //   );
-  //   const newSoundSamples = defaultPresetData.soundSamples.map(
-  //     (defaultSoundSample) => {
-  //       const newSoundSampleData = newSoundSampleMap.get(
-  //         defaultSoundSample.location
-  //       );
-  //       if (newSoundSampleData !== undefined) {
-  //         return newSoundSampleData;
-  //       }
-  //       return defaultSoundSample;
-  //     }
-  //   );
-
-  //   setDefaultPresetData({
-  //     presetTitle: newPresetData.presetTitle,
-  //     presetId: newPresetData.presetId,
-  //     areaSize: newPresetData.areaSize,
-  //     soundSamples: newSoundSamples,
-  //   });
-  // };
-
   const handleGetPreset = async (params: PresetParams) => {
     try {
       const data = await getPreset(params);
