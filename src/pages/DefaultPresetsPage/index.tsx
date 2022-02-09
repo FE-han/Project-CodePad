@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
@@ -100,13 +101,43 @@ export function DefaultPresetsPage() {
 
   useEffect(() => {
     getInitialData();
-    console.log(defaultPresetData);
   }, []);
 
   //테스트 공간
-  const [files, setFiles] = useState<null | Array<File>>();
+  const [file, setFile] = useState<null | File>(null);
 
-  const handleSetFiles = (e) => {};
+  const handleSetFiles = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (evt.target.files === null) {
+      console.log("파일이 업로드되지 않았음");
+      return;
+    }
+    const firstFile = evt.target.files[0];
+    console.log("선택한 파일", firstFile);
+
+    setFile(firstFile);
+  };
+
+  const sendData = async (file: File | null | undefined) => {
+    if (file === null || file === undefined) {
+      console.log("file을 인식하지 못했음");
+      return;
+    }
+
+    console.log("파일이 넘어옴", file);
+
+    const formData = new FormData();
+
+    formData.append("audio", file, file.name);
+
+    const res = await axios.post("http://localhost:4100/multer", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("axios결과", res);
+
+    setFile(null);
+  };
 
   //
 
@@ -118,9 +149,27 @@ export function DefaultPresetsPage() {
 
         <div>
           사운드 셈플 테스트 업로드 공간
-          <input type="file" multiple accept="audio/*" />
-          <button>사운드 셈플 업로드</button>
-          <button>파일 상태 로그찍기</button>
+          <input
+            type="file"
+            multiple
+            name="audio"
+            accept="audio/*"
+            onChange={handleSetFiles}
+          />
+          <button
+            onClick={() => {
+              sendData(file);
+            }}
+          >
+            사운드 셈플 업로드
+          </button>
+          <button
+            onClick={() => {
+              console.log(file);
+            }}
+          >
+            파일 상태 로그찍기
+          </button>
         </div>
       </div>
       <div className={classes.togglePresetBtn}>

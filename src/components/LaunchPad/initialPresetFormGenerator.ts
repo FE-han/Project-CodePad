@@ -26,6 +26,5 @@ export function initialPresetGenerator(scale: LaunchPadScale) {
       initialPreset.soundSamples.push(initialSoundSampleGenerator(`${x}X${y}`));
     }
   }
-  console.log(initialPreset);
   return initialPreset;
 }
