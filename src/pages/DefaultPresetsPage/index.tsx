@@ -10,10 +10,13 @@ import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 import pororo from './pororo.png';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
+import  ListItemIcon from "@mui/material/ListItemIcon";
+import DraftsIcon from "@mui/icons-material/Drafts";
 import ListItemText from '@mui/material/ListItemText';
 import { grey } from "@mui/material/colors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { style } from "@mui/system";
 
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
@@ -49,21 +52,25 @@ const DefaultPresetsPageStyles = makeStyles({
   },
   pororoimage: {
     paddingLeft: "200px",
-    paddingTop: "80px",
+    paddingTop: "50px",
+    paddingBottom: "20px",
+    backgroundColor: "#8E8E8E",
   },
   listStyle: {
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "gray",
+    backgroundColor: "#8E8E8E",
     height: "60%",
+    width: "100%",
     borderRadius: 1,
   },
   page:{
     paddingLeft: "90px",
-  }
+  },
 });
+
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
@@ -85,6 +92,13 @@ export function DefaultPresetsPage() {
     }
   };
   
+  function ButtonPresetMake(){
+    return (
+      <Link to="/mypresets">
+      </Link>
+    )
+  }
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const newPresetData: Preset = await getPreset({
@@ -140,30 +154,35 @@ export function DefaultPresetsPage() {
       </div>
       <div className={classes.presetList}>
         <div className={classes.pororoimage}>
-          <img src={pororo} width="50%"/>
+          <img src={pororo} width="55%" height="100%"/>
         </div>
         <div className={classes.listStyle}>
-        <List sx={{width:"100%",bgcolor:grey} }>
-            <ListItemButton>
-              <ListItemText primary="Tech House" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Tech House" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Tech House" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Tech House" />
-            </ListItemButton>
-          </List>
+          <List component="nav" sx={{width:"100%",maxWidth:"500px",height:"100%", display:"flex", alignItems:"center", flexDirection:"column", justifyContent:"space-between"} }>
+              <ListItemButton onClick={() => {'./mypresets'}} sx={{width: "100%", textAlign:"center", border: "1px solid white"}}>
+                <ListItemText primary="+"/>
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech Housesjfdsjfsj" />
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="sddsfdsfdsfdsfdsfTech House" />
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech House" />
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech House" />
+              </ListItemButton>
+            </List>
         </div>
         <div className={classes.page}>
           <Stack spacing={2}>
             <Pagination count={10} showFirstButton showLastButton/>
           </Stack>
         </div>
-        {/* <PresetList /> */}
       </div>
     </div>
   );
