@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { Link, Params, useParams } from "react-router-dom";
 import UserInfo from "./components/UserInfo";
 
 const UserPresetsPageStyles = makeStyles({
@@ -35,8 +35,17 @@ const UserPresetsPageStyles = makeStyles({
   communityContainer: {},
 });
 
+//에러 처리 고민 후 타입 변경할 것
+type UserPresetsPageParams = {
+  userId: any;
+}
+
 export function UserPresetsPage() {
+  
+  const { userId } = useParams<UserPresetsPageParams>();
+  
   const classes = UserPresetsPageStyles();
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -45,7 +54,7 @@ export function UserPresetsPage() {
         {/* <LaunchPad /> */}
       </div>
       <div className={classes.userInfo}>
-        <UserInfo />
+        <UserInfo userId={userId} />
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
