@@ -1,6 +1,6 @@
-import { Translate } from "@mui/icons-material";
+import { ConstructionRounded, HdrEnhancedSelectOutlined, Translate } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
@@ -17,6 +17,7 @@ import { grey } from "@mui/material/colors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { style } from "@mui/system";
+import  Grid  from "@mui/material/Grid";
 
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
@@ -69,7 +70,22 @@ const DefaultPresetsPageStyles = makeStyles({
     backgroundColor: "#8E8E8E",
     height: "60%",
     width: "100%",
+    fontWeight: 'medium',
     borderRadius: 1,
+  },
+  presetListStyles:{
+    width:"100%",
+    maxWidth:"500px",
+    height:"100%", 
+    display:"flex", 
+    alignItems:"center", 
+    flexDirection:"column", 
+    justifyContent:"space-between",
+    fontWeight: 'medium',
+  },
+  plusPresetButtonStyles:{
+    width: "100%", 
+    textAlignLast:"center",
   },
   page:{
     paddingLeft: "90px",
@@ -81,7 +97,8 @@ const DefaultPresetsPageStyles = makeStyles({
     flexDirection: "row",
     width: "70%",
     justifyContent: "center",
-  }
+  },
+
 });
 
 
@@ -149,6 +166,7 @@ export function DefaultPresetsPage() {
     console.log(defaultPresetData);
   }, []);
 
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -170,10 +188,7 @@ export function DefaultPresetsPage() {
           <img src={pororo} width="55%" height="100%"/>
         </div>
         <div className={classes.listStyle}>
-          <List component="nav" sx={{width:"100%",maxWidth:"500px",height:"100%", display:"flex", alignItems:"center", flexDirection:"column", justifyContent:"space-between"} }>
-              <ListItemButton onClick={() => {'/mypresets'}} sx={{width: "100%", textAlign:"center", border: "1px solid white"}}>
-                <ListItemText primary="+"/>
-              </ListItemButton>
+          <List className={classes.presetListStyles}>
               <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
                 <ListItemText primary="Tech Housesjfdsjfsj" />
                 <ListItemIcon>

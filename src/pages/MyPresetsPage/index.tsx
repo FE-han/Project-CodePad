@@ -1,5 +1,23 @@
+import { ConstructionRounded, HdrEnhancedSelectOutlined, Translate } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import {  useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, Params, useParams } from "react-router-dom";
+import { getPreset } from "../../api/getPreset";
+import LaunchPad from "../../components/LaunchPad";
+import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
+import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
+import pororo from './pororo.png';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import  ListItemIcon from "@mui/material/ListItemIcon";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import ListItemText from '@mui/material/ListItemText';
+import { grey } from "@mui/material/colors";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { style } from "@mui/system";
+import  Grid  from "@mui/material/Grid";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -27,9 +45,56 @@ const MyPresetsPageStyles = makeStyles({
   },
   togglePresetBtn: {
     gridArea: "togglePresetBtn",
+    backgroundColor: "#8E8E8E",
+    display:"flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  changePresets:{
+    backgroundColor: "#8E8E8E",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "70%",
+    justifyContent: "center",
   },
   presetList: {
     gridArea: "presetList",
+  },
+  pororoimage: {
+    paddingLeft: "200px",
+    paddingTop: "50px",
+    paddingBottom: "20px",
+    backgroundColor: "#8E8E8E",
+  },
+  listStyle: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    backgroundColor: "#8E8E8E",
+    height: "60%",
+    width: "100%",
+    fontWeight: 'medium',
+    borderRadius: 1,
+  },
+  presetListStyles:{
+    width:"100%",
+    maxWidth:"500px",
+    height:"100%", 
+    display:"flex", 
+    alignItems:"center", 
+    flexDirection:"column", 
+    justifyContent:"space-between",
+    fontWeight: 'medium',
+  },
+  plusPresetButtonStyles:{
+    width: "100%", 
+    textAlignLast:"center",
+  },
+  page:{
+    paddingLeft: "90px",
   },
   communityContainer: {},
 });
@@ -44,12 +109,46 @@ export function MyPresetsPage() {
         {/* <LaunchPad /> */}
       </div>
       <div className={classes.togglePresetBtn}>
-        디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
-        {/* <PresetToggleBtn /> */}
+        <List className={classes.changePresets}>
+          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+            <ListItemText primary="Default presets"/>
+          </ListItemButton>
+          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+            <ListItemText primary="My presets"/>
+          </ListItemButton>
+        </List>
       </div>
       <div className={classes.presetList}>
-        프리셋 리스트 올곳
-        {/* <PresetList /> */}
+        <div className={classes.pororoimage}>
+          <img src={pororo} width="55%" height="100%"/>
+        </div>
+        <div className={classes.listStyle}>
+          <List className={classes.presetListStyles}>
+              <ListItemButton component={Link} to="/mypresets" className={classes.plusPresetButtonStyles} sx={{border: "1px solid white"}}>
+                <ListItemText>+</ListItemText>
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech Housesjfdsjfsj" />
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="sddsfdsfdsfdsfdsfTech House" />
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech House" />
+              </ListItemButton>
+              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
+                <ListItemText primary="Tech House" />
+              </ListItemButton>
+            </List>
+        </div>
+        <div className={classes.page}>
+          <Stack spacing={2}>
+            <Pagination count={10} showFirstButton showLastButton/>
+          </Stack>
+        </div>
       </div>
       <div className={classes.communityContainer}>
         태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
