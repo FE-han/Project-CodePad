@@ -1,6 +1,6 @@
 import { ConstructionRounded, HdrEnhancedSelectOutlined, Translate } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
@@ -174,11 +174,11 @@ export function DefaultPresetsPage() {
         <LaunchPad presetData={defaultPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
-        <List className={classes.changePresets}>
-          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+      <List className={classes.changePresets}>
+          <ListItemButton component={Link} to="/defaultpresets/enter"sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
             <ListItemText primary="Default presets"/>
           </ListItemButton>
-          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+          <ListItemButton component={Link} to="/mypresets" sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
             <ListItemText primary="My presets"/>
           </ListItemButton>
         </List>

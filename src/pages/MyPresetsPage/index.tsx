@@ -110,10 +110,10 @@ export function MyPresetsPage() {
       </div>
       <div className={classes.togglePresetBtn}>
         <List className={classes.changePresets}>
-          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+          <ListItemButton component={Link} to="/defaultpresets/enter"sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
             <ListItemText primary="Default presets"/>
           </ListItemButton>
-          <ListItemButton sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
+          <ListItemButton component={Link} to="/mypresets" sx={{border:"1px solid white", width:"50%", textAlign:"center"}}>
             <ListItemText primary="My presets"/>
           </ListItemButton>
         </List>
