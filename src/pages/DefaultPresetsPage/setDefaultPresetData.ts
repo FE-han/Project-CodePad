@@ -1,4 +1,4 @@
-import { Preset } from "../../components/LaunchPad/types";
+import { Preset } from "../../components/LaunchPad/utils/types";
 
 export const setNewPresetData = (
   newPresetData: Preset,

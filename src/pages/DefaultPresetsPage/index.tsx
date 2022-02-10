@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { Params, useParams } from "react-router-dom";
 import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
-import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
-import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
+import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
+import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { setNewPresetData } from "./setDefaultPresetData";
@@ -56,15 +56,16 @@ export function DefaultPresetsPage() {
     try {
       const data = await getPreset(params);
       dispatch(actions.getPresetDataFulfilled(data));
+
+      setNewPresetData(data, defaultPresetData, setDefaultPresetData);
     } catch (err) {
-      console.log(err);
+      console.log("프리셋 Api에러", err);
       dispatch(actions.getPresetDataRejected());
     }
   };
 
+  //default Preset 처음진입시 프리셋 데이터 가져옴
   useEffect(() => {
-    // 1. 페이지 렌더시 프리셋 데이터 가져오는 액션 pending
-    // 2. 액션이 pending 되면 로딩중 문구가 나타남
     dispatch(
       actions.getPresetDataPending({
         //useParams에서(defaultPresetId) 가져올값들
@@ -73,31 +74,18 @@ export function DefaultPresetsPage() {
       })
     );
 
-    // 3. api 요청을 보내고 값을 받아옴(결과값은 redux state에 저장)
     handleGetPreset({
       userId: state.userId,
       presetId: state.presetId,
     });
-    // 4. 받아온 api값을 fulfilled 액션에 dispatch해서 넣어줌
-    // 5. (자동)redux state값이 변화한것 반영해서 새로 리랜더링 된다
-
-    setNewPresetData(
-      {
-        presetId: state.presetId,
-        presetTitle: state.presetTitle,
-        areaSize: state.areaSize,
-        soundSamples: state.soundSamples,
-      },
-      defaultPresetData,
-      setDefaultPresetData
-    );
-    // + 3에서 실패시 받은값의 status값을 이용해서 에러핸들링한다
   }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <button onClick={() => console.log(state)}>state값 확인</button>
+        <button onClick={() => console.log(state, defaultPresetData)}>
+          state값 확인
+        </button>
         <LaunchPad presetData={defaultPresetData} />
         {state.isLoading ? "로딩중" : null}
       </div>

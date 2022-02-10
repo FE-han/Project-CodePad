@@ -1,7 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
-import { Preset } from "./types";
-import LaunchPadButton from "./LaunchPadButton";
+import { Preset } from "./utils/types";
+import OneShotButton from "./OneShotButton";
+import LoopButton from "./LoopButton";
+import EmptyButton from "./EmptyButton";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -33,37 +35,6 @@ const LaunchPadStyles = makeStyles({
     gridGap: "5px",
   },
 });
-
-//4x4 scale
-// export function LaunchPad16() {
-//   const classes = LaunchPadStyles();
-//   const [presetData, setPresetData] = useState(
-//     initialPresetGenerator(LaunchPadScale.MINI)
-//   );
-//   return (
-//     <>
-//       <div className={classes.root}>
-//         <div className={classes.header}>
-//           <div className={classes.presetName}>Default Preset 1</div>
-//           <button className={classes.forkBtn}>FORK</button>
-//         </div>
-
-//         <div className={classes.btnContainer}>
-//           {presetData.soundSamples.map((soundSample) => {
-//             return (
-//               <LaunchPadButton
-//                 soundPath={soundSample.soundSampleURL}
-//                 buttonType={soundSample.buttonType}
-//                 soundType={soundSample.soundType}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
 interface LaunchPadProps {
   presetData: Preset;
 }
@@ -89,14 +60,32 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
               soundType,
               location,
             }) => {
-              return (
-                <LaunchPadButton
-                  key={soundSampleId + location}
-                  soundSampleURL={soundSampleURL}
-                  buttonType={buttonType}
-                  soundType={soundType}
-                />
-              );
+              switch (buttonType) {
+                case "ONESHOT":
+                  return (
+                    <OneShotButton
+                      key={soundSampleId + location}
+                      soundSampleURL={soundSampleURL}
+                      buttonType={buttonType}
+                      soundType={soundType}
+                      location={location}
+                    />
+                  );
+
+                case "LOOP":
+                  return (
+                    <LoopButton
+                      key={soundSampleId + location}
+                      soundSampleURL={soundSampleURL}
+                      buttonType={buttonType}
+                      soundType={soundType}
+                      location={location}
+                    />
+                  );
+
+                default:
+                  return <EmptyButton />;
+              }
             }
           )}
         </div>

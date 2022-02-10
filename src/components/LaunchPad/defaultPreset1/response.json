@@ -38,6 +38,27 @@
         "soundSampleURL": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
         "buttonType": "ONESHOT",
         "soundType": "DRUM"
+      },
+      {
+        "location": "5X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "buttonType": "LOOP",
+        "soundType": "SYNTH"
+      },
+      {
+        "location": "6X3",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "buttonType": "LOOP",
+        "soundType": "MELODY"
+      },
+      {
+        "location": "7X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "buttonType": "LOOP",
+        "soundType": "DRUMS"
       }
     ]
   }
