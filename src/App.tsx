@@ -37,7 +37,7 @@ function App() {
               path={"/defaultpresets/:presetId"}
               element={<DefaultPresetsPage />}
             />
-            <Route path={"/userpresets"} element={<UserPresetsPage />} />
+            <Route path={"/userpresets/:userId"} element={<UserPresetsPage />} />
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
