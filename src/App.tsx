@@ -11,13 +11,14 @@ import UserPresetsPage from "./pages/UserPresetsPage";
 import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
 import RTKPage from "./pages/RTKPage";
+import NewPresetsPage from './pages/NewPresetsPage';
 
 const AppStyles = makeStyles({
   root: {
     display: "grid",
     background: `url(${bg})`,
     backgroundPosition: `center center`,
-    height: "100vh",
+    // height: "100vh",
     overflow: "hidden",
   },
 });
@@ -40,6 +41,7 @@ function App() {
             <Route path={"/userpresets"} element={<UserPresetsPage />} />
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
+            <Route path={"/newpresets"} element={<NewPresetsPage />} />
 
             {/* ReduxToolkit 예시용 페이지 */}
             <Route path={"/example"} element={<RTKPage />} />

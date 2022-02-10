@@ -11,12 +11,14 @@ import pororo from './pororo.png';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import  ListItemIcon from "@mui/material/ListItemIcon";
+import  Box  from "@mui/material/Box";
+import Button from '@mui/material/Button';
 import DraftsIcon from "@mui/icons-material/Drafts";
 import ListItemText from '@mui/material/ListItemText';
 import { grey } from "@mui/material/colors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { style } from "@mui/system";
+import { padding, style } from "@mui/system";
 import  Grid  from "@mui/material/Grid";
 
 
@@ -82,6 +84,7 @@ const DefaultPresetsPageStyles = makeStyles({
     flexDirection:"column", 
     justifyContent:"space-between",
     fontWeight: 'medium',
+    paddingBottom: '30px',
   },
   plusPresetButtonStyles:{
     width: "100%", 
@@ -98,6 +101,12 @@ const DefaultPresetsPageStyles = makeStyles({
     width: "70%",
     justifyContent: "center",
   },
+  buttonStyles:{
+    height:"50px",
+    width:'500px',
+    color: 'white',
+    backgroundColor: 'gray',
+  }
 
 });
 
@@ -188,7 +197,14 @@ export function DefaultPresetsPage() {
           <img src={pororo} width="55%" height="100%"/>
         </div>
         <div className={classes.listStyle}>
-          <List className={classes.presetListStyles}>
+          <Stack className={classes.presetListStyles} spacing={2} direction='column'>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+          </Stack>
+          {/* <List className={classes.presetListStyles}>
               <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
                 <ListItemText primary="Tech Housesjfdsjfsj" />
                 <ListItemIcon>
@@ -204,10 +220,10 @@ export function DefaultPresetsPage() {
               <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
                 <ListItemText primary="Tech House" />
               </ListItemButton>
-            </List>
+            </List> */}
         </div>
         <div className={classes.page}>
-          <Stack spacing={2}>
+          <Stack spacing={1}>
             <Pagination count={10} showFirstButton showLastButton/>
           </Stack>
         </div>

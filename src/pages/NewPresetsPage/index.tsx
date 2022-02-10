@@ -125,7 +125,7 @@ export function MyPresetsPage() {
         </div>
         <div className={classes.listStyle}>
         <Stack className={classes.presetListStyles} spacing={2} direction='column'>
-            <Button component={Link} to='/newpresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button>
+            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
             <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
             <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
             <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
