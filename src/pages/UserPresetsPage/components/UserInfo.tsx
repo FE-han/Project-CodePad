@@ -1,6 +1,8 @@
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useState, useEffect } from "react";
+import { 
+    getUserInfo,
+} from "../../../api/getUserInfo";
 
 const UserInfoStyles = makeStyles ({
     container: {
@@ -26,7 +28,6 @@ const UserInfoStyles = makeStyles ({
     },
 
     userNameWrap: {
-
         textAlign: "center",
         fontSize: "25px",
         fontWeight: "bold",
@@ -37,33 +38,41 @@ const UserInfoStyles = makeStyles ({
     },
 })
 
-interface UserInfoProps {
-    userId: number
+type UserInfoTypes = {
+    name: string;
+    thumbnailURL: string;
 }
 
-// userId 값 필요
-export default function UserInfo(){
+type UserInfoProps = {
+    userId: string;
+}
+
+export default function UserInfo({userId}:UserInfoProps){
 
     const classes = UserInfoStyles();
-    const [userInfo, setUserInfo] = useState({
-        name: "UserName",
-        thumbnailURL: "https://png.clipart.me/istock/previews/9349/93493545-people-icon.jpg"
+  
+    const [userInfo, setUserInfo] = useState<UserInfoTypes>({
+        name: "",
+        thumbnailURL: ""
     });
 
-    //유저정보 호출
-    const getUserInfo = async (userId:number) => {
-        const user = await axios.get("/userData.json")
-        setUserInfo(user.data[userId]);
+    const getInitialData = async () => {
+        try{
+            const userInfoData: UserInfoTypes = await getUserInfo({userId: userId})
+            setUserInfo(userInfoData);
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {
-        getUserInfo(1);
-    }, [])
+        getInitialData();
+    }, []);
 
     return (
         <div className={classes.container}>
             <div className={classes.userImageWrap}>
-                <img src={userInfo.thumbnailURL} />
+                <img src={userInfo.thumbnailURL} alt="유저 프로필" />
             </div>
             <div className={classes.userNameWrap}>
                 <p>{userInfo.name}</p>
