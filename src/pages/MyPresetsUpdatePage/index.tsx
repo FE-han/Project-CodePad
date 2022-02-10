@@ -1,10 +1,12 @@
 import { makeStyles } from "@mui/styles";
-import { Link, Params, useParams } from "react-router-dom";
-import UserInfo from "./components/UserInfo";
+import { Link } from "react-router-dom";
+import PresetOptionHandle from "./components/PresetOptionHandle";
+import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
+import PresetTitle from "./components/PresetTitle";
 
-const UserPresetsPageStyles = makeStyles({
+const MyPresetsPageStyles = makeStyles({
   root: {
-    background: "#3fa1a5",
+    background: "#4b7a1f",
 
     padding: "35px 60px 35px 60px",
 
@@ -14,7 +16,7 @@ const UserPresetsPageStyles = makeStyles({
     gridColumnGap: "100px",
     gridRowGap: "20px",
     gridTemplateAreas: `
-    "launchPad userInfo"
+    "launchPad togglePresetBtn"
     "launchPad presetList"
     "communityContainer presetList"`,
 
@@ -26,8 +28,10 @@ const UserPresetsPageStyles = makeStyles({
   launchPad: {
     gridArea: "launchPad",
   },
-  userInfo: {
-    gridArea: "userInfo",
+  togglePresetBtn: {
+    gridArea: "togglePresetBtn",
+    display: "flex",
+    justifyContent: "space-around",
   },
   presetList: {
     gridArea: "presetList",
@@ -35,17 +39,8 @@ const UserPresetsPageStyles = makeStyles({
   communityContainer: {},
 });
 
-//에러 처리 고민 후 타입 변경할 것
-type UserPresetsPageParams = {
-  userId: any;
-}
-
-export function UserPresetsPage() {
-  
-  const { userId } = useParams<UserPresetsPageParams>();
-  
-  const classes = UserPresetsPageStyles();
-
+export function MyPresetsUpdatePage() {
+  const classes = MyPresetsPageStyles();
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -53,18 +48,22 @@ export function UserPresetsPage() {
         런치패드 올곳
         {/* <LaunchPad /> */}
       </div>
-      <div className={classes.userInfo}>
-        <UserInfo userId={userId} />
+      <div className={classes.togglePresetBtn}>
+        <PresetThumbnailUpload imgURL="https://images.mypetlife.co.kr/content/uploads/2019/12/09151959/%EC%8B%AC%EC%8B%AC%ED%95%9C_%EA%B3%A0%EC%96%91%EC%9D%B42.png"/>
+        <div>
+          <PresetTitle />
+          <PresetOptionHandle />
+        </div>
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
         {/* <PresetList /> */}
       </div>
-      <div className={classes.communityContainer}>
+      <div className={classes.communityContainer}>  
         태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
       </div>
     </div>
   );
 }
 
-export default UserPresetsPage;
+export default MyPresetsUpdatePage;
