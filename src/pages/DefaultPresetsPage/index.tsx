@@ -6,6 +6,7 @@ import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
+import PresetToggleButton from "../../components/PresetToggleButton";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -110,8 +111,7 @@ export function DefaultPresetsPage() {
         <LaunchPad presetData={defaultPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
-        디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
-        {/* <PresetToggleBtn /> */}
+        <PresetToggleButton />
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
