@@ -17,7 +17,7 @@ const AppStyles = makeStyles({
     display: "grid",
     background: `url(${bg})`,
     backgroundPosition: `center center`,
-    height: "100vh",
+    // height: "100vh",
     overflow: "hidden",
   },
 });
