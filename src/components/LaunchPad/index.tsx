@@ -61,53 +61,53 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
   const [bar, setBar] = useState<number>(1);
   const [beat, setBeat] = useState<number>(1);
 
-  const beatMatch: BeatMatch = {
-    tempo,
-    setTempo,
-    bar,
-    setBar,
-    beat,
-    setBeat,
-  };
+  // const beatMatch: BeatMatch = {
+  //   tempo,
+  //   setTempo,
+  //   bar,
+  //   setBar,
+  //   beat,
+  //   setBeat,
+  // };
 
-  const handleTempoStart = (beatMatch: BeatMatch) => {
-    const intervalTime = (60 / beatMatch.tempo) * 1000;
-    let expected = Date.now() + intervalTime;
+  // const handleTempoStart = (beatMatch: BeatMatch) => {
+  //   const intervalTime = (60 / beatMatch.tempo) * 1000;
+  //   let expected = Date.now() + intervalTime;
 
-    console.log("intervalTime", intervalTime);
+  //   console.log("intervalTime", intervalTime);
 
-    const step = (
-      beatMatch: BeatMatch,
-      intervalTime: number,
-      expected: number
-    ) => {
-      const delayTime = Date.now() - expected;
-      if (delayTime > intervalTime) {
-        console.log("딜레이가 너무 커졌습니다");
-      }
+  //   function step (
+  //     beatMatch: BeatMatch,
+  //     intervalTime: number,
+  //     expected: number
+  //   ) {
+  //     const delayTime = Date.now() - expected;
+  //     if (delayTime > intervalTime) {
+  //       console.log("딜레이가 너무 커졌습니다");
+  //     }
 
-      console.log("step", beatMatch.beat);
+  //     console.log("step", beatMatch.beat);
 
-      if (beatMatch.beat < 4) {
-        beatMatch.setBeat(beatMatch.beat + 1);
-      }
-      if (beatMatch.beat >= 4) {
-        beatMatch.setBeat(1);
+  //     if (beatMatch.beat < 4) {
+  //       beatMatch.setBeat(beatMatch.beat + 1);
+  //     }
+  //     if (beatMatch.beat >= 4) {
+  //       beatMatch.setBeat(1);
 
-        if (beatMatch.bar < 4) {
-          beatMatch.setBar(beatMatch.bar + 1);
-        }
-        if (beatMatch.bar >= 4) {
-          beatMatch.setBar(1);
-        }
-      }
+  //       if (beatMatch.bar < 4) {
+  //         beatMatch.setBar(beatMatch.bar + 1);
+  //       }
+  //       if (beatMatch.bar >= 4) {
+  //         beatMatch.setBar(1);
+  //       }
+  //     }
 
-      expected += intervalTime;
-      setTimeout(step, Math.max(0, intervalTime - delayTime));
-    };
+  //     expected += intervalTime;
+  //     setTimeout(step(beatMatch,intervalTime,expected), Math.max(0, intervalTime - delayTime));
+  //   };
 
-    setTimeout(step, 0);
-  };
+  //   setTimeout(step(beatMatch,intervalTime,expected), 0);
+  // };
 
   //
 
@@ -131,7 +131,7 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <div>tempoTest</div>
           <button
             onClick={() => {
-              handleTempoStart(beatMatch);
+              // handleTempoStart(beatMatch);
             }}
           >
             start!
@@ -145,13 +145,16 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
 
         <div className={classes.btnContainer}>
           {presetData.soundSamples.map(
-            ({
-              soundSampleId,
-              soundSampleURL,
-              buttonType,
-              soundType,
-              location,
-            }) => {
+            (
+              {
+                soundSampleId,
+                soundSampleURL,
+                buttonType,
+                soundType,
+                location,
+              },
+              idx
+            ) => {
               switch (buttonType) {
                 case "ONESHOT":
                   return (
@@ -176,7 +179,7 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
                   );
 
                 default:
-                  return <EmptyButton />;
+                  return <EmptyButton key={soundSampleId + location} />;
               }
             }
           )}
