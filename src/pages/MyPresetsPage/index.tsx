@@ -89,6 +89,9 @@ const MyPresetsPageStyles = makeStyles({
     flexDirection:"column", 
     justifyContent:"space-between",
     fontWeight: 'medium',
+    paddingBottom: '20px',
+    textAlign:'center',
+    lineHeight:'50px',
   },
   plusPresetButtonStyles:{
     width: "100%", 
@@ -102,6 +105,7 @@ const MyPresetsPageStyles = makeStyles({
 
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -125,11 +129,12 @@ export function MyPresetsPage() {
         </div>
         <div className={classes.listStyle}>
         <Stack className={classes.presetListStyles} spacing={2} direction='column'>
-            <Button component={Link} to='/mypresets/update' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+            {/* <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> */}
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e', fontSize:'30px'}}>+</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
           </Stack>
         </div>
         <div className={classes.page}>

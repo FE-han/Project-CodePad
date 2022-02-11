@@ -84,7 +84,9 @@ const DefaultPresetsPageStyles = makeStyles({
     flexDirection:"column", 
     justifyContent:"space-between",
     fontWeight: 'medium',
-    paddingBottom: '30px',
+    paddingBottom: '20px',
+    textAlign:'center',
+    lineHeight:'50px',
   },
   plusPresetButtonStyles:{
     width: "100%", 
@@ -198,29 +200,12 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.listStyle}>
           <Stack className={classes.presetListStyles} spacing={2} direction='column'>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
-            <Button sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white'}}>zzz</Button>
+          <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e', fontSize:'30px'}}>+</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
           </Stack>
-          {/* <List className={classes.presetListStyles}>
-              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
-                <ListItemText primary="Tech Housesjfdsjfsj" />
-                <ListItemIcon>
-                  <DraftsIcon />
-                </ListItemIcon>
-              </ListItemButton>
-              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
-                <ListItemText primary="sddsfdsfdsfdsfdsfTech House" />
-              </ListItemButton>
-              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
-                <ListItemText primary="Tech House" />
-              </ListItemButton>
-              <ListItemButton sx={{width: "100%", border: "1px solid white"}}>
-                <ListItemText primary="Tech House" />
-              </ListItemButton>
-            </List> */}
         </div>
         <div className={classes.page}>
           <Stack spacing={1}>
