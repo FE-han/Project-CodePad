@@ -1,6 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Params, useParams } from "react-router-dom";
+import { getPreset } from "../../api/getPreset";
+import LaunchPad from "../../components/LaunchPad";
+import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
+import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 import PresetToggleButton from "../../components/PresetToggleButton";
+import setPresetId from "../../utils/setPresetId";
+import setPresetData from "../../utils/setPresetData";
+
 const MyPresetsPageStyles = makeStyles({
   root: {
     background: "#4b7a1f",
@@ -36,12 +44,33 @@ const MyPresetsPageStyles = makeStyles({
 
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
+  const [myPresetData, setMyPresetData] = useState<Preset>(
+    initialPresetGenerator(LaunchPadScale.DEFAULT)
+  );
+  const presetId = useParams();
+
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // setDefaultPresetData(newPresetData);
+
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
+  };
+
+  useEffect(() => {
+    getInitialData();
+  }, []);
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
         <Link to={"/"}>인트로 페이지 이동버튼</Link>
         런치패드 올곳
-        {/* <LaunchPad /> */}
+        <LaunchPad presetData={myPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
         <PresetToggleButton />

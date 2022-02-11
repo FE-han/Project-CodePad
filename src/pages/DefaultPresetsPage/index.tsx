@@ -7,6 +7,7 @@ import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
 import PresetToggleButton from "../../components/PresetToggleButton";
+import setPresetData from "../../utils/setPresetData";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -63,45 +64,20 @@ export function DefaultPresetsPage() {
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const newPresetData: Preset = await getPreset({
+    const nowPresetData: Preset = await getPreset({
       presetId: setPresetId(defaultPresetId),
     });
     // setDefaultPresetData(newPresetData);
 
-    setNewPresetData(newPresetData);
-  };
-
-  const setNewPresetData = (newPresetData: Preset) => {
-    const newSoundSampleMap = newPresetData.soundSamples.reduce(
-      (newMap, soundSample) => {
-        newMap.set(soundSample.location, soundSample);
-        return newMap;
-      },
-      new Map()
-    );
-    const newSoundSamples = defaultPresetData.soundSamples.map(
-      (defaultSoundSample) => {
-        const newSoundSampleData = newSoundSampleMap.get(
-          defaultSoundSample.location
-        );
-        if (newSoundSampleData !== undefined) {
-          return newSoundSampleData;
-        }
-        return defaultSoundSample;
-      }
-    );
-
-    setDefaultPresetData({
-      presetTitle: newPresetData.presetTitle,
-      presetId: newPresetData.presetId,
-      areaSize: newPresetData.areaSize,
-      soundSamples: newSoundSamples,
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: defaultPresetData,
+      setDefaultPresetData: setDefaultPresetData,
     });
   };
 
   useEffect(() => {
     getInitialData();
-    console.log(defaultPresetData);
   }, []);
 
   return (

@@ -1,11 +1,11 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
-interface DefaultPresetIdParams {
+export interface PresetIdParams {
   presetId: string;
 }
 
-export async function getPreset(params: DefaultPresetIdParams) {
+export async function getPreset(params: PresetIdParams) {
   const config: AxiosRequestConfig = {
     //token input
   };
