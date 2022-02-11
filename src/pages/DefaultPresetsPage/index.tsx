@@ -9,6 +9,9 @@ import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { setNewPresetData } from "./setDefaultPresetData";
+import PresetToggleButton from "../../components/PresetToggleButton";
+import setPresetData from "../../utils/setPresetData";
+import setPresetId from "../../utils/setPresetId";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -50,7 +53,8 @@ export function DefaultPresetsPage() {
   );
   const defaultPresetId = useParams();
   const dispatch = useDispatch();
-  const state = useAppSelector((state) => state.getPresetSlice);
+  // const state = useAppSelector((state) => state.getPresetSlice);
+  const state = useAppSelector((state) => state);
 
   const handleGetPreset = async (params: PresetParams) => {
     try {
@@ -64,20 +68,20 @@ export function DefaultPresetsPage() {
     }
   };
 
-  //default Preset 처음진입시 프리셋 데이터 가져옴
-  useEffect(() => {
-    dispatch(
-      actions.getPresetDataPending({
-        //useParams에서(defaultPresetId) 가져올값들
-        userId: "inputUserId",
-        presetId: "inputPresetId",
-      })
-    );
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset(setPresetId(defaultPresetId));
+    // setDefaultPresetData(newPresetData);
 
-    handleGetPreset({
-      userId: state.userId,
-      presetId: state.presetId,
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: defaultPresetData,
+      setDefaultPresetData: setDefaultPresetData,
     });
+  };
+
+  useEffect(() => {
+    getInitialData();
   }, []);
 
   return (
@@ -87,11 +91,10 @@ export function DefaultPresetsPage() {
           state값 확인
         </button>
         <LaunchPad presetData={defaultPresetData} />
-        {state.isLoading ? "로딩중" : null}
+        {/* {state.isLoading ? "로딩중" : null} */}
       </div>
       <div className={classes.togglePresetBtn}>
-        디폴트 프리셋 {"<->"} 마이프리셋 토글 버튼 올곳
-        {/* <PresetToggleBtn /> */}
+        <PresetToggleButton />
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳

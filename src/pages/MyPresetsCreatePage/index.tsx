@@ -1,15 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import { useEffect, useState } from "react";
-import { Link, Params, useParams } from "react-router-dom";
-import { getPreset } from "../../api/getPreset";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
-import PresetToggleButton from "../../components/PresetToggleButton";
-import setPresetId from "../../utils/setPresetId";
-import setPresetData from "../../utils/setPresetData";
+import PresetOptionHandle from "./components/PresetOptionHandle";
+import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
+import PresetTitle from "./components/PresetTitle";
 
-const MyPresetsPageStyles = makeStyles({
+const MyPresetsCreatePageStyles = makeStyles({
   root: {
     background: "#4b7a1f",
 
@@ -35,6 +34,8 @@ const MyPresetsPageStyles = makeStyles({
   },
   togglePresetBtn: {
     gridArea: "togglePresetBtn",
+    display: "flex",
+    justifyContent: "space-around",
   },
   presetList: {
     gridArea: "presetList",
@@ -42,42 +43,28 @@ const MyPresetsPageStyles = makeStyles({
   communityContainer: {},
 });
 
-export function MyPresetsPage() {
-  const classes = MyPresetsPageStyles();
+export function MyPresetsCreatePage() {
+  const classes = MyPresetsCreatePageStyles();
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
-
-  const getInitialData = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
-    // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
-  };
-
-  useEffect(() => {
-    getInitialData();
-  }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
+        <Link to={"/"}>인트로 페이지 이동버튼</Link>
         런치패드 올곳
         <LaunchPad presetData={myPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
-        <PresetToggleButton />
+        <PresetThumbnailUpload imgURL="https://images.mypetlife.co.kr/content/uploads/2019/12/09151959/%EC%8B%AC%EC%8B%AC%ED%95%9C_%EA%B3%A0%EC%96%91%EC%9D%B42.png" />
+        <div>
+          <PresetTitle />
+          <PresetOptionHandle />
+        </div>
       </div>
       <div className={classes.presetList}>
         프리셋 리스트 올곳
-        <Link to={"/mypresets/create"}>나의 새 프리셋 생성 페이지 이동</Link>
         {/* <PresetList /> */}
       </div>
       <div className={classes.communityContainer}>
@@ -87,4 +74,4 @@ export function MyPresetsPage() {
   );
 }
 
-export default MyPresetsPage;
+export default MyPresetsCreatePage;
