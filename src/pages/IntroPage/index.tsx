@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
+import { CommunityContentType } from "../../utils/CommonValue";
 import { Link } from "react-router-dom";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
@@ -10,15 +11,24 @@ export default function IntroPage() {
   return (
     <div className={classes.root}>
       <div className={classes.top50}>
-        <CommunityContentsScrollList title="CHART : TOP 50" listName="top50" />
+        <CommunityContentsScrollList
+          title="CHART : TOP 50"
+          listName="top50"
+          type={CommunityContentType.preset}
+        />
       </div>
       <div className={classes.used}>
-        <CommunityContentsScrollList title="Recently Used" listName="used" />
+        <CommunityContentsScrollList
+          title="Recently Used"
+          listName="used"
+          type={CommunityContentType.preset}
+        />
       </div>
       <div className={classes.artist}>
         <CommunityContentsScrollList
           title="Artist Profiles"
           listName="artist"
+          type={CommunityContentType.profile}
         />
       </div>
     </div>

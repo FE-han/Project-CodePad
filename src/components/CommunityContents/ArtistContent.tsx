@@ -1,15 +1,24 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Fonts } from "../../utils/CommonStyle";
+import { PresetData } from "../../utils/CommonInterface";
 
-export default function Artist(props: { src: string; title: string }) {
+export default function Artist(props: {
+  presetData: PresetData;
+  checkLastPreset: boolean;
+}) {
   const classes = PresetContentStyles();
+
   return (
-    <div className={classes.albumCoverContainer}>
+    <div
+      className={`${classes.albumCoverContainer} ${
+        props.checkLastPreset ? "lastContent" : ""
+      }`}
+    >
       <div className={classes.albumCoverImg}>
-        <img src={props.src} alt="preset-img"></img>
+        <img src={props.presetData.thumbnailURL} alt="preset-img"></img>
       </div>
-      <p className={classes.albumCoverTitle}>{props.title}</p>
+      <p className={classes.albumCoverTitle}>{props.presetData.title}</p>
     </div>
   );
 }
