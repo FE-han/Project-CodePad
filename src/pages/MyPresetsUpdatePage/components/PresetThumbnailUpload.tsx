@@ -1,11 +1,13 @@
+
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import noImage from '../../../assets/noImage.png';
 
 const PresetThumbnailUploadStyles = makeStyles({
     root: {
         width: "40%",
-        height: "100%",
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
@@ -13,7 +15,7 @@ const PresetThumbnailUploadStyles = makeStyles({
 
     imageWrap: {
         width: "100%",
-        height: "80%",
+        height: "100%",
     },
 
     uploadInput: {
@@ -33,10 +35,13 @@ const PresetThumbnailUploadStyles = makeStyles({
 });
 
 type PresetThumbnailUploadProps = {
-    imgURL: string
+    imgURL: string | undefined
 }
 
-export default function PresetThumbnailUpload({imgURL}:PresetThumbnailUploadProps){
+PresetThumbnailUpload.defaultProps = {
+    imgURL: noImage
+}
+function PresetThumbnailUpload({imgURL}:PresetThumbnailUploadProps){
     const classes = PresetThumbnailUploadStyles();
 
     const [currImg, setCurrImg] = useState(imgURL);
@@ -66,9 +71,11 @@ export default function PresetThumbnailUpload({imgURL}:PresetThumbnailUploadProp
             <label>
                 <input className={classes.uploadInput} accept="image/*" type="file" onChange={handleImageUpload} />
                 <span className={classes.uploadButton}>
-                    Upload
+                    Upload <CloudUploadIcon/>
                 </span>
             </label>
         </div>
     )
 }
+
+export default PresetThumbnailUpload;
