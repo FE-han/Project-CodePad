@@ -39,6 +39,15 @@ interface LaunchPadProps {
   presetData: Preset;
 }
 
+interface BeatMatch {
+  tempo: number;
+  setTempo: React.Dispatch<React.SetStateAction<number>>;
+  bar: number;
+  setBar: React.Dispatch<React.SetStateAction<number>>;
+  beat: number;
+  setBeat: React.Dispatch<React.SetStateAction<number>>;
+}
+
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
@@ -49,27 +58,55 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
     setTempo(Number(e.target.value));
   };
 
-  const handleTempoStart = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const intervalTime = (60 / tempo) * 1000;
+  const [bar, setBar] = useState<number>(1);
+  const [beat, setBeat] = useState<number>(1);
+
+  const beatMatch: BeatMatch = {
+    tempo,
+    setTempo,
+    bar,
+    setBar,
+    beat,
+    setBeat,
+  };
+
+  const handleTempoStart = (beatMatch: BeatMatch) => {
+    const intervalTime = (60 / beatMatch.tempo) * 1000;
     let expected = Date.now() + intervalTime;
 
-    console.log(intervalTime);
+    console.log("intervalTime", intervalTime);
 
-    const step = () => {
+    const step = (
+      beatMatch: BeatMatch,
+      intervalTime: number,
+      expected: number
+    ) => {
       const delayTime = Date.now() - expected;
       if (delayTime > intervalTime) {
         console.log("딜레이가 너무 커졌습니다");
       }
 
-      console.log("clap!");
+      console.log("step", beatMatch.beat);
+
+      if (beatMatch.beat < 4) {
+        beatMatch.setBeat(beatMatch.beat + 1);
+      }
+      if (beatMatch.beat >= 4) {
+        beatMatch.setBeat(1);
+
+        if (beatMatch.bar < 4) {
+          beatMatch.setBar(beatMatch.bar + 1);
+        }
+        if (beatMatch.bar >= 4) {
+          beatMatch.setBar(1);
+        }
+      }
 
       expected += intervalTime;
       setTimeout(step, Math.max(0, intervalTime - delayTime));
     };
 
-    setTimeout(step, intervalTime);
+    setTimeout(step, 0);
   };
 
   //
@@ -92,7 +129,17 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
             onChange={handleSetTempo}
           />
           <div>tempoTest</div>
-          <button onClick={handleTempoStart}>start!</button>
+          <button
+            onClick={() => {
+              handleTempoStart(beatMatch);
+            }}
+          >
+            start!
+          </button>
+          <div>
+            <div>bar: {bar}</div>
+            <div>beat: {beat}</div>
+          </div>
         </div>
         {/* 템포테스트 */}
 

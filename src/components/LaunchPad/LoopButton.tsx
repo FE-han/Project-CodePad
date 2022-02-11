@@ -163,6 +163,7 @@ export function LoopButton({
         console.log("딜레이가 너무 커졌습니다");
       }
 
+      console.log(isPlay);
       if (isPlay) {
         console.log("clap!");
         sound2!.play();
