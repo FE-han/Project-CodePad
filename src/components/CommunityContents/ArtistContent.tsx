@@ -3,18 +3,11 @@ import { makeStyles } from "@mui/styles";
 import { Fonts } from "../../utils/CommonStyle";
 import { PresetData } from "../../utils/CommonInterface";
 
-export default function Artist(props: {
-  presetData: PresetData;
-  checkLastPreset: boolean;
-}) {
+export default function Artist(props: { presetData: PresetData; ref: any }) {
   const classes = PresetContentStyles();
 
   return (
-    <div
-      className={`${classes.albumCoverContainer} ${
-        props.checkLastPreset ? "lastContent" : ""
-      }`}
-    >
+    <div className={`${classes.albumCoverContainer}`} ref={props.ref}>
       <div className={classes.albumCoverImg}>
         <img src={props.presetData.thumbnailURL} alt="preset-img"></img>
       </div>

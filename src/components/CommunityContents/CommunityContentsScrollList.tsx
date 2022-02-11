@@ -7,7 +7,7 @@ import { ScrollValues } from "../../utils/CommonValue";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../modules/hooks";
 import { actions as getPresetListActions } from "../../modules/actions/CommunityContents/presetListSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
@@ -19,6 +19,9 @@ export default function CommunityContentsScrollList(props: {
   type: number;
 }) {
   const classes = ScrollListStyles();
+
+  const scrollDiv = useRef<Element>(null);
+  const lastContentDiv = useRef<Element>(null);
 
   const dispatch = useDispatch();
   //const state = useAppSelector((state) => state.presetListSlice);
@@ -49,6 +52,10 @@ export default function CommunityContentsScrollList(props: {
       //   getPresetListActions.getPresetListFulFilled({ presetList: res.data })
       // );
 
+      const lastContent = document.querySelector(".lastContent");
+      if (lastContent !== null) {
+        lastContent.classList.remove(".lastContent");
+      }
       const newDataList = [...dataList];
       res.data.map((dt: PresetData) => newDataList.push(dt));
       setDataList(newDataList);
@@ -66,11 +73,11 @@ export default function CommunityContentsScrollList(props: {
   }, []);
 
   const watchSrollState = () => {
-    const ScrollListContainer = document.querySelector(".ScrollListContainer");
-    const lastContents = document.querySelectorAll(".lastContent");
+    //const ScrollListContainer = document.querySelector(".ScrollListContainer");
+    //const lastContent = document.querySelector(".lastContent");
 
     const option = {
-      root: ScrollListContainer,
+      root: scrollDiv.current,
       rootMargin: "0px",
       threshold: 1,
     };
@@ -83,7 +90,10 @@ export default function CommunityContentsScrollList(props: {
     };
     const observer = new IntersectionObserver(callback, option);
 
-    lastContents.forEach((lastContent) => observer.observe(lastContent));
+    //lastContents.forEach((lastContent) => observer.observe(lastContent));
+    if (lastContentDiv.current !== null) {
+      observer.observe(lastContentDiv.current);
+    }
   };
 
   const ContentList = () => {
@@ -95,8 +105,8 @@ export default function CommunityContentsScrollList(props: {
         li.push(
           <PresetContent
             key={preset.presetId + Math.random() * 10}
+            ref={presetLength - 1 === idx ? lastContentDiv : null}
             presetData={preset}
-            checkLastPreset={presetLength - 1 === idx ? true : false}
           />
         )
       );
@@ -108,7 +118,7 @@ export default function CommunityContentsScrollList(props: {
           <ArtistContent
             key={preset.presetId + Math.random() * 10}
             presetData={preset}
-            checkLastPreset={presetLength - 1 === idx ? true : false}
+            ref={presetLength - 1 === idx ? lastContentDiv : null}
           />
         )
       );
@@ -125,9 +135,12 @@ export default function CommunityContentsScrollList(props: {
     <>
       <header>{props.title}</header>
       <div
-        className={`${classes.ScrollListContainer} ScrollListContainer`}
+        className={`${classes.ScrollListContainer}`}
         onScroll={watchSrollState}
-      ></div>
+        ref={scrollDiv}
+      >
+        {ContentList()}
+      </div>
     </>
   );
 }
