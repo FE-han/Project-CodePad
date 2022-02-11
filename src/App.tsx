@@ -38,11 +38,17 @@ function App() {
               path={"/defaultpresets/:presetId"}
               element={<DefaultPresetsPage />}
             />
-            <Route path={"/userpresets/:userId"} element={<UserPresetsPage />} />
+            <Route
+              path={"/userpresets/:userId"}
+              element={<UserPresetsPage />}
+            />
             <Route path={"/mypresets"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
-            <Route path={"/mypresets/update"} element={<MyPresetsUpdatePage />}/>
+            <Route
+              path={"/mypresets/update"}
+              element={<MyPresetsUpdatePage />}
+            />
             {/* ReduxToolkit 예시용 페이지 */}
             <Route path={"/example"} element={<RTKPage />} />
           </Routes>

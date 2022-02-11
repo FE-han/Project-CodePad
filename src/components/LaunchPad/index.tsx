@@ -43,6 +43,37 @@ interface LaunchPadProps {
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
 
+  //박자 맟추기 테스트
+  const [tempo, setTempo] = useState<number>(112);
+  const handleSetTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempo(Number(e.target.value));
+  };
+
+  const handleTempoStart = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const intervalTime = (60 / tempo) * 1000;
+    let expected = Date.now() + intervalTime;
+
+    console.log(intervalTime);
+
+    const step = () => {
+      const delayTime = Date.now() - expected;
+      if (delayTime > intervalTime) {
+        console.log("딜레이가 너무 커졌습니다");
+      }
+
+      console.log("clap!");
+
+      expected += intervalTime;
+      setTimeout(step, Math.max(0, intervalTime - delayTime));
+    };
+
+    setTimeout(step, intervalTime);
+  };
+
+  //
+
   return (
     <>
       <div className={classes.root}>
@@ -50,6 +81,20 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <div className={classes.presetName}>{presetData.presetTitle}</div>
           <button className={classes.forkBtn}>FORK</button>
         </div>
+
+        {/* 템포테스트 */}
+        <div>
+          <label htmlFor={"tempo"}>tempo(bpm)</label>
+          <input
+            id={"tempo"}
+            type="number"
+            value={tempo}
+            onChange={handleSetTempo}
+          />
+          <div>tempoTest</div>
+          <button onClick={handleTempoStart}>start!</button>
+        </div>
+        {/* 템포테스트 */}
 
         <div className={classes.btnContainer}>
           {presetData.soundSamples.map(

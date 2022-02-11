@@ -21,6 +21,31 @@ const LoopButtonStyles = makeStyles({
     cursor: "pointer",
     borderRadius: "3px",
   },
+  nowPlayingBtn: {
+    background: LaunchPadButtonColor.NOW_PLAYING,
+    width: "100%",
+    height: "100%",
+    position: "relative",
+    cursor: "pointer",
+    borderRadius: "3px",
+  },
+  waitingBtn: {
+    background: LaunchPadButtonColor.NOW_WAIT,
+    width: "100%",
+    height: "100%",
+    position: "relative",
+    cursor: "pointer",
+    borderRadius: "3px",
+  },
+
+  errorBtn: {
+    background: "gray",
+    width: "100%",
+    height: "100%",
+    position: "relative",
+    cursor: "pointer",
+    borderRadius: "3px",
+  },
 
   buttonText: {
     color: "white",
@@ -47,6 +72,8 @@ export function LoopButton({
 }: Omit<SoundSample, "soundSampleId">) {
   const classes = LoopButtonStyles();
   const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
+  const [sound2, setSound2] = useState<HTMLAudioElement | undefined>(undefined);
+  const [isWait, setIsWait] = useState<boolean>(false);
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
@@ -59,12 +86,40 @@ export function LoopButton({
     }
 
     if (isPlay) {
+      setIsPlay(false);
       sound.pause();
 
       return;
     }
 
+    setIsPlay(true);
     sound.play();
+
+    if (sound.onended) {
+      console.log("End");
+    }
+
+    console.log(sound);
+  };
+
+  const getClassNameByBtnState = () => {
+    if (isPlay) {
+      return classes.nowPlayingBtn;
+    }
+
+    if (isWait) {
+      return classes.waitingBtn;
+    }
+
+    if (isEven) {
+      return classes.loopEvenBtn;
+    }
+
+    if (!isEven) {
+      return classes.loopOddBtn;
+    }
+
+    return classes.errorBtn;
   };
 
   useEffect(() => {
@@ -72,17 +127,61 @@ export function LoopButton({
       //URL없을경우 에러컨트롤
       setSound(undefined);
     } else {
-      const loopSound = new Audio(soundSampleURL);
-      // loopSound.loop = true;
-      setSound(loopSound);
+      // const soundTag: React.DetailedHTMLProps<
+      //   React.AudioHTMLAttributes<HTMLAudioElement>,
+      //   HTMLAudioElement
+      // > = (
+      //   <audio
+      //     src={soundSampleURL}
+      //     preload="auto"
+      //     onPlay={() => {
+
+      //     }}
+      //     onEnded={() => {
+      //       console.log("end");
+      //     }}
+      //   ></audio>
+      // );
+      // setSound(soundTag);
+
+      setSound(new Audio(soundSampleURL));
+      setSound2(new Audio(soundSampleURL));
     }
   }, [setSound]);
 
+  const handleTempoStart = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const intervalTime = (60 / 112) * 1000;
+    let expected = Date.now() + intervalTime;
+
+    console.log(intervalTime);
+
+    const step = () => {
+      const delayTime = Date.now() - expected;
+      if (delayTime > intervalTime) {
+        console.log("딜레이가 너무 커졌습니다");
+      }
+
+      if (isPlay) {
+        console.log("clap!");
+        sound2!.play();
+      } else {
+        console.log("clap!!!");
+        sound!.play();
+        setIsPlay(true);
+      }
+
+      expected += intervalTime;
+      setTimeout(step, Math.max(0, intervalTime - delayTime));
+    };
+
+    setTimeout(step, intervalTime);
+  };
+
   return (
-    <div
-      className={isEven ? classes.loopEvenBtn : classes.loopOddBtn}
-      onClick={toggleSoundPlay}
-    >
+    <div className={getClassNameByBtnState()} onClick={handleTempoStart}>
+      {/* <div className={getClassNameByBtnState()}> */}
       <div className={classes.buttonText}>{soundType || ""}</div>
       <div className={classes.buttonIcon}>
         <AutorenewIcon />
