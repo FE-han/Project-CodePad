@@ -2,74 +2,96 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import PresetContent from "./PresetContent";
 
+import { ScrollValues } from "../../utils/CommonValue";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../modules/hooks";
-import {
-  actions,
-  actions as getPresetContentDataActions,
-} from "../../modules/actions/presetContentSlice";
+import { actions as getPresetListActions } from "../../modules/actions/CommunityContents/presetListSlice";
 import { useEffect, useState } from "react";
 
-export interface PresetContentData {
-  presetId: string;
-  thumbnailURL: string;
-  title: string;
-  author: string;
-  userId: string;
-}
+import { makePresetScrollList } from "./makePresetScrollList";
 
-export default function CommunityContentsScrollList(props: { title: string }) {
+export default function CommunityContentsScrollList(props: {
+  title: string;
+  listName: string;
+}) {
   const classes = ScrollListStyles();
 
   const dispatch = useDispatch();
-  const state = useAppSelector((state) => state.exampleSlice);
+  const state = useAppSelector((state) => state.presetListSlice);
 
-  const [inputData, setInputData] = useState<PresetContentData>({
-    presetId: "",
-    thumbnailURL: "",
-    title: "",
-    author: "",
-    userId: "",
-  });
+  const [curPageNum, setCurPageNum] = useState<number>(
+    ScrollValues.defaultPageNum
+  );
 
-  const loadTimer = 3000;
-  const { presetId, thumbnailURL, title, author, userId } = inputData;
+  const [presetLength, setPresetLength] = useState<number>(0);
 
-  const handleChangeInputValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = evt.target;
-    setInputData({
-      ...inputData,
-      [name]: value,
-    });
+  const callPresetListAPI = async () => {
+    const configdata = {
+      Listname: props.listName,
+      pageNum: curPageNum + 1,
+      limitNum: ScrollValues.limitNum,
+    };
+
+    dispatch(getPresetListActions.getPresetListPending(state));
+
+    const res = await makePresetScrollList(configdata);
+
+    // setTimeout(() => {
+    //   if (res.success) {
+    //     dispatch(
+    //       getPresetListActions.getPresetListFulFilled({ presetList: res.data })
+    //     );
+
+    //     setPresetLength(res.data.length);
+    //     setCurPageNum(curPageNum + 1);
+    //     console.log("ok");
+    //   } else {
+    //     dispatch(getPresetListActions.getPresetListRejected());
+    //     console.log(res.errorMessage);
+    //   }
+    // }, 2000);
   };
 
-  //새 인적사항을 보내기 시작하는 액션. api를 보내는 함수라고 생각하면 된다.
-  const getReadyToChangeData = (inputData: PresetContentData) => {
-    dispatch(getPresetContentDataActions.getPersonalDataPending(inputData));
-  };
+  useEffect(() => {
+    callPresetListAPI();
+  }, []);
 
-  //등록한 인적사항을 반영하는 액션. api 요청에 대한 응답을 여기서 배정한다고 생각하면 된다.
-  const loadSuccess = (loadTimer: number) => {
-    setTimeout(() => {
-      dispatch(getPresetContentDataActions.getPersonalDataFulFilled(inputData));
-    }, loadTimer);
-  };
+  const watchSrollState = () => {
+    const ScrollListContainer = document.querySelector(".ScrollListContainer");
+    const lastContents = document.querySelectorAll(".lastContent");
 
-  const buttonText = (isLoading: boolean) => {
-    switch (isLoading) {
-      case true:
-        return "로딩중...";
+    const option = {
+      root: ScrollListContainer,
+      rootMargin: "0px",
+      threshold: 1,
+    };
+    const callback = (entries: Array<any>, observer: IntersectionObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          callPresetListAPI();
+        }
+      });
+    };
+    const observer = new IntersectionObserver(callback, option);
 
-      default:
-        return "더 보기";
-    }
+    lastContents.forEach((lastContent) => observer.observe(lastContent));
   };
 
   return (
     <>
       <header>{props.title}</header>
-      <div className={classes.ScrollListContainer}>
-        {buttonText(state.isLoading)}
+      <div
+        className={`${classes.ScrollListContainer} ScrollListContainer`}
+        onScroll={watchSrollState}
+      >
+        {state.presetList.map((preset, idx) => (
+          <PresetContent
+            key={preset.presetId + Math.random() * 10}
+            presetData={preset}
+            checkLastPreset={presetLength - 1 === idx ? true : false}
+          />
+        ))}
+        {state.isLoading ? "wait" : null}
       </div>
     </>
   );
@@ -90,80 +112,5 @@ const ScrollListStyles = makeStyles({
     "&::-webkit-scrollbar": {
       display: "none",
     },
-    // "&::-webkit-scrollbar": {
-    //   width: "10px",
-    // },
-
-    // "&::-webkit-scrollbar-thumb": {
-    //   backgroundColor: "#2f3542",
-    //   borderRadius: "10px",
-    //   backgroundClip: "padding-box",
-    //   border: `2px solid transparent`,
-    // },
-    // "&::-webkit-scrollbar-track": {
-    //   backgroundColor: "grey",
-    //   borderRadius: "10px",
-    //   boxshadow: `inset 0px 0px 5px white`,
-    // },
   },
 });
-
-// 여기 밑은 예시용 내용
-// function 무한스크롤예시문장() {
-//   const state = useAppSelector(state => state.PresetList)
-//   const dispatch = useDispatch()
-
-//   const [isEnd, setIsEnd] = useState<boolean>(false)
-
-//   const watchSrollState = (nowIdx:number) => {
-//     if(nowIdx === endIdx) {
-//       setIsEnd(true)
-//     }
-//   }
-
-//   const asdf = async() => {
-//     const configdata = {page: nowPage+1
-//       limit: 10}
-//     if(isEnd){
-//       dispatch(actions.getPresetListPending(configdata))
-//     }
-
-//     const res = await makePresetScrollList(configdata)
-
-//     if (!res.success) {
-//       dispatch(actions.getPresetListRejectd())
-
-//       //Error handling
-//     }
-
-//     if (res.success) {
-//       dispatch(actions.getPresetListFulfilled(res.data))
-//     }
-//   }
-
-//   useEffect( () => {
-
-//     asdf()
-
-//   },[isEnd, setIsEnd])
-
-//   return (
-//     <>
-//     <div>
-//       여기는 무한 스크롤
-
-//       <div watchSrollState={watchSrollState}>
-//         {state.data.map(presetList => {
-//           return (
-//             <div key={presetList.id}>
-//               <PresetListElementComponent presetData={presetList.data}/>
-//             </div>
-//           )
-//         })}
-//         {state.isLoading ? <대충로딩중이라는컴포넌트 /> : null}
-//       </div>
-//     </div>
-
-//     </>
-//   )
-// }

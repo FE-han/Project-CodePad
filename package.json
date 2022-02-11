@@ -32,8 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "devServer": "npx json-server --port 3333 ./mock/presetList.json",
-    "dev:apiServer": "npx json-server --port 4000 --watch ./src/components/LaunchPad/defaultPreset1/response.json "
+    "dev:apiServer": "npx json-server --port 4000 --watch ./src/components/LaunchPad/defaultPreset1/response.json ",
+    "dev:apiServer2": "npx json-server --port 4000 --watch ./mock/presetList.json"
   },
   "eslintConfig": {
     "extends": [

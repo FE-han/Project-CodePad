@@ -1,16 +1,11 @@
-import {
-  getPresetList,
-  프리셋리스트불러오는params,
-} from "../../api/getPresetList";
+import { getPresetList, PresetListparams } from "../../api/getPresetList";
 
-export const makePresetScrollList = async (
-  params: 프리셋리스트불러오는params
-) => {
+export const makePresetScrollList = async (params: PresetListparams) => {
   try {
-    const res = await getPresetList(params);
-    return { res, success: true };
+    const data = await getPresetList(params);
+    return { data, success: true };
   } catch (error) {
-    console.log("에러가 발생했네용");
-    return { success: fail };
+    const errorMessage = new Error("Failed...getPresetList API");
+    return { errorMessage, success: false };
   }
 };

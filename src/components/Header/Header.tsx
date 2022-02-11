@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { headerBgColor, headerBoxShadow } from "../../utils/CommonStyle";
+import { HeaderColors } from "../../utils/CommonStyle";
 
 export default function Header() {
   const classes = HeaderStyles();
@@ -59,8 +59,8 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: `${headerBgColor}`,
-          boxShadow: `${headerBoxShadow}`,
+          backgroundColor: `${HeaderColors.BACKGROUND}`,
+          boxShadow: `${HeaderColors.SHADOW}`,
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
