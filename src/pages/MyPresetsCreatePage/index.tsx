@@ -1,17 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getPreset } from "../../api/getPreset";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/types";
-import setPresetData from "../../utils/setPresetData";
-import setPresetId from "../../utils/setPresetId";
 import PresetOptionHandle from "./components/PresetOptionHandle";
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import PresetTitle from "./components/PresetTitle";
 
-const MyPresetsPageStyles = makeStyles({
+const MyPresetsCreatePageStyles = makeStyles({
   root: {
     background: "#4b7a1f",
 
@@ -46,28 +43,11 @@ const MyPresetsPageStyles = makeStyles({
   communityContainer: {},
 });
 
-export function MyPresetsUpdatePage() {
-  const classes = MyPresetsPageStyles();
+export function MyPresetsCreatePage() {
+  const classes = MyPresetsCreatePageStyles();
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
-
-  const getInitialData = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
-    // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
-  };
-
-  useEffect(() => {
-    getInitialData();
-  }, []);
 
   return (
     <div className={classes.root}>
@@ -94,4 +74,4 @@ export function MyPresetsUpdatePage() {
   );
 }
 
-export default MyPresetsUpdatePage;
+export default MyPresetsCreatePage;

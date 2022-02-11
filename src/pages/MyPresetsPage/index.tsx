@@ -1,7 +1,7 @@
 import { ConstructionRounded, HdrEnhancedSelectOutlined, Translate } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-import {  useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Link, Params, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
@@ -19,6 +19,9 @@ import Stack from "@mui/material/Stack";
 import { style } from "@mui/system";
 import  Grid  from "@mui/material/Grid";
 import Button from '@mui/material/Button';
+import PresetToggleButton from "../../components/PresetToggleButton";
+import setPresetId from "../../utils/setPresetId";
+import setPresetData from "../../utils/setPresetData";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -106,12 +109,34 @@ const MyPresetsPageStyles = makeStyles({
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
 
+  const [myPresetData, setMyPresetData] = useState<Preset>(
+    initialPresetGenerator(LaunchPadScale.DEFAULT)
+  );
+  const presetId = useParams();
+
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // setDefaultPresetData(newPresetData);
+
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
+  };
+
+  useEffect(() => {
+    getInitialData();
+  }, []);
+
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <Link to={"/"}>인트로 페이지 이동버튼</Link>
+        <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
         런치패드 올곳
-        {/* <LaunchPad /> */}
+        <LaunchPad presetData={myPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
         <List className={classes.changePresets}>
@@ -142,6 +167,12 @@ export function MyPresetsPage() {
             <Pagination count={10} showFirstButton showLastButton/>
           </Stack>
         </div>
+        <PresetToggleButton />
+      </div>
+      <div className={classes.presetList}>
+        프리셋 리스트 올곳
+        <Link to={"/mypresets/create"}>나의 새 프리셋 생성 페이지 이동</Link>
+        {/* <PresetList /> */}
       </div>
       <div className={classes.communityContainer}>
         태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
