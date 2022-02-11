@@ -48,7 +48,14 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Page</MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/mypresets/enter");
+          handleMenuClose();
+        }}
+      >
+        My Page
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Likes</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
@@ -89,7 +96,7 @@ export default function Header() {
               size="small"
               color="inherit"
               onClick={() => {
-                navigate("/mypresets/enter");
+                navigate("/defaultpresets/enter");
               }}
             >
               Preset
