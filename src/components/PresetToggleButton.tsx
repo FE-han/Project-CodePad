@@ -2,6 +2,7 @@ import { styled } from "@mui/system";
 import TabsUnstyled from "@mui/base/TabsUnstyled";
 import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
+import { useLocation } from 'react-router-dom';
 
 const TabsUnstyledWrap = styled(TabsUnstyled)`
   width: 100%;
@@ -37,15 +38,27 @@ const Tab = styled(TabUnstyled)`
   }
 `;
 
-
-export default function PresetToggleButton() {
-    return (
-            <TabsUnstyledWrap defaultValue={0}>
-              <TabsList>
-                <Tab>Default Presets</Tab>
-                <Tab>My Presets</Tab>
-              </TabsList>
-            </TabsUnstyledWrap>
-    );
+const toggleDefaultValue:toggleDefaultValueTypes = {
+  defaultpresets: 0,
+  mypresets: 1,
 }
 
+type toggleDefaultValueTypes = {
+  [index: string]: number,
+  defaultpresets: number,
+  mypresets: number
+}
+
+export default function PresetToggleButton() {
+  const location = useLocation();
+  const currPath = location.pathname.split("/")[1];
+
+  return (
+          <TabsUnstyledWrap defaultValue={toggleDefaultValue[currPath]}>
+            <TabsList>
+              <Tab>Default Presets</Tab>
+              <Tab>My Presets</Tab>
+            </TabsList>
+          </TabsUnstyledWrap>
+  );
+}
