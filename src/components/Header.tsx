@@ -77,7 +77,7 @@ export default function Header() {
             className={classes.logo}
             alt="React"
             onClick={() => {
-              navigate("/intro");
+              navigate("/");
             }}
           />
           <Search>
