@@ -41,7 +41,6 @@ interface LaunchPadProps {
 
 interface BeatMatch {
   tempo: number;
-  setTempo: React.Dispatch<React.SetStateAction<number>>;
   bar: number;
   setBar: React.Dispatch<React.SetStateAction<number>>;
   beat: number;
@@ -61,14 +60,13 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
   const [bar, setBar] = useState<number>(1);
   const [beat, setBeat] = useState<number>(1);
 
-  // const beatMatch: BeatMatch = {
-  //   tempo,
-  //   setTempo,
-  //   bar,
-  //   setBar,
-  //   beat,
-  //   setBeat,
-  // };
+  const beatMatch: BeatMatch = {
+    tempo,
+    bar,
+    setBar,
+    beat,
+    setBeat,
+  };
 
   // const handleTempoStart = (beatMatch: BeatMatch) => {
   //   const intervalTime = (60 / beatMatch.tempo) * 1000;
@@ -109,6 +107,42 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
   //   setTimeout(step(beatMatch,intervalTime,expected), 0);
   // };
 
+  const metronome = (beatMatch: BeatMatch, delayTime: number) => {
+    const intervalTime = (60 / beatMatch.tempo) * 1000;
+    let expected = Date.now() + intervalTime;
+
+    const Timer = setTimeout(() => {
+      const newBeatMatch: BeatMatch = {
+        ...beatMatch,
+      };
+
+      const delayTime = Date.now() - expected;
+      if (delayTime > intervalTime) {
+        console.log("딜레이가 너무 커졌습니다");
+      }
+
+      if (beatMatch.beat < 4) {
+        newBeatMatch.beat = beatMatch.beat + 1;
+        beatMatch.setBeat(newBeatMatch.beat);
+      }
+      if (beatMatch.beat >= 4) {
+        newBeatMatch.beat = 1;
+        beatMatch.setBeat(newBeatMatch.beat);
+
+        if (beatMatch.bar < 4) {
+          newBeatMatch.bar = beatMatch.bar + 1;
+          beatMatch.setBar(newBeatMatch.bar);
+        }
+        if (beatMatch.bar >= 4) {
+          newBeatMatch.bar = 1;
+          beatMatch.setBar(newBeatMatch.bar);
+        }
+      }
+
+      metronome(newBeatMatch, Math.max(0, intervalTime - delayTime));
+    }, intervalTime);
+  };
+
   //
 
   return (
@@ -132,6 +166,8 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <button
             onClick={() => {
               // handleTempoStart(beatMatch);
+
+              metronome(beatMatch, 0);
             }}
           >
             start!
