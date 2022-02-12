@@ -2,19 +2,20 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Fonts } from "../../utils/CommonStyle";
 import { PresetData } from "../../utils/CommonInterface";
+import { memo } from "react";
 
-export default function Artist(props: { presetData: PresetData; ref: any }) {
+const Artist = (props: { presetData: PresetData }) => {
   const classes = PresetContentStyles();
 
   return (
-    <div className={`${classes.albumCoverContainer}`} ref={props.ref}>
+    <div className={`${classes.albumCoverContainer}`}>
       <div className={classes.albumCoverImg}>
         <img src={props.presetData.thumbnailURL} alt="preset-img"></img>
       </div>
       <p className={classes.albumCoverTitle}>{props.presetData.title}</p>
     </div>
   );
-}
+};
 
 const PresetContentStyles = makeStyles({
   albumCoverContainer: {
@@ -33,3 +34,5 @@ const PresetContentStyles = makeStyles({
     fontFamily: `${Fonts.DEFAULT}`,
   },
 });
+
+export default memo(Artist);
