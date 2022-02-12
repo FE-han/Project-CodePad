@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 
-import { LoginModal } from "./Modal";
+import { LoginModal, ProfileModal } from "./Modal";
 import { useState } from "react";
 
 const HeaderStyles = makeStyles({
@@ -16,11 +16,25 @@ const HeaderStyles = makeStyles({
 export function Header() {
   const classes = HeaderStyles();
 
-  const [open, setOpen] = useState(true);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
-  const onClose = () => {
-    setOpen(false);
+  const handleClickLoginOpen = () => {
+    setLoginOpen(true);
   };
+
+  const handleClickProfileOpen = () => {
+    setProfileOpen(true);
+  };
+
+  const onLoginClose = () => {
+    setLoginOpen(false);
+  };
+
+  const onProfileClose = () => {
+    setProfileOpen(false);
+  };
+
   return (
     <div className={classes.root}>
       <Link to={"/"}>LOGO</Link>
@@ -31,8 +45,10 @@ export function Header() {
       <Link to={"/defaultpresets/enter"}>DefaultPresetsLink</Link>
       <Link to={"/userpresets"}>UserPresetsLink</Link>
       <Link to={"/mypresets"}>MyPresetLink</Link>
-      <div>LOGIN</div>
-      <LoginModal open={true} onClose={onClose}></LoginModal>
+      <button onClick={handleClickLoginOpen}>Login</button>
+      <LoginModal open={loginOpen} onClose={onLoginClose} />
+      <button onClick={handleClickProfileOpen}>Profile</button>
+      <ProfileModal open={profileOpen} onClose={onProfileClose} />
       <Link to={"/likePresets"}>MyLikePresets</Link>
     </div>
   );
