@@ -1,12 +1,14 @@
 {
-    "presets": [{
-            "id": 1,
-            "title": "preset1"
-        },
-        {
-            "id": 2,
-            "title": "preset2"
-        }
-    ]
-
+  "presets": [
+    {
+      "title": "test1",
+      "views": 0,
+      "id": 1
+    },
+    {
+      "title": "test2",
+      "views": 0,
+      "id": 2
+    }
+  ]
 }

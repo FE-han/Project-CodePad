@@ -1,8 +1,11 @@
-export default function PresetTitle(){
+import React, { useState } from "react"
+
+export default function PresetTitle(props:any){
+
     return (
         <div>
             <h2>Title</h2>
-            <input type="text" name="title"/>
+            <input onChange={props.handleTitleChange} value={props.titleValue} type="text" name="title"/>
         </div>
     )
 }

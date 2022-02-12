@@ -10,6 +10,10 @@ import setPresetId from "../../utils/setPresetId";
 import PresetOptionHandle from "./components/PresetOptionHandle";
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import PresetTitle from "./components/PresetTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { articleActions } from "../../slice/articleSlice"; //임시 액션함수 불러오기
+import { RootState } from "../../modules/store";
+import { title } from "process";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -69,6 +73,26 @@ export function MyPresetsUpdatePage() {
     getInitialData();
   }, []);
 
+  const [titleValue, setTitleValue] = useState('');
+  const dispatch = useDispatch();
+  const views = useSelector((state:any) => state.articleReducers.views);
+
+    const onTitleChange = (event:any) => {
+        setTitleValue(event.currentTarget.value);
+    }
+
+  const onSubmitTitle = (event:any) =>{
+    event.preventDefault();
+    if (titleValue=== '' || titleValue === null || titleValue === undefined){
+      alert('제목을 작성하세요')
+      return false;
+    }
+    const article = { title : titleValue, views : views };
+    dispatch(articleActions.registerArticle(article))
+    console.log(article);
+  }
+
+
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -79,8 +103,8 @@ export function MyPresetsUpdatePage() {
       <div className={classes.togglePresetBtn}>
         <PresetThumbnailUpload imgURL="https://images.mypetlife.co.kr/content/uploads/2019/12/09151959/%EC%8B%AC%EC%8B%AC%ED%95%9C_%EA%B3%A0%EC%96%91%EC%9D%B42.png" />
         <div>
-          <PresetTitle />
-          <PresetOptionHandle />
+          <PresetTitle titleValue={titleValue} handleTitleChange={onTitleChange}/>
+          <PresetOptionHandle handleSubmit={onSubmitTitle} />
         </div>
       </div>
       <div className={classes.presetList}>

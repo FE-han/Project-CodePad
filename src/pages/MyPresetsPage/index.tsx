@@ -22,6 +22,7 @@ import Button from '@mui/material/Button';
 import PresetToggleButton from "../../components/PresetToggleButton";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import { isJsxOpeningLikeElement } from "typescript";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -130,7 +131,9 @@ export function MyPresetsPage() {
     getInitialData();
   }, []);
 
-
+  const openLink = ()=>{
+    document.location.href= '/mypresets/enter'
+  }
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
@@ -150,12 +153,11 @@ export function MyPresetsPage() {
       </div>
       <div className={classes.presetList}>
         <div className={classes.pororoimage}>
-          <img src={pororo} width="55%" height="100%"/>
+          <img src={pororo} width="55%" height="100%"/> 
         </div>
         <div className={classes.listStyle}>
         <Stack className={classes.presetListStyles} spacing={2} direction='column'>
-            {/* <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> */}
-            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e', fontSize:'30px'}}>+</div>
+            <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> 
             <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
             <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
             <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
