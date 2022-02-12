@@ -1,5 +1,5 @@
-import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
+import { Link, useNavigate } from "react-router-dom";
 
 import * as React from "react";
 import { makeStyles } from "@mui/styles";
@@ -17,6 +17,7 @@ import { HeaderColors } from "../../utils/CommonStyle";
 
 export default function Header() {
   const classes = HeaderStyles();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -47,7 +48,14 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Page</MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/mypresets/enter");
+          handleMenuClose();
+        }}
+      >
+        My Page
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Likes</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
@@ -64,7 +72,14 @@ export default function Header() {
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <img src={logo} className={classes.logo} alt="React" />
+          <img
+            src={logo}
+            className={classes.logo}
+            alt="React"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -77,7 +92,13 @@ export default function Header() {
           <Box
             sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}
           >
-            <IconButton size="small" color="inherit">
+            <IconButton
+              size="small"
+              color="inherit"
+              onClick={() => {
+                navigate("/defaultpresets/enter");
+              }}
+            >
               Preset
             </IconButton>
             <div className={classes.borderLine}></div>
@@ -136,6 +157,7 @@ const HeaderStyles = makeStyles({
 
   logo: {
     width: "120px",
+    cursor: "pointer",
   },
 
   link: {
