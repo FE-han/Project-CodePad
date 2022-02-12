@@ -10,7 +10,6 @@ import { useEffect, useState, useRef, ReactElement } from "react";
 import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
 import { CommunityContentType } from "../../utils/CommonValue";
-import { red } from "@mui/material/colors";
 
 export default function CommunityContentsScrollList(props: {
   title: string;
@@ -23,6 +22,7 @@ export default function CommunityContentsScrollList(props: {
 
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const [curPageNum, setCurPageNum] = useState<number>(
     ScrollValues.defaultPageNum
@@ -39,27 +39,35 @@ export default function CommunityContentsScrollList(props: {
       limitNum: ScrollValues.limitNum,
     };
 
-    const res = await makePresetScrollList(configdata);
+    const res: any = await makePresetScrollList(configdata);
 
     if (res.success) {
       setItemLists((itemLists) => itemLists.concat(res.data));
       setCurPageNum(curPageNum + 1);
+      setIsError(false);
     }
 
     if (!res.success) {
-      alert(res.errorMessage);
+      setIsError(true);
+      throw new Error(res.errorMessage);
     }
+
     setIsLoaded(false);
   };
 
-  const onIntersect = async (
+  const onIntersect = (
     entries: Array<IntersectionObserverEntry>,
     observer: IntersectionObserver
   ) => {
     entries.forEach(async (entry) => {
-      if (entry.isIntersecting && !isLoaded) {
+      if (entry.isIntersecting && !isLoaded && !isError) {
         observer.unobserve(entry.target);
-        await getMoreItem();
+        try {
+          await getMoreItem();
+        } catch (error) {
+          observer.disconnect();
+          return;
+        }
         observer.observe(entry.target);
       }
     });
