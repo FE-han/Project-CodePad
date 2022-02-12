@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
@@ -68,45 +68,6 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
     setBeat,
   };
 
-  // const handleTempoStart = (beatMatch: BeatMatch) => {
-  //   const intervalTime = (60 / beatMatch.tempo) * 1000;
-  //   let expected = Date.now() + intervalTime;
-
-  //   console.log("intervalTime", intervalTime);
-
-  //   function step (
-  //     beatMatch: BeatMatch,
-  //     intervalTime: number,
-  //     expected: number
-  //   ) {
-  //     const delayTime = Date.now() - expected;
-  //     if (delayTime > intervalTime) {
-  //       console.log("딜레이가 너무 커졌습니다");
-  //     }
-
-  //     console.log("step", beatMatch.beat);
-
-  //     if (beatMatch.beat < 4) {
-  //       beatMatch.setBeat(beatMatch.beat + 1);
-  //     }
-  //     if (beatMatch.beat >= 4) {
-  //       beatMatch.setBeat(1);
-
-  //       if (beatMatch.bar < 4) {
-  //         beatMatch.setBar(beatMatch.bar + 1);
-  //       }
-  //       if (beatMatch.bar >= 4) {
-  //         beatMatch.setBar(1);
-  //       }
-  //     }
-
-  //     expected += intervalTime;
-  //     setTimeout(step(beatMatch,intervalTime,expected), Math.max(0, intervalTime - delayTime));
-  //   };
-
-  //   setTimeout(step(beatMatch,intervalTime,expected), 0);
-  // };
-
   const metronome = (beatMatch: BeatMatch, delayTime: number) => {
     const intervalTime = (60 / beatMatch.tempo) * 1000;
     let expected = Date.now() + intervalTime;
@@ -166,8 +127,8 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <button
             onClick={() => {
               // handleTempoStart(beatMatch);
-
-              metronome(beatMatch, 0);
+              const initialIntervalTime = 0;
+              metronome(beatMatch, initialIntervalTime);
             }}
           >
             start!

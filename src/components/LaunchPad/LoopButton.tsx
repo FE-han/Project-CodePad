@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { makeStyles } from "@mui/styles";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { SoundSample } from "./utils/types";
@@ -191,4 +191,4 @@ export function LoopButton({
   );
 }
 
-export default LoopButton;
+export default memo(LoopButton);

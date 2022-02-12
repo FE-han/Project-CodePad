@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
+import { memo } from "react";
 
 const EmptyButtonStyles = makeStyles({
   emptyBtn: {
@@ -19,4 +20,4 @@ export function EmptyButton() {
   return <div className={classes.emptyBtn}></div>;
 }
 
-export default EmptyButton;
+export default memo(EmptyButton);

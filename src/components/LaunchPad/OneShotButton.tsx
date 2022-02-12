@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { makeStyles } from "@mui/styles";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { SoundSample } from "./utils/types";
@@ -90,4 +90,4 @@ export function OneShotButton({
   );
 }
 
-export default OneShotButton;
+export default memo(OneShotButton);
