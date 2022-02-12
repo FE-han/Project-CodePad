@@ -34,8 +34,6 @@ import setPresetId from "../../utils/setPresetId";
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
-    background: "orange",
-
     padding: "35px 60px 35px 60px",
 
     display: "grid",
