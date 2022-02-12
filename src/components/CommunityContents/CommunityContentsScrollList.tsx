@@ -96,7 +96,9 @@ export default function CommunityContentsScrollList(props: {
       itemLists.map((preset, idx) =>
         li.push(
           <PresetContent
-            key={preset.presetId + Math.random() * 10}
+            key={preset.presetId}
+            // key={preset.presetId + Math.random() * 10}
+            //key값은 각 요소를 구별하면서 추정가능해야합니다. presetId가 unique한 값이라면 preset.presetId만 사용하세요. random같은 추정불가능한 값은 비추천...
             presetData={preset}
           />
         )
@@ -107,7 +109,8 @@ export default function CommunityContentsScrollList(props: {
       itemLists.map((preset, idx) =>
         li.push(
           <ArtistContent
-            key={preset.presetId + Math.random() * 10}
+            key={preset.presetId}
+            //위와 동일
             presetData={preset}
           />
         )

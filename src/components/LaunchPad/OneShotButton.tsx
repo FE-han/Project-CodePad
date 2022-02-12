@@ -1,25 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { makeStyles } from "@mui/styles";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
+import { SoundSample } from "./utils/types";
+import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 
-import { SoundSample } from "./types";
-
-const LaunchPadButtonStyles = makeStyles({
-  root: {},
-  button: {
-    background: "skyblue",
+const OneShotButtonStyles = makeStyles({
+  oneshotBtn: {
+    background: LaunchPadButtonColor.ONESHOT,
     width: "100%",
-    // minWidth: "60px",
     height: "100%",
-    // minHeight: "60px",
     position: "relative",
     cursor: "pointer",
+    borderRadius: "3px",
 
     "&:active": {
       background: "green",
     },
   },
+
   buttonText: {
     color: "white",
 
@@ -37,27 +35,19 @@ const LaunchPadButtonStyles = makeStyles({
   },
 });
 
-export function LaunchPadButton({
+export function OneShotButton({
   soundSampleURL,
   buttonType,
   soundType,
-}: Omit<SoundSample, "location" | "soundSampleId">) {
-  const [sound, setSound] = useState<HTMLAudioElement | "empty">("empty");
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (soundSampleURL === null) {
-      //URL없을경우 에러컨트롤
-      setSound("empty");
-    } else {
-      setSound(new Audio(soundSampleURL));
-    }
-  }, []);
+  location,
+}: Omit<SoundSample, "soundSampleId">) {
+  const classes = OneShotButtonStyles();
+  const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
 
   const handleSoundPlay = (
     evt: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (sound === "empty") {
+    if (sound === undefined) {
       console.log("음악이 없음");
       return;
     }
@@ -70,29 +60,34 @@ export function LaunchPadButton({
   const handleSoundStop = (
     evt: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (sound === "empty") {
+    if (sound === undefined) {
       return;
     }
     sound.pause();
     sound.currentTime = 0;
   };
 
-  const classes = LaunchPadButtonStyles();
+  useEffect(() => {
+    if (soundSampleURL === undefined) {
+      //URL없을경우 에러컨트롤
+      setSound(undefined);
+    } else {
+      setSound(new Audio(soundSampleURL));
+    }
+  }, [setSound]);
 
   return (
-    <div className={classes.root}>
-      <div
-        className={classes.button}
-        onMouseDown={handleSoundPlay}
-        onMouseUp={handleSoundStop}
-      >
-        <div className={classes.buttonText}>{soundType || "null"}</div>
-        <div className={classes.buttonIcon}>
-          {buttonType === "ONESHOT" ? <ArrowRightAltIcon /> : <AutorenewIcon />}
-        </div>
+    <div
+      className={classes.oneshotBtn}
+      onMouseDown={handleSoundPlay}
+      onMouseUp={handleSoundStop}
+    >
+      <div className={classes.buttonText}>{soundType || ""}</div>
+      <div className={classes.buttonIcon}>
+        <ArrowRightAltIcon />
       </div>
     </div>
   );
 }
 
-export default LaunchPadButton;
+export default memo(OneShotButton);

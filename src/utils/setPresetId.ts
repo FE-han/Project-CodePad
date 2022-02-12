@@ -1,9 +1,10 @@
 import { Params } from "react-router";
-import { PresetIdParams } from "../api/getPreset";
+import { PresetParams } from "../api/getPreset";
 
 export const setPresetId = (defaultPresetId: Readonly<Params<string>>) => {
-  const params: PresetIdParams = {
+  const params: PresetParams = {
     presetId: "",
+    userId: "",
   };
   switch (defaultPresetId.presetId) {
     case "enter":
