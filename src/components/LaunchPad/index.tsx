@@ -4,6 +4,7 @@ import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
+import { metronome, MetronomeParams } from "./utils/metronome";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -60,48 +61,12 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
   const [bar, setBar] = useState<number>(1);
   const [beat, setBeat] = useState<number>(1);
 
-  const beatMatch: BeatMatch = {
+  const metronomeParams: MetronomeParams = {
     tempo,
     bar,
     setBar,
     beat,
     setBeat,
-  };
-
-  const metronome = (beatMatch: BeatMatch, delayTime: number) => {
-    const intervalTime = (60 / beatMatch.tempo) * 1000;
-    let expected = Date.now() + intervalTime;
-
-    const Timer = setTimeout(() => {
-      const newBeatMatch: BeatMatch = {
-        ...beatMatch,
-      };
-
-      const delayTime = Date.now() - expected;
-      if (delayTime > intervalTime) {
-        console.log("딜레이가 너무 커졌습니다");
-      }
-
-      if (beatMatch.beat < 4) {
-        newBeatMatch.beat = beatMatch.beat + 1;
-        beatMatch.setBeat(newBeatMatch.beat);
-      }
-      if (beatMatch.beat >= 4) {
-        newBeatMatch.beat = 1;
-        beatMatch.setBeat(newBeatMatch.beat);
-
-        if (beatMatch.bar < 4) {
-          newBeatMatch.bar = beatMatch.bar + 1;
-          beatMatch.setBar(newBeatMatch.bar);
-        }
-        if (beatMatch.bar >= 4) {
-          newBeatMatch.bar = 1;
-          beatMatch.setBar(newBeatMatch.bar);
-        }
-      }
-
-      metronome(newBeatMatch, Math.max(0, intervalTime - delayTime));
-    }, intervalTime);
   };
 
   //
@@ -126,9 +91,8 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <div>tempoTest</div>
           <button
             onClick={() => {
-              // handleTempoStart(beatMatch);
               const initialIntervalTime = 0;
-              metronome(beatMatch, initialIntervalTime);
+              metronome(metronomeParams, initialIntervalTime);
             }}
           >
             start!
