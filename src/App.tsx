@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import { Route, Routes } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
 import SearchReasultPage from "./pages/SearchResultPage";
-
+import NewMypresetsPage from './pages/NewMypresetsPage';
 import bg from "./assets/bg.jpg";
 import { makeStyles } from "@mui/styles";
 import DefaultPresetsPage from "./pages/DefaultPresetsPage";
@@ -11,8 +11,9 @@ import UserPresetsPage from "./pages/UserPresetsPage";
 import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
 import RTKPage from "./pages/RTKPage";
-import MyPresetsUpdatePage from "./pages/MyPresetsUpdatePage";
+import MyPresetsUpdatePage from "./pages/NewMypresetsPage";
 import MyPresetsCreatePage from "./pages/MyPresetsCreatePage";
+
 
 const AppStyles = makeStyles({
   root: {
@@ -44,6 +45,7 @@ function App() {
             />
             <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
             <Route path={"/likepresets"} element={<LikePresetsPage />} />
+            <Route path={"/newmypresets"} element={<NewMypresetsPage />}/>
 
             <Route
               path={"/mypresets/update"}

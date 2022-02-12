@@ -1,25 +1,35 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { titleFont, pageBgColor, pageBoxShadow } from "../../utils/CommonStyle";
+import { Fonts, PageColors } from "../../utils/CommonStyle";
+import { CommunityContentType } from "../../utils/CommonValue";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useAppDispatch, useAppSelector } from "../../modules/hooks";
-import { actions } from "../../modules/actions/exampleSlice";
 
-import CommunityContentsScrollList from "../../components/CommunityContentsScrollList";
+import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 
 export default function IntroPage() {
   const classes = introPageStyles();
   return (
     <div className={classes.root}>
-      <div className={classes.first}>
-        <CommunityContentsScrollList title="CHART : TOP 50" />
+      <div className={classes.top50}>
+        <CommunityContentsScrollList
+          title="CHART : TOP 50"
+          listName="top50"
+          type={CommunityContentType.preset}
+        />
       </div>
-      <div className={classes.second}>
-        <CommunityContentsScrollList title="Recently Used" />
+      <div className={classes.used}>
+        <CommunityContentsScrollList
+          title="Recently Used"
+          listName="used"
+          type={CommunityContentType.preset}
+        />
       </div>
-      <div className={classes.third}>
-        <CommunityContentsScrollList title="Artist Profiles" />
+      <div className={classes.artist}>
+        <CommunityContentsScrollList
+          title="Artist Profiles"
+          listName="artist"
+          type={CommunityContentType.profile}
+        />
       </div>
     </div>
   );
@@ -27,7 +37,8 @@ export default function IntroPage() {
 
 const introPageStyles = makeStyles({
   root: {
-    backgroundColor: `${pageBgColor}`,
+    backgroundColor: `${PageColors.BACKGROUND}`,
+    boxShadow: `${PageColors.SHADOW}`,
 
     margin: "0 auto 0 auto",
     width: "75%",
@@ -36,9 +47,7 @@ const introPageStyles = makeStyles({
 
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
-    gridTemplateAreas: `"first second third"`,
-
-    boxShadow: `${pageBoxShadow}`,
+    gridTemplateAreas: `"top50 used artist"`,
 
     "& > *": {
       display: "flex",
@@ -50,20 +59,20 @@ const introPageStyles = makeStyles({
         color: "indianred",
         marginTop: "56px",
         marginBottom: "56px",
-        fontFamily: `${titleFont}`,
+        fontFamily: `${Fonts.TITLE}`,
         fontSize: "26px",
         fontWeight: "bold",
         opacity: "65%",
       },
     },
   },
-  first: {
-    gridArea: "first",
+  top50: {
+    gridArea: "top50",
   },
-  second: {
-    gridArea: "second",
+  used: {
+    gridArea: "used",
   },
-  third: {
-    gridArea: "third",
+  artist: {
+    gridArea: "artist",
   },
 });
