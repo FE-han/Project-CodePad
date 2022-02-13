@@ -1,14 +1,29 @@
 {
-  "presets": [
+  "board": [
     {
-      "title": "test1",
+      "title": "test",
       "views": 0,
       "id": 1
     },
     {
-      "title": "test2",
+      "title": "test1",
       "views": 0,
       "id": 2
+    },
+    {
+      "title": "test3",
+      "views": 0,
+      "id": 3
+    },
+    {
+      "title": "test4",
+      "views": 0,
+      "id": 4
+    },
+    {
+      "title": "test5",
+      "views": 0,
+      "id": 5
     }
   ]
 }

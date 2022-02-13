@@ -6,10 +6,18 @@ export const articleSlice = createSlice({
     reducers: {
         registerArticle: (state, { payload: article }) => {
             console.log(article);
-            // return {
-            //     ...article,
-            //     id: state.id,
-            // }
+        },
+        getArticle: (state, { payload: id }) => {
+            console.log(id);
+        },
+        getArticleAsync: (state, { payload: article }) => {
+            console.log(article);
+            return {
+                ...state,
+                id: article.id,
+                title: article.title,
+                views: article.views,
+            }
         },
         registerArticleAsync: (state, { payload }) => {
             console.log(payload);

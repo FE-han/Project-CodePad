@@ -2,7 +2,7 @@ import { ConstructionRounded, HdrEnhancedSelectOutlined, Translate } from "@mui/
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Link, Params, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/initialPresetFormGenerator";
@@ -23,6 +23,9 @@ import PresetToggleButton from "../../components/PresetToggleButton";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 import { isJsxOpeningLikeElement } from "typescript";
+import ArticlePage from "./articlePage";
+import BoardList from "./boardList";
+import BoardPage from './boardPage';
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -156,13 +159,13 @@ export function MyPresetsPage() {
           <img src={pororo} width="55%" height="100%"/> 
         </div>
         <div className={classes.listStyle}>
-        <Stack className={classes.presetListStyles} spacing={2} direction='column'>
-            <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> 
+        <BoardPage>
+            {/* <ArticlePage match={undefined} location={undefined} /> */}
+            {/* <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}></div>
             <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
             <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
-            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
-            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div>
-          </Stack>
+            <div style={{height:"50px", width:"500px", border:"1px solid white", color:'white', backgroundColor:'#8e8e8e'}}>1a2s3d</div> */}
+        </BoardPage>
         </div>
         <div className={classes.page}>
           <Stack spacing={2}>
