@@ -1,7 +1,9 @@
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
-import { Preset } from "./types";
-import LaunchPadButton from "./LaunchPadButton";
+import { useState, memo } from "react";
+import { Preset } from "./utils/types";
+import OneShotButton from "./OneShotButton";
+import LoopButton from "./LoopButton";
+import EmptyButton from "./EmptyButton";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -33,44 +35,76 @@ const LaunchPadStyles = makeStyles({
     gridGap: "5px",
   },
 });
-
-//4x4 scale
-// export function LaunchPad16() {
-//   const classes = LaunchPadStyles();
-//   const [presetData, setPresetData] = useState(
-//     initialPresetGenerator(LaunchPadScale.MINI)
-//   );
-//   return (
-//     <>
-//       <div className={classes.root}>
-//         <div className={classes.header}>
-//           <div className={classes.presetName}>Default Preset 1</div>
-//           <button className={classes.forkBtn}>FORK</button>
-//         </div>
-
-//         <div className={classes.btnContainer}>
-//           {presetData.soundSamples.map((soundSample) => {
-//             return (
-//               <LaunchPadButton
-//                 soundPath={soundSample.soundSampleURL}
-//                 buttonType={soundSample.buttonType}
-//                 soundType={soundSample.soundType}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
 interface LaunchPadProps {
   presetData: Preset;
+}
+
+interface BeatMatch {
+  tempo: number;
+  bar: number;
+  setBar: React.Dispatch<React.SetStateAction<number>>;
+  beat: number;
+  setBeat: React.Dispatch<React.SetStateAction<number>>;
 }
 
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
+
+  //박자 맟추기 테스트
+  const [tempo, setTempo] = useState<number>(112);
+  const handleSetTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempo(Number(e.target.value));
+  };
+
+  const [bar, setBar] = useState<number>(1);
+  const [beat, setBeat] = useState<number>(1);
+
+  const beatMatch: BeatMatch = {
+    tempo,
+    bar,
+    setBar,
+    beat,
+    setBeat,
+  };
+
+  const metronome = (beatMatch: BeatMatch, delayTime: number) => {
+    const intervalTime = (60 / beatMatch.tempo) * 1000;
+    let expected = Date.now() + intervalTime;
+
+    const Timer = setTimeout(() => {
+      const newBeatMatch: BeatMatch = {
+        ...beatMatch,
+      };
+
+      const delayTime = Date.now() - expected;
+      if (delayTime > intervalTime) {
+        console.log("딜레이가 너무 커졌습니다");
+      }
+
+      if (beatMatch.beat < 4) {
+        newBeatMatch.beat = beatMatch.beat + 1;
+        beatMatch.setBeat(newBeatMatch.beat);
+      }
+      if (beatMatch.beat >= 4) {
+        newBeatMatch.beat = 1;
+        beatMatch.setBeat(newBeatMatch.beat);
+
+        if (beatMatch.bar < 4) {
+          newBeatMatch.bar = beatMatch.bar + 1;
+          beatMatch.setBar(newBeatMatch.bar);
+        }
+        if (beatMatch.bar >= 4) {
+          newBeatMatch.bar = 1;
+          beatMatch.setBar(newBeatMatch.bar);
+        }
+      }
+
+      metronome(newBeatMatch, Math.max(0, intervalTime - delayTime));
+    }, intervalTime);
+  };
+
+  //
 
   return (
     <>
@@ -80,23 +114,70 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <button className={classes.forkBtn}>FORK</button>
         </div>
 
+        {/* 템포테스트 */}
+        <div>
+          <label htmlFor={"tempo"}>tempo(bpm)</label>
+          <input
+            id={"tempo"}
+            type="number"
+            value={tempo}
+            onChange={handleSetTempo}
+          />
+          <div>tempoTest</div>
+          <button
+            onClick={() => {
+              // handleTempoStart(beatMatch);
+              const initialIntervalTime = 0;
+              metronome(beatMatch, initialIntervalTime);
+            }}
+          >
+            start!
+          </button>
+          <div>
+            <div>bar: {bar}</div>
+            <div>beat: {beat}</div>
+          </div>
+        </div>
+        {/* 템포테스트 */}
+
         <div className={classes.btnContainer}>
           {presetData.soundSamples.map(
-            ({
-              soundSampleId,
-              soundSampleURL,
-              buttonType,
-              soundType,
-              location,
-            }) => {
-              return (
-                <LaunchPadButton
-                  key={soundSampleId + location}
-                  soundSampleURL={soundSampleURL}
-                  buttonType={buttonType}
-                  soundType={soundType}
-                />
-              );
+            (
+              {
+                soundSampleId,
+                soundSampleURL,
+                buttonType,
+                soundType,
+                location,
+              },
+              idx
+            ) => {
+              switch (buttonType) {
+                case "ONESHOT":
+                  return (
+                    <OneShotButton
+                      key={soundSampleId + location}
+                      soundSampleURL={soundSampleURL}
+                      buttonType={buttonType}
+                      soundType={soundType}
+                      location={location}
+                    />
+                  );
+
+                case "LOOP":
+                  return (
+                    <LoopButton
+                      key={soundSampleId + location}
+                      soundSampleURL={soundSampleURL}
+                      buttonType={buttonType}
+                      soundType={soundType}
+                      location={location}
+                    />
+                  );
+
+                default:
+                  return <EmptyButton key={soundSampleId + location} />;
+              }
             }
           )}
         </div>
