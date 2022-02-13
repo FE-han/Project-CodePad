@@ -1,27 +1,31 @@
-// type Color = string;
-// type BoxShadow = string;
-// type Font = string;
-
-// export const commonFont: Font = `Roboto, sans-serif`;
-// export const titleFont: Font = `IBM Plex Sans Thai Looped, sans-serif`;
-
-// export const headerBgColor: Color = "#e47474";
-// export const headerBoxShadow: BoxShadow = `rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px`;
-
-// export const pageBgColor: Color = "rgba(255, 255, 255, 0.8)";
-// export const pageBoxShadow: BoxShadow = `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`;
-
 export enum Fonts {
   DEFAULT = `Roboto, sans-serif`,
   TITLE = `IBM Plex Sans Thai Looped, sans-serif`,
 }
 
 export enum HeaderColors {
-  BACKGROUND = "#e47474",
+  BACKGROUND = "rgba(210, 95, 95, 0.5)",
   SHADOW = `rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px`,
 }
 
 export enum PageColors {
   BACKGROUND = "rgba(255, 255, 255, 0.8)",
   SHADOW = `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`,
+}
+
+export enum ToggleBtnColors {
+  BACKGROUND = "rgba(210, 95, 95, 0.5)",
+  HOVER = "rgba(210, 95, 95, 0.5)",
+  BORDER = `#8E8E8E`,
+}
+
+export enum ButtonColors {
+  COLOR = `rgba(0, 0, 0, 0.5)`,
+  SHADOW = `rgba(0, 0, 0, 0.16) 0px 1px 4px`,
+}
+
+export enum PresetListBtnColors {
+  HOVER = "rgba(25, 118, 210, 0.04)",
+  COLOR = `rgba(0, 0, 0, 0.5)`,
+  SHADOW = `rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px`,
 }

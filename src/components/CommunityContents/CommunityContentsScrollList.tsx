@@ -124,7 +124,7 @@ const ScrollListStyles = makeStyles({
     PaddingTop: "42px",
     PaddingBottom: "42px",
     textAlign: "center",
-    height: `calc(100vh - 176px)`,
+    height: `calc(100vh - 202px)`,
     overflow: "auto",
 
     "&::-webkit-scrollbar": {
