@@ -134,6 +134,14 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
             >
               start!
             </button>
+            <button
+              onClick={() => {
+                const initialIntervalTime = 0;
+                metronome(metronomeParams, initialIntervalTime, true);
+              }}
+            >
+              stop!
+            </button>
             <div>bar: {bar}</div>
             <div>beat: {beat}</div>
           </div>

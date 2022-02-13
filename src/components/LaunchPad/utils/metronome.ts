@@ -6,7 +6,11 @@ export interface MetronomeParams {
   setBeat: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const metronome = (params: MetronomeParams, delayTime: number) => {
+export const metronome = (
+  params: MetronomeParams,
+  delayTime: number,
+  isStop?: boolean
+) => {
   const { tempo, bar, beat, setBar, setBeat } = params;
   const intervalTime = (60 / tempo) * 1000;
   let expectedTime = Date.now() + intervalTime;
@@ -32,15 +36,21 @@ export const metronome = (params: MetronomeParams, delayTime: number) => {
       nextParams.beat = 1;
       setBeat(nextParams.beat);
 
-      //4beat시 1bar 올림
-      if (bar < 4) {
+      //8beat시 1bar 올림
+      if (bar < 8) {
         nextParams.bar = bar + 1;
         setBar(nextParams.bar);
       }
-      if (bar >= 4) {
+      if (bar >= 8) {
         nextParams.bar = 1;
         setBar(nextParams.bar);
       }
+    }
+
+    if (isStop) {
+      console.log("멈춰!");
+      clearTimeout(Timer);
+      return;
     }
 
     //다음 메트로눔 시작
