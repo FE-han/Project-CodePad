@@ -1,0 +1,12 @@
+{
+    "presets": [{
+            "id": 1,
+            "title": "preset1"
+        },
+        {
+            "id": 2,
+            "title": "preset2"
+        }
+    ]
+
+}
