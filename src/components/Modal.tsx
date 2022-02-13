@@ -10,6 +10,7 @@ import {
 import { useState, ChangeEvent } from "react";
 import getProfileInfo from "../api/getProfileInfo";
 import editProfileInfo from "../api/editProfileInfo";
+import { getCookie } from "./cookie";
 interface LoginModalProps {
   open: boolean;
   onClose: () => void;
@@ -152,7 +153,8 @@ export function ProfileModal(props: ProfileModalProps) {
   };
 
   const initializeProfileModal = (accessToken: string) => {
-    getProfileInfo("myToken")
+    const cookieToken = getCookie("accessToken");
+    getProfileInfo(cookieToken)
       .then((res) => {
         setUserNameInput(res.name);
         setUserProfileImageBase64(res.thumbnail);
