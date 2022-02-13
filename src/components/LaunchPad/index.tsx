@@ -40,12 +40,46 @@ interface LaunchPadProps {
   presetData: Preset;
 }
 
-interface BeatMatch {
-  tempo: number;
-  bar: number;
-  setBar: React.Dispatch<React.SetStateAction<number>>;
-  beat: number;
-  setBeat: React.Dispatch<React.SetStateAction<number>>;
+function RenderButtons({ presetData }: LaunchPadProps) {
+  const classes = LaunchPadStyles();
+
+  return (
+    <div className={classes.btnContainer}>
+      {presetData.soundSamples.map(
+        (
+          { soundSampleId, soundSampleURL, buttonType, soundType, location },
+          idx
+        ) => {
+          switch (buttonType) {
+            case "ONESHOT":
+              return (
+                <OneShotButton
+                  key={soundSampleId + location}
+                  soundSampleURL={soundSampleURL}
+                  buttonType={buttonType}
+                  soundType={soundType}
+                  location={location}
+                />
+              );
+
+            case "LOOP":
+              return (
+                <LoopButton
+                  key={soundSampleId + location}
+                  soundSampleURL={soundSampleURL}
+                  buttonType={buttonType}
+                  soundType={soundType}
+                  location={location}
+                />
+              );
+
+            default:
+              return <EmptyButton key={soundSampleId + location} />;
+          }
+        }
+      )}
+    </div>
+  );
 }
 
 //8x8 scale
@@ -80,71 +114,33 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
         </div>
 
         {/* 템포테스트 */}
-        <div>
-          <label htmlFor={"tempo"}>tempo(bpm)</label>
+        <details>
+          <summary>metronome기능</summary>
+
+          <label htmlFor="bpm">BPM : </label>
           <input
-            id={"tempo"}
             type="number"
+            id="bpm"
             value={tempo}
             onChange={handleSetTempo}
           />
           <div>tempoTest</div>
-          <button
-            onClick={() => {
-              const initialIntervalTime = 0;
-              metronome(metronomeParams, initialIntervalTime);
-            }}
-          >
-            start!
-          </button>
-          <div>
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <button
+              onClick={() => {
+                const initialIntervalTime = 0;
+                metronome(metronomeParams, initialIntervalTime);
+              }}
+            >
+              start!
+            </button>
             <div>bar: {bar}</div>
             <div>beat: {beat}</div>
           </div>
-        </div>
+        </details>
         {/* 템포테스트 */}
 
-        <div className={classes.btnContainer}>
-          {presetData.soundSamples.map(
-            (
-              {
-                soundSampleId,
-                soundSampleURL,
-                buttonType,
-                soundType,
-                location,
-              },
-              idx
-            ) => {
-              switch (buttonType) {
-                case "ONESHOT":
-                  return (
-                    <OneShotButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
-
-                case "LOOP":
-                  return (
-                    <LoopButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
-
-                default:
-                  return <EmptyButton key={soundSampleId + location} />;
-              }
-            }
-          )}
-        </div>
+        <RenderButtons presetData={presetData} />
       </div>
     </>
   );

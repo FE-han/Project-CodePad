@@ -1,8 +1,3 @@
-import {
-  ConstructionRounded,
-  HdrEnhancedSelectOutlined,
-  Translate,
-} from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -15,18 +10,8 @@ import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { setNewPresetData } from "./setDefaultPresetData";
 import pororo from "./pororo.png";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import ListItemText from "@mui/material/ListItemText";
-import { grey } from "@mui/material/colors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { padding, style } from "@mui/system";
-import Grid from "@mui/material/Grid";
 import PresetToggleButton from "../../components/PresetToggleButton";
 import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
@@ -34,8 +19,6 @@ import setPresetId from "../../utils/setPresetId";
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
-    background: "orange",
-
     padding: "35px 60px 35px 60px",
 
     display: "grid",
@@ -127,8 +110,7 @@ export function DefaultPresetsPage() {
   );
   const defaultPresetId = useParams();
   const dispatch = useDispatch();
-  // const state = useAppSelector((state) => state.getPresetSlice);
-  const state = useAppSelector((state) => state);
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   const handleGetPreset = async (params: PresetParams) => {
     try {
@@ -161,11 +143,11 @@ export function DefaultPresetsPage() {
   return (
     <div className={classes.root}>
       <div className={classes.launchPad}>
-        <button onClick={() => console.log(state, defaultPresetData)}>
-          state값 확인
-        </button>
-        <LaunchPad presetData={defaultPresetData} />
-        {/* {state.isLoading ? "로딩중" : null} */}
+        {state.isLoading ? (
+          "로딩중"
+        ) : (
+          <LaunchPad presetData={defaultPresetData} />
+        )}
       </div>
       <div className={classes.togglePresetBtn}>
         <PresetToggleButton />
