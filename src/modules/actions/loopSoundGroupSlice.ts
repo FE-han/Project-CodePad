@@ -12,6 +12,8 @@ interface LoopSoundGroupState {
     bar7: Array<string>;
     bar8: Array<string>;
   };
+  nowStagedSampleCount: number;
+  nowBar: Bar;
 }
 
 const initialState: LoopSoundGroupState = {
@@ -26,27 +28,45 @@ const initialState: LoopSoundGroupState = {
     bar7: [],
     bar8: [],
   },
+  nowStagedSampleCount: 0,
+  nowBar: "bar1",
 };
+
+type Bar =
+  | "bar1"
+  | "bar2"
+  | "bar3"
+  | "bar4"
+  | "bar5"
+  | "bar6"
+  | "bar7"
+  | "bar8";
 
 interface SelectLoopParams {
   location: string;
-  nowBar: "bar1" | "bar2" | "bar3" | "bar4" | "bar5" | "bar6" | "bar7" | "bar8";
+  nowBar: Bar;
 }
 
 export const loopSoundGroupSlice = createSlice({
   name: "loopSoundGroup",
   initialState,
   reducers: {
-    selectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
-      const selectedBar = action.payload.nowBar;
+    selectLoopSound: (
+      state,
+      action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
+    ) => {
       state.isPlay = true;
       state.soundGroup = {
         ...state.soundGroup,
-        [selectedBar]: [
-          ...state.soundGroup[selectedBar],
+        [state.nowBar]: [
+          ...state.soundGroup[state.nowBar],
           action.payload.location,
         ],
       };
+      state.nowStagedSampleCount += 1;
+    },
+    checkNowBar: (state, action: PayloadAction<Bar>) => {
+      state.nowBar = action.payload;
     },
   },
 });

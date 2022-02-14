@@ -170,6 +170,7 @@ export function LoopButton({
         // sound!.play();
 
         //=======
+
         dispatch(
           actions.selectLoopSound({
             location,
@@ -179,7 +180,7 @@ export function LoopButton({
 
         if (audioContext === undefined) return;
 
-        audioContext.start();
+        // audioContext.start(); 음원재생
         setIsPlay(true);
       }}
     >
