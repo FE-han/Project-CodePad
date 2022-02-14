@@ -40,7 +40,7 @@ const MyPresetsPageStyles = makeStyles({
     display: "flex",
     justifyContent: "space-around",
   },
-  presetTitleWrap:{
+  presetTitleWrap: {
     width: "30%",
     height: "80%",
     marginTop: "auto",
@@ -80,10 +80,10 @@ export function MyPresetsUpdatePage() {
       <div className={classes.launchPad}>
         <Link to={"/"}>인트로 페이지 이동버튼</Link>
         런치패드 올곳
-        <LaunchPad presetData={myPresetData} />
+        <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
       </div>
       <div className={classes.presetOptionBox}>
-      {/* imgURL 은 preset 정보 받았을때 넘어오는 thumbnailImageURL 넘겨줘야함 */}
+        {/* imgURL 은 preset 정보 받았을때 넘어오는 thumbnailImageURL 넘겨줘야함 */}
         <PresetThumbnailUpload imgURL="https://images.mypetlife.co.kr/content/uploads/2019/12/09151959/%EC%8B%AC%EC%8B%AC%ED%95%9C_%EA%B3%A0%EC%96%91%EC%9D%B42.png" />
         <div className={classes.presetTitleWrap}>
           <PresetTitle />

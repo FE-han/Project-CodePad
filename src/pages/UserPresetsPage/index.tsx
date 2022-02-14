@@ -122,7 +122,7 @@ export function UserPresetsPage() {
               title={myPresetData.presetTitle}
               onlyFork={true}
             />
-            <LaunchPad presetData={myPresetData} />
+            <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
           </div>
         </div>
         <div className={classes.UserInfo}>

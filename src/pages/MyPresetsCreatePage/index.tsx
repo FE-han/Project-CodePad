@@ -60,7 +60,7 @@ export function MyPresetsCreatePage() {
       <div className={classes.launchPad}>
         <Link to={"/"}>인트로 페이지 이동버튼</Link>
         런치패드 올곳
-        <LaunchPad presetData={myPresetData} />
+        <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
       </div>
       <div className={classes.presetOptionBox}>
         <PresetThumbnailUpload imgURL={undefined} />
