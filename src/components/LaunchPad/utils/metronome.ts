@@ -4,64 +4,55 @@ export interface MetronomeParams {
   setBar: React.Dispatch<React.SetStateAction<number>>;
   beat: number;
   setBeat: React.Dispatch<React.SetStateAction<number>>;
+  isStop: boolean;
 }
 
-export const metronome = (
-  params: MetronomeParams,
-  delayTime: number,
-  isStop?: boolean
-) => {
-  const { tempo, bar, beat, setBar, setBeat } = params;
+export const metronome = (params: MetronomeParams, delayTime: number) => {
+  const { tempo, bar, beat, setBar, setBeat, isStop } = params;
+  console.log("처음받아온값", params);
   const intervalTime = (60 / tempo) * 1000;
   let expectedTime = Date.now() + intervalTime;
 
-  let timer: any;
+  const timer = setTimeout(() => {
+    const nextParams: MetronomeParams = {
+      ...params,
+    };
 
-  if (isStop) {
-    clearTimeout(timer);
-    return;
-  } else {
-    timer = setTimeout(() => {
-      const nextParams: MetronomeParams = {
-        ...params,
-      };
+    const nextDelayTime = Date.now() - expectedTime;
 
-      const nextDelayTime = Date.now() - expectedTime;
+    //delay overFlow시 알림 (약 1시간까지는 뜨지않음)
+    if (nextDelayTime > intervalTime) {
+      console.log("에러 : 누적된 딜레이가 템포 이상입니다");
+    }
 
-      //delay overFlow시 알림 (약 1시간까지는 뜨지않음)
-      if (nextDelayTime > intervalTime) {
-        console.log("에러 : 누적된 딜레이가 템포 이상입니다");
+    // (4/4)박자 기준으로 재생
+    if (beat < 4) {
+      nextParams.beat = beat + 1;
+      setBeat(nextParams.beat);
+    }
+    if (beat >= 4) {
+      nextParams.beat = 1;
+      setBeat(nextParams.beat);
+
+      //8beat시 1bar 올림
+      if (bar < 8) {
+        nextParams.bar = bar + 1;
+        setBar(nextParams.bar);
       }
-
-      // (4/4)박자 기준으로 재생
-      if (beat < 4) {
-        nextParams.beat = beat + 1;
-        setBeat(nextParams.beat);
+      if (bar >= 8) {
+        nextParams.bar = 1;
+        setBar(nextParams.bar);
       }
-      if (beat >= 4) {
-        nextParams.beat = 1;
-        setBeat(nextParams.beat);
+    }
 
-        //8beat시 1bar 올림
-        if (bar < 8) {
-          nextParams.bar = bar + 1;
-          setBar(nextParams.bar);
-        }
-        if (bar >= 8) {
-          nextParams.bar = 1;
-          setBar(nextParams.bar);
-        }
-      }
+    if (nextParams.isStop) {
+      console.log("멈춰!");
 
-      if (isStop) {
-        console.log("멈춰1!");
-        clearTimeout(timer);
-        return;
-      } else {
-        metronome(nextParams, Math.max(0, intervalTime - nextDelayTime));
-      }
+      return;
+    } else {
+      metronome(nextParams, Math.max(0, intervalTime - nextDelayTime));
+    }
 
-      //다음 메트로눔 시작
-    }, intervalTime);
-  }
+    //다음 메트로눔 시작
+  }, intervalTime);
 };

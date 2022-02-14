@@ -6,7 +6,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import { Fonts, ButtonColors } from "../../utils/CommonStyle";
 
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
@@ -122,16 +122,26 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
 
   const [bar, setBar] = useState<number>(1);
   const [beat, setBeat] = useState<number>(1);
-
-  const metronomeParams: MetronomeParams = {
-    tempo,
-    bar,
-    setBar,
-    beat,
-    setBeat,
-  };
+  const [isStop, setIsStop] = useState<boolean>(true);
 
   //
+
+  useEffect(() => {
+    const timer = () => {
+      setTimeout(() => {
+        console.log(isStop);
+      }, 1000);
+    };
+    if (isStop) {
+      // console.log("정지상태");
+    } else {
+      // console.log("재생상태");
+      const timer = setTimeout(() => {
+        console.log(isStop);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [isStop]);
 
   return (
     <>
@@ -173,22 +183,31 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <button
               onClick={() => {
-                const initialIntervalTime = 0;
-                metronome(metronomeParams, initialIntervalTime);
+                setIsStop(false);
+                // const startMetronomeParams: MetronomeParams = {
+                //   tempo,
+                //   bar,
+                //   setBar,
+                //   beat,
+                //   setBeat,
+                //   isStop,
+                // };
+                // const initialIntervalTime = 0;
+                // metronome(startMetronomeParams, initialIntervalTime);
               }}
             >
               start!
             </button>
             <button
               onClick={() => {
-                const initialIntervalTime = 0;
-                metronome(metronomeParams, initialIntervalTime, true);
+                setIsStop(true);
               }}
             >
               stop!
             </button>
             <div>bar: {bar}</div>
             <div>beat: {beat}</div>
+            <div>상태: {isStop ? "멈춤" : "재생"}</div>
           </div>
         </details>
         {/* 템포테스트 */}
