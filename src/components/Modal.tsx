@@ -8,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { useState, ChangeEvent } from "react";
+import { Link } from "react-router-dom";
 import getProfileInfo from "../api/getProfileInfo";
 import editProfileInfo from "../api/editProfileInfo";
 import loginGoogle from "../api/loginGoogle";
@@ -33,10 +34,13 @@ const LoginModalStyles = makeStyles({
     top: "-10px",
     cursor: "pointer",
   },
+  loginLink: {
+    margin: "0px auto 60px",
+  },
   loginButton: {
     width: "250px",
     height: "50px",
-    margin: "0px auto 60px",
+
     backgroundColor: "white",
     borderRadius: "5px",
     cursor: "pointer",
@@ -71,9 +75,11 @@ export function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <button className={classes.loginButton} onClick={login}>
-          구글 로그인
-        </button>
+        <Link to="/auth/google" className={classes.loginLink}>
+          <button className={classes.loginButton} onClick={login}>
+            구글 로그인
+          </button>
+        </Link>
       </DialogActions>
     </Dialog>
   );
