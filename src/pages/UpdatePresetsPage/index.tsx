@@ -33,14 +33,14 @@ import testImage from "../../assets/testImage.png";
 const UpdatePresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1200px",
+    minWidth: "1020px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1200px",
+    minWidth: "1020px",
     minHeight: "814.5px",
 
     display: "grid",

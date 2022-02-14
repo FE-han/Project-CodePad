@@ -13,7 +13,7 @@ const LaunchpadHeaderConatinerStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    margin: "18px 15px",
+    margin: "15px",
     justifyContent: "space-between",
 
     "& > :nth-child(1)": {

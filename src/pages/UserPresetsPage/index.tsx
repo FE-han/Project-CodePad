@@ -24,18 +24,18 @@ import UserInfo from "./components/UserInfo";
 const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1200px",
+    minWidth: "1020px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1200px",
+    minWidth: "1020px",
     minHeight: "814.5px",
 
     display: "grid",
-    gridTemplateRows: "1fr 4fr 2fr",
+    gridTemplateRows: "1fr 2fr 2fr",
     gridTemplateColumns: "1fr 1fr",
     gridColumnGap: "20px",
     gridRowGap: "20px",
@@ -52,11 +52,13 @@ const UserPresetsPageStyles = makeStyles({
   launchPad: {
     gridArea: "launchPad",
     minHeight: "570px",
+    display: "grid",
+    alignItems: "center",
 
     "& > .launchPadContainer": {
       margin: "10px",
-      display: "flex",
-      flexDirection: "column",
+      display: "grid",
+      rowGap: "10px",
     },
   },
 

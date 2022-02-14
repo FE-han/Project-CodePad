@@ -8,6 +8,7 @@ const UserInfoStyles = makeStyles({
     height: "100%",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
   },
 
   userImageWrap: {

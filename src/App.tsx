@@ -18,7 +18,7 @@ import RTKPage from "./pages/RTKPage";
 
 const AppStyles = makeStyles({
   root: {
-    minWidth: "1200px",
+    minWidth: "1020px",
     height: "100vh",
     overflow: "auto",
     background: `url(${bg}) no-repeat center center`,
