@@ -1,11 +1,6 @@
 import axios from "axios";
 
-interface GoogleLoginParams {}
-
-export async function loginGoogle(params: GoogleLoginParams) {
-  try {
-    await axios.get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/google`);
-  } catch (e) {
-    return { message: "로그인 요청 실패" };
-  }
+export default async function loginGoogle() {
+  const response = await axios.get(`https://elice.codepad.gq/auth/google`);
+  return response.data;
 }

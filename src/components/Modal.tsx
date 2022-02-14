@@ -10,31 +10,28 @@ import {
 import { useState, ChangeEvent } from "react";
 import getProfileInfo from "../api/getProfileInfo";
 import editProfileInfo from "../api/editProfileInfo";
+import loginGoogle from "../api/loginGoogle";
 import { getCookie } from "./cookie";
 interface LoginModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-// dummy api
-const loginGoogle = async () => {
-  try {
-    return {
-      status: true,
-      message: "로그인 성공",
-    };
-  } finally {
-  }
-};
-
-const ModalStyles = makeStyles({
-  loginPaper: {
+const LoginModalStyles = makeStyles({
+  paper: {
     minWidth: "500px",
     minHeight: "200px",
   },
-  profilePaper: {
-    minWidth: "500px",
-    minHeight: "300px",
+  titleRoot: {
+    textAlign: "center",
+    display: "inline",
+  },
+  closeButton: {
+    display: "inline",
+    position: "relative",
+    left: "200px",
+    top: "-10px",
+    cursor: "pointer",
   },
   loginButton: {
     width: "250px",
@@ -44,9 +41,62 @@ const ModalStyles = makeStyles({
     borderRadius: "5px",
     cursor: "pointer",
   },
+});
+
+export function LoginModal(props: LoginModalProps) {
+  const { onClose, open } = props;
+
+  const classes = LoginModalStyles();
+
+  const login = () => {
+    loginGoogle();
+    handleClose();
+  };
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  return (
+    <Dialog
+      classes={{ paper: classes.paper }}
+      onClose={handleClose}
+      open={open}
+    >
+      <DialogTitle classes={{ root: classes.titleRoot }}>
+        로그인
+        <div className={classes.closeButton} onClick={handleClose}>
+          X
+        </div>
+      </DialogTitle>
+      <DialogContent></DialogContent>
+      <DialogActions>
+        <button className={classes.loginButton} onClick={login}>
+          구글 로그인
+        </button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+interface ProfileModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const ProfileModalStyles = makeStyles({
+  paper: {
+    minWidth: "500px",
+    minHeight: "300px",
+  },
   titleRoot: {
     textAlign: "center",
     display: "inline",
+  },
+  closeButton: {
+    display: "inline",
+    float: "right",
+    cursor: "pointer",
   },
   fileButton: {
     padding: "11px 12px",
@@ -54,6 +104,12 @@ const ModalStyles = makeStyles({
     borderRadius: "4px",
     color: "white",
     cursor: "pointer",
+    position: "relative",
+    right: "240px",
+    top: "-10px",
+    "&:hover": {
+      backgroundColor: "#FF8800",
+    },
   },
   ProfileImage: {
     width: "200px",
@@ -74,44 +130,6 @@ const ModalStyles = makeStyles({
   },
 });
 
-export function LoginModal(props: LoginModalProps) {
-  const { onClose, open } = props;
-
-  const classes = ModalStyles();
-
-  const login = () => {
-    loginGoogle();
-    handleClose();
-  };
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  return (
-    <Dialog
-      classes={{ paper: classes.loginPaper }}
-      onClose={handleClose}
-      open={open}
-    >
-      <DialogTitle classes={{ root: classes.titleRoot }}>
-        로그인<div style={{ display: "inline", float: "right" }}>X</div>
-      </DialogTitle>
-      <DialogContent></DialogContent>
-      <DialogActions>
-        <button className={classes.loginButton} onClick={login}>
-          구글 로그인
-        </button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-interface ProfileModalProps {
-  open: boolean;
-  onClose: () => void;
-}
-
 export function ProfileModal(props: ProfileModalProps) {
   const { onClose, open } = props;
   const [profileModalState, setProfileModalState] = useState<string>("CLOSE");
@@ -121,7 +139,7 @@ export function ProfileModal(props: ProfileModalProps) {
     string | undefined
   >("");
 
-  const classes = ModalStyles();
+  const classes = ProfileModalStyles();
 
   // 모달 창 닫기 함수
   const handleClose = () => {
@@ -153,12 +171,14 @@ export function ProfileModal(props: ProfileModalProps) {
       alert("유저 이름은 1글자 이상이어야 합니다.");
       return;
     }
-    editProfileInfo("myToken", userNameInput, userProfileImageBase64);
+    editProfileInfo(getCookie("token"), userNameInput, userProfileImageBase64);
+    alert("수정되었습니다");
     handleClose();
   };
 
   const initializeProfileModal = (accessToken: string) => {
-    const cookieToken = getCookie("accessToken");
+    const cookieToken = getCookie("token");
+    console.log(cookieToken);
     getProfileInfo(cookieToken)
       .then((res) => {
         setUserNameInput(res.name);
@@ -174,12 +194,15 @@ export function ProfileModal(props: ProfileModalProps) {
 
   return (
     <Dialog
-      classes={{ paper: classes.profilePaper }}
+      classes={{ paper: classes.paper }}
       onClose={handleClose}
       open={open}
     >
       <DialogTitle classes={{ root: classes.titleRoot }}>
         프로필 정보
+        <div className={classes.closeButton} onClick={handleClose}>
+          X
+        </div>
       </DialogTitle>
       <img
         src={userProfileImageBase64}
@@ -197,11 +220,15 @@ export function ProfileModal(props: ProfileModalProps) {
         ></input>
       </DialogContent>
       <DialogActions>
+        <label className={classes.fileButton} htmlFor="userThumbnail">
+          썸네일 업로드
+        </label>
         <input
           id="userThumbnail"
           type="file"
           accept="image/gif, image/jpeg, image/png"
           onChange={onChangeThumbnailUpload}
+          style={{ display: "none" }}
         ></input>
         <Button variant="outlined" onClick={onClickForEditProfile}>
           프로필 수정
