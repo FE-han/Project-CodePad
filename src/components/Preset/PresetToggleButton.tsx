@@ -1,4 +1,5 @@
 import { styled } from "@mui/system";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Fonts, ToggleBtnColors } from "../../utils/CommonStyle";
 
@@ -55,10 +56,24 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
+const toggleDefaultValue: toggleDefaultValueTypes = {
+  defaultpresets: 0,
+  mypresets: 1,
+};
+
+type toggleDefaultValueTypes = {
+  [index: string]: number;
+  defaultpresets: number;
+  mypresets: number;
+};
+
 export default function PresetToggleButton(props: { type: number }) {
+  // const location = useLocation();
+  // const currPath = location.pathname.split("/")[1];
   const navigate = useNavigate();
 
   return (
+    // <TabsUnstyled defaultValue={toggleDefaultValue[currPath]}>
     <TabsUnstyled defaultValue={props.type}>
       <TabsList>
         <Tab
