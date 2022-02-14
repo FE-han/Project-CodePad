@@ -7,6 +7,8 @@ import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import PresetOptionHandle from "./components/PresetOptionHandle";
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import PresetTitle from "./components/PresetTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { articleActions } from "../../modules/slice/articleSlice";
 
 const MyPresetsCreatePageStyles = makeStyles({
   root: {
@@ -48,6 +50,24 @@ export function MyPresetsCreatePage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [titleValue, setTitleValue] = useState('');
+  const dispatch = useDispatch();
+  const views = useSelector((state:any) => state.articleReducers.views);
+
+    const onTitleChange = (event:any) => {
+        setTitleValue(event.currentTarget.value);
+    }
+
+  const onSubmitTitle = (event:any) =>{
+    event.preventDefault();
+    if (titleValue=== '' || titleValue === null || titleValue === undefined){
+      alert('제목을 작성하세요')
+      return false;
+    }
+    const article = { title : titleValue, views : views };
+    dispatch(articleActions.registerArticle(article))
+    console.log(article);
+  }
 
   return (
     <div className={classes.root}>
@@ -59,8 +79,8 @@ export function MyPresetsCreatePage() {
       <div className={classes.togglePresetBtn}>
         <PresetThumbnailUpload imgURL="https://images.mypetlife.co.kr/content/uploads/2019/12/09151959/%EC%8B%AC%EC%8B%AC%ED%95%9C_%EA%B3%A0%EC%96%91%EC%9D%B42.png" />
         <div>
-          <PresetTitle />
-          <PresetOptionHandle />
+          <PresetTitle titleValue={titleValue} handleTitleChange={onTitleChange}/>
+          <PresetOptionHandle handleSubmit={onSubmitTitle}/>
         </div>
       </div>
       <div className={classes.presetList}>

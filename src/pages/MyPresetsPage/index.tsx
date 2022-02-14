@@ -26,81 +26,55 @@ import Button from "@mui/material/Button";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import PresetList from "../../components/Preset/PresetList";
+import { PageColors } from "../../utils/CommonStyle";
+import MyPresetPage from '../../components/Preset/MypresetPage'
+
 
 const MyPresetsPageStyles = makeStyles({
   root: {
-    background: "#4b7a1f",
-
-    padding: "35px 60px 35px 60px",
-
+    padding: "50px 0px",
+    minWidth: "1200px",
+  },
+  container: {
+    margin: "0 auto",
+    width: "60%",
+    minWidth: "1200px",
     display: "grid",
+    gridTemplateRows: "1fr 4fr 2fr",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "150px auto 200px",
-    gridColumnGap: "100px",
+    gridColumnGap: "20px",
     gridRowGap: "20px",
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "communityContainer presetList"`,
+    "comment presetList"`,
 
     "& > *": {
-      border: "1px solid gray",
-      minWidth: "500px",
+      backgroundColor: PageColors.BACKGROUND,
+      boxShadow: PageColors.SHADOW,
     },
   },
   launchPad: {
     gridArea: "launchPad",
+    minHeight: "570px",
   },
+
   togglePresetBtn: {
     gridArea: "togglePresetBtn",
-    backgroundColor: "#8E8E8E",
+
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center",
-  },
-  changePresets: {
-    backgroundColor: "#8E8E8E",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    width: "70%",
     justifyContent: "center",
   },
   presetList: {
     gridArea: "presetList",
+    minWidth: "460px",
   },
-
-  listStyle: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    backgroundColor: "#8E8E8E",
-    height: "60%",
-    width: "100%",
-    fontWeight: "medium",
-    borderRadius: 1,
-  },
-  presetListStyles: {
-    width: "100%",
-    maxWidth: "500px",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    fontWeight: "medium",
-    paddingBottom: "20px",
-    textAlign: "center",
-    lineHeight: "50px",
-  },
-  plusPresetButtonStyles: {
-    width: "100%",
-    textAlignLast: "center",
-  },
-  page: {
-    paddingLeft: "90px",
+  comment: {
+    gridArea: "comment",
+    // display: "none",
   },
   communityContainer: {},
 });
@@ -128,121 +102,22 @@ export function MyPresetsPage() {
   useEffect(() => {
     getInitialData();
   }, []);
-
+ 
   return (
     <div className={classes.root}>
+      <div className={classes.container}>
       <div className={classes.launchPad}>
-        <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
-        런치패드 올곳
         <LaunchPad presetData={myPresetData} />
       </div>
       <div className={classes.togglePresetBtn}>
-        <List className={classes.changePresets}>
-          <ListItemButton
-            component={Link}
-            to="/defaultpresets/enter"
-            sx={{
-              border: "1px solid white",
-              width: "50%",
-              textAlign: "center",
-            }}
-          >
-            <ListItemText primary="Default presets" />
-          </ListItemButton>
-          <ListItemButton
-            component={Link}
-            to="/mypresets"
-            sx={{
-              border: "1px solid white",
-              width: "50%",
-              textAlign: "center",
-            }}
-          >
-            <ListItemText primary="My presets" />
-          </ListItemButton>
-        </List>
-      </div>
-      <div className={classes.presetList}>
-        <div></div>
-        <div className={classes.listStyle}>
-          <Stack
-            className={classes.presetListStyles}
-            spacing={2}
-            direction="column"
-          >
-            {/* <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> */}
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-                fontSize: "30px",
-              }}
-            >
-              +
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-          </Stack>
-        </div>
-        <div className={classes.page}>
-          <Stack spacing={2}>
-            <Pagination count={10} showFirstButton showLastButton />
-          </Stack>
-        </div>
         <PresetToggleButton />
       </div>
       <div className={classes.presetList}>
-        프리셋 리스트 올곳
-        <Link to={"/mypresets/create"}>나의 새 프리셋 생성 페이지 이동</Link>
-        {/* <PresetList /> */}
+        <MyPresetPage />
       </div>
       <div className={classes.communityContainer}>
         태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
+      </div>
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ function App() {
           <Route path={"/userpresets/:userId"} element={<UserPresetsPage />} />
           <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
-          <Route path={"/newmypresets"} element={<NewMypresetsPage />} />
+          {/* <Route path={"/newmypresets"} element={<NewMypresetsPage />} /> 중복된 페이지 삭제(한대현) */}
 
           <Route path={"/mypresets/update"} element={<MyPresetsUpdatePage />} />
           <Route path={"/mypresets/create"} element={<MyPresetsCreatePage />} />

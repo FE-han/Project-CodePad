@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function PresetOptionHandle(){
+export default function PresetOptionHandle(props: any){
 
     const handleFormSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
         alert("세이브")
@@ -12,7 +12,7 @@ export default function PresetOptionHandle(){
 
     return (
         <>
-            <button onClick={handleFormSubmit}>SAVE</button>
+            <button onClick={props.handleSubmit}>SAVE</button>
             <button onClick={handleCancelClick}>CANCEL</button>
         </>
     )
