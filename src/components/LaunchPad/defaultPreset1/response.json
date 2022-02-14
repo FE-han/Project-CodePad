@@ -1,0 +1,247 @@
+{
+  "launchPad": {
+    "presetTitle": "94 Neon Dreams",
+    "presetId": "12-34-56-12",
+    "areaSize": 64,
+    "soundSamples": [
+      {
+        "location": "0X1",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "0X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "0X3",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "0X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick4_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "0X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick5_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "0X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/kick/94 Neon Dreamskick3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "KICK"
+      },
+      {
+        "location": "1X1",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare1_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "1X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "1X3",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare1_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "1X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "1X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare4_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "1X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/snare/94 Neon DreamsSnare5_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "SNARE"
+      },
+      {
+        "location": "2X0",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper1_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X1",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper4_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X3",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper5_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper6_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper7_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper8_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "2X7",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/topper/94 Neon Dreamstopper9_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "TOPPER"
+      },
+      {
+        "location": "3X0",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/layeredBass/94 Neon DreamsLayerdBass7_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X1",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/layeredBass/94 Neon DreamsLayerdBass7_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X3",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass4_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass5_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "3X7",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthBass/94 Neon DreamsSynthBass5_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "BASS"
+      },
+      {
+        "location": "6X2",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthChords/94 Neon DreamssynthChords2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CHORD"
+      },
+      {
+        "location": "6X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthChords/94 Neon DreamssynthChords3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CHORD"
+      },
+      {
+        "location": "6X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthChords/94 Neon DreamssynthChords6_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CHORD"
+      },
+      {
+        "location": "6X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/synthChords/94 Neon DreamssynthChords4_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CHORD"
+      },
+      {
+        "location": "7X4",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/choppedSamples/94 Neon DreamschoppedSamples2_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CP_SP"
+      },
+      {
+        "location": "7X5",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "http://localhost:4100/choppedSamples/94 Neon DreamschoppedSamples3_bip.wav",
+        "buttonType": "LOOP",
+        "soundType": "CP_SP"
+      }
+    ]
+  }
+}
