@@ -8,14 +8,14 @@ export type LoopSoundType = "SYNTH" | "DRUMS" | "MELODIC" | "VOCAL" | "CHORD";
 
 export interface SoundSample {
   location: string;
-  soundSampleId: string | null;
-  soundSampleURL: string | null;
-  buttonType: "ONESHOT" | "LOOP" | null;
-  soundType: OneShotSoundType | LoopSoundType | null;
+  soundSampleId?: string;
+  soundSampleURL?: string;
+  buttonType?: "ONESHOT" | "LOOP";
+  soundType?: OneShotSoundType | LoopSoundType;
 }
 export interface Preset {
-  presetTitle: string | null;
-  presetId: string | null;
-  areaSize: LaunchPadScale;
+  presetTitle?: string;
+  presetId?: string;
+  areaSize?: LaunchPadScale;
   soundSamples: Array<SoundSample>;
 }

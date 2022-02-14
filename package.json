@@ -21,6 +21,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
+    "react-loading": "^2.0.3",
     "react-redux": "^7.2.6",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
@@ -35,7 +36,12 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev:apiServer": "npx json-server --port 4000 --watch ./src/components/LaunchPad/defaultPreset1/response.json ",
+<<<<<<< HEAD
     "api": "json-server [path-to-db.json] --routes [path-to-routes.json] --no-cors=false"
+=======
+    "dev:apiServer_intro": "npx json-server --port 4000 --watch ./mock/presetList.json",
+    "dev:Server_userInfo": "npx json-server --port 4000 --watch ./mock/userInfo.json"
+>>>>>>> c187de9594f5792b4a9e78d463e284a652dac608
   },
   "eslintConfig": {
     "extends": [
