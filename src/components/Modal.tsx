@@ -75,11 +75,14 @@ export function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <Link to="/auth/google" className={classes.loginLink}>
+        <a
+          href="https://elice.codepad.gq/auth/google"
+          className={classes.loginLink}
+        >
           <button className={classes.loginButton} onClick={login}>
             구글 로그인
           </button>
-        </Link>
+        </a>
       </DialogActions>
     </Dialog>
   );
