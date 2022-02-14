@@ -134,7 +134,7 @@ export function MyPresetsPage() {
       <div className={classes.launchPad}>
         <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
         런치패드 올곳
-        <LaunchPad presetData={myPresetData} />
+        <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
       </div>
       <div className={classes.togglePresetBtn}>
         <List className={classes.changePresets}>

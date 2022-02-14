@@ -11,7 +11,6 @@ import { initialPresetGenerator } from "../../components/LaunchPad/utils/initial
 import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
-import { setNewPresetData } from "./setDefaultPresetData";
 
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
@@ -87,32 +86,38 @@ export function DefaultPresetsPage() {
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
   const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
 
-  const handleGetPreset = async (params: PresetParams) => {
-    try {
-      const data = await getPreset(params);
-      dispatch(actions.getPresetDataFulfilled(data));
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    // setDefaultPresetData(newPresetData);
 
-      setNewPresetData(data, defaultPresetData, setDefaultPresetData);
+    try {
+      const nowPresetData: Preset = await getPreset(
+        setPresetId(defaultPresetId)
+      );
+      dispatch(actions.getPresetDataFulfilled(nowPresetData));
+      setPresetData({
+        nowPresetData,
+        defaultPresetData: defaultPresetData,
+        setDefaultPresetData: setDefaultPresetData,
+      });
+
+      const currentSampleSoundMap = sampleSoundMap;
+      nowPresetData.soundSamples.map((soundSample) => {
+        currentSampleSoundMap.set(
+          soundSample.location,
+          soundSample.soundSampleURL
+        );
+      });
+      setSampleSoundMap(currentSampleSoundMap);
     } catch (err) {
       console.log("프리셋 Api에러", err);
       dispatch(actions.getPresetDataRejected());
     }
-  };
-
-  const getInitialData = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(defaultPresetId));
-    // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: defaultPresetData,
-      setDefaultPresetData: setDefaultPresetData,
-    });
   };
 
   useEffect(() => {
@@ -126,7 +131,10 @@ export function DefaultPresetsPage() {
           {state.isLoading ? (
             "로딩중"
           ) : (
-            <LaunchPad presetData={defaultPresetData} />
+            <LaunchPad
+              presetData={defaultPresetData}
+              sampleSoundMap={sampleSoundMap}
+            />
           )}
         </div>
         <div className={classes.togglePresetBtn}>

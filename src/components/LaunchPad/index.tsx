@@ -13,6 +13,7 @@ import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
 import Metronome from "./Metronome";
 import { useAppSelector } from "../../modules/hooks";
+import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -67,9 +68,10 @@ const LaunchPadStyles = makeStyles({
 });
 interface LaunchPadProps {
   presetData: Preset;
+  sampleSoundMap: Map<string, string>; //<K=location, V=sampleSoundURL>
 }
 
-function RenderButtons({ presetData }: LaunchPadProps) {
+function RenderButtons({ presetData }: Pick<LaunchPadProps, "presetData">) {
   const classes = LaunchPadStyles();
 
   return (
@@ -118,14 +120,41 @@ function RenderButtons({ presetData }: LaunchPadProps) {
 }
 
 //8x8 scale
-export function LaunchPad({ presetData }: LaunchPadProps) {
+export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   const classes = LaunchPadStyles();
   const { nowBar, soundGroup } = useAppSelector(
     (state) => state.loopSoundGroupSlice
   );
+  const [alreadyPlayedSoundSamples, setAlreadyPlayedSoundSamples] = useState(
+    new Map()
+  );
+
+  const getBufferSource = async (url: string | undefined) => {
+    if (url === undefined) return;
+    const data: ArrayBuffer = await getAudioArrayBuffer(url);
+
+    const audioContext = new AudioContext();
+    const audioBuffer = await audioContext.decodeAudioData(data);
+
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.loop = true;
+    source.connect(audioContext.destination);
+    source.start();
+  };
 
   useEffect(() => {
-    console.log(nowBar, soundGroup);
+    console.log(alreadyPlayedSoundSamples);
+    soundGroup[nowBar].map((sound) => {
+      if (alreadyPlayedSoundSamples.get(sound)) {
+        console.log("이미 재생했어!");
+      } else {
+        getBufferSource(sampleSoundMap.get(sound));
+        const newPlayedSet = alreadyPlayedSoundSamples;
+        newPlayedSet.set(sound, true);
+        setAlreadyPlayedSoundSamples(newPlayedSet);
+      }
+    });
   }, [nowBar]);
 
   return (
