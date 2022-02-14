@@ -9,6 +9,7 @@ import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 
+
 const Tab = styled(TabUnstyled)`
   width: 100%;
   font-family: ${Fonts.TITLE};
@@ -56,6 +57,7 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
+<<<<<<< HEAD
 const toggleDefaultValue: toggleDefaultValueTypes = {
   defaultpresets: 0,
   mypresets: 1,
@@ -92,5 +94,32 @@ export default function PresetToggleButton(props: { type: number }) {
         </Tab>
       </TabsList>
     </TabsUnstyled>
+=======
+
+
+const toggleDefaultValue:toggleDefaultValueTypes = {
+  defaultpresets: 0,
+  mypresets: 1,
+}
+
+type toggleDefaultValueTypes = {
+  [index: string]: number,
+  defaultpresets: number,
+  mypresets: number
+}
+
+  
+export default function PresetToggleButton() {
+  const location = useLocation();
+  const currPath = location.pathname.split("/")[1];
+  return (
+    <TabsUnstyled defaultValue={toggleDefaultValue[currPath]}>
+            <TabsList>
+              <Tab>Default Presets</Tab>
+              <Tab>My Presets</Tab>
+            </TabsList>
+          </TabsUnstyled >
+
+>>>>>>> d46dd8a5f3e977da1a0f86cbf8db9c1548ab9f03
   );
 }
