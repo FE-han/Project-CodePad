@@ -22,13 +22,17 @@ import setPresetId from "../../utils/setPresetId";
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
-    padding: "50px 0px",
+    height: `calc(100% - 64px)`,
     minWidth: "1200px",
   },
   container: {
     margin: "0 auto",
+    padding: "50px 0px",
     width: "60%",
+    height: "90%",
     minWidth: "1200px",
+    minHeight: "814.5px",
+
     display: "grid",
     gridTemplateRows: "1fr 4fr 2fr",
     gridTemplateColumns: "1fr 1fr",

@@ -17,6 +17,8 @@ import MyPresetsCreatePage from "./pages/MyPresetsCreatePage";
 const AppStyles = makeStyles({
   root: {
     minWidth: "1200px",
+    height: "100vh",
+    overflow: "auto",
     background: `url(${bg}) no-repeat center center`,
     backgroundSize: `100% 100%`,
   },

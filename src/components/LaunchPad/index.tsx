@@ -54,9 +54,7 @@ const LaunchPadStyles = makeStyles({
   },
   btnContainer: {
     display: "grid",
-    justifyContent: "space-between",
-    alignContent: "space-between",
-    placeItems: `center start`,
+    justifyContent: "space-evenly",
 
     gridTemplateRows: "repeat(8, 52px)",
     gridTemplateColumns: "repeat(8, 52px)",

@@ -82,11 +82,7 @@ export default function PresetToggleButton() {
         <img src={testImage} alt="" />
       </div>
       <div className={classes.listBox}>
-        <List
-          component="nav"
-          aria-label="main mailbox folders"
-          className={classes.presetList}
-        >
+        <List component="nav" className={classes.presetList}>
           <ListItemButton
             selected={selectedIndex === 0}
             onClick={(event) => handleListItemClick(event, 0)}
