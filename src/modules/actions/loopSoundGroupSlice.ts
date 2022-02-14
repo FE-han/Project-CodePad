@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { bindNextbar } from "../../utils/bindNextbar";
 
 interface LoopSoundGroupState {
   isPlay: boolean;
@@ -32,7 +33,7 @@ const initialState: LoopSoundGroupState = {
   nowBar: "bar1",
 };
 
-type Bar =
+export type Bar =
   | "bar1"
   | "bar2"
   | "bar3"
@@ -71,12 +72,10 @@ export const loopSoundGroupSlice = createSlice({
       if (newStagedSampleSounds.length === currentStagedSampleSounds.length)
         return;
 
+      const targetbar = bindNextbar(state.nowBar);
       state.soundGroup = {
         ...state.soundGroup,
-        [state.nowBar]: [
-          ...state.soundGroup[state.nowBar],
-          action.payload.location,
-        ],
+        [targetbar]: [...state.soundGroup[targetbar], action.payload.location],
       };
     },
     deselectLoopSound: (

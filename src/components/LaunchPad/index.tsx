@@ -12,6 +12,7 @@ import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
 import Metronome from "./Metronome";
+import { useAppSelector } from "../../modules/hooks";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -119,6 +120,13 @@ function RenderButtons({ presetData }: LaunchPadProps) {
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
+  const { nowBar, soundGroup } = useAppSelector(
+    (state) => state.loopSoundGroupSlice
+  );
+
+  useEffect(() => {
+    console.log(nowBar, soundGroup);
+  }, [nowBar]);
 
   return (
     <>
