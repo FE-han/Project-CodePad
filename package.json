@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev:apiServer": "npx json-server --port 4000 --watch ./src/components/LaunchPad/defaultPreset1/response.json "
+    "dev:apiServer": "npx json-server --port 4000 --watch ./src/components/LaunchPad/defaultPreset1/response.json ",
+    "api": "json-server [path-to-db.json] --routes [path-to-routes.json] --no-cors=false"
   },
   "eslintConfig": {
     "extends": [

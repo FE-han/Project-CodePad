@@ -46,6 +46,7 @@ const ModalStyles = makeStyles({
   },
   titleRoot: {
     textAlign: "center",
+    display: "inline",
   },
   fileButton: {
     padding: "11px 12px",
@@ -80,6 +81,7 @@ export function LoginModal(props: LoginModalProps) {
 
   const login = () => {
     loginGoogle();
+    handleClose();
   };
 
   const handleClose = () => {
@@ -92,7 +94,9 @@ export function LoginModal(props: LoginModalProps) {
       onClose={handleClose}
       open={open}
     >
-      <DialogTitle classes={{ root: classes.titleRoot }}>로그인</DialogTitle>
+      <DialogTitle classes={{ root: classes.titleRoot }}>
+        로그인<div style={{ display: "inline", float: "right" }}>X</div>
+      </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
         <button className={classes.loginButton} onClick={login}>
@@ -150,6 +154,7 @@ export function ProfileModal(props: ProfileModalProps) {
       return;
     }
     editProfileInfo("myToken", userNameInput, userProfileImageBase64);
+    handleClose();
   };
 
   const initializeProfileModal = (accessToken: string) => {
