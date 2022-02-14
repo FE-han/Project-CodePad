@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { actions } from "../../modules/actions/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
 
 export default function Metronome() {
@@ -30,11 +32,36 @@ export default function Metronome() {
   const delayTimeRef = useRef(delayTime);
   delayTimeRef.current = delayTime;
 
+  const dispatch = useDispatch();
   const { isPlay, soundGroup, nowStagedSampleCount, nowBar } = useAppSelector(
     (state) => state.loopSoundGroupSlice
   );
   const isPlayRef = useRef(isPlay);
   isPlayRef.current = isPlay;
+
+  const barNumToString = (barNum: number) => {
+    switch (barNum) {
+      case 1:
+        return "bar1";
+      case 2:
+        return "bar2";
+      case 3:
+        return "bar3";
+      case 4:
+        return "bar4";
+      case 5:
+        return "bar5";
+      case 6:
+        return "bar6";
+      case 7:
+        return "bar7";
+      case 8:
+        return "bar8";
+
+      default:
+        return "bar1";
+    }
+  };
 
   function metronome() {
     setIntervalTime((60 / tempoRef.current) * 1000);
@@ -52,9 +79,11 @@ export default function Metronome() {
 
           if (barRef.current <= 8) {
             setBar(barRef.current + 1);
+            dispatch(actions.checkNowBar(barNumToString(barRef.current)));
           }
           if (barRef.current > 8) {
             setBar(1);
+            dispatch(actions.checkNowBar("bar1"));
           }
         }
         metronome();
@@ -89,27 +118,10 @@ export default function Metronome() {
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <button
           onClick={() => {
-            setIsStop(false);
-            // const startMetronomeParams: MetronomeParams = {
-            //   tempo,
-            //   bar,
-            //   setBar,
-            //   beat,
-            //   setBeat,
-            //   isStop,
-            // };
-            // const initialIntervalTime = 0;
-            // metronome(startMetronomeParams, initialIntervalTime);
+            console.log({ isPlay, soundGroup, nowStagedSampleCount, nowBar });
           }}
         >
-          start!
-        </button>
-        <button
-          onClick={() => {
-            setIsStop(true);
-          }}
-        >
-          stop!
+          reduxValue!
         </button>
         <div>bar: {bar}</div>
         <div>beat: {beat}</div>

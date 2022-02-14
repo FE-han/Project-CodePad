@@ -6,6 +6,7 @@ import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { useDispatch } from "react-redux";
 import { actions } from "../../modules/actions/loopSoundGroupSlice";
+import { useAppSelector } from "../../modules/hooks";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {
@@ -76,10 +77,11 @@ export function LoopButton({
   const classes = LoopButtonStyles();
   const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
   const [isWait, setIsWait] = useState<boolean>(false);
-  const [isPlay, setIsPlay] = useState<boolean>(false);
+  const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
   const dispatch = useDispatch();
+  const { isPlay } = useAppSelector((state) => state.loopSoundGroupSlice);
 
   // const [audioContext, setAudioContext] =
   //   useState<AudioContext | undefined>(undefined);
@@ -88,7 +90,7 @@ export function LoopButton({
     useState<AudioBufferSourceNode | undefined>(undefined);
 
   const getClassNameByBtnState = () => {
-    if (isPlay) {
+    if (isPlaySample) {
       return classes.nowPlayingBtn;
     }
 
@@ -171,6 +173,11 @@ export function LoopButton({
 
         //=======
 
+        if (isPlaySample) {
+          // dispatch;
+          setIsPlaySample(false);
+        }
+
         dispatch(
           actions.selectLoopSound({
             location,
@@ -180,8 +187,9 @@ export function LoopButton({
 
         if (audioContext === undefined) return;
 
+        setIsPlaySample(true);
         // audioContext.start(); 음원재생
-        setIsPlay(true);
+        // setIsPlay(true);
       }}
     >
       {/* <div className={getClassNameByBtnState()}> */}
