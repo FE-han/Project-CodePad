@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useAppSelector } from "../../modules/hooks";
 
 export default function Metronome() {
   //박자 맟추기 테스트
@@ -11,24 +12,16 @@ export default function Metronome() {
   const [beat, setBeat] = useState<number>(1);
   const [isStop, setIsStop] = useState<boolean>(true);
 
-  //
+  const isStopRef = useRef(isStop);
+  isStopRef.current = isStop;
+
+  const { isPlay, soundGroup } = useAppSelector(
+    (state) => state.loopSoundGroupSlice
+  );
 
   useEffect(() => {
-    const timer = () => {
-      setTimeout(() => {
-        console.log(isStop);
-      }, 1000);
-    };
-    if (isStop) {
-      // console.log("정지상태");
-    } else {
-      // console.log("재생상태");
-      const timer = setTimeout(() => {
-        console.log(isStop);
-      }, 1000);
-    }
-    // return () => clearTimeout(timer);
-  }, [isStop]);
+    console.log("누가 루프 버튼을 눌렀는가?", soundGroup);
+  }, [soundGroup]);
 
   return (
     <details open>

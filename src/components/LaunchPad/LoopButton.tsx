@@ -4,6 +4,8 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
+import { useDispatch } from "react-redux";
+import { actions } from "../../modules/actions/loopSoundGroupSlice";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {
@@ -76,6 +78,8 @@ export function LoopButton({
   const [isWait, setIsWait] = useState<boolean>(false);
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
+
+  const dispatch = useDispatch();
 
   // const [audioContext, setAudioContext] =
   //   useState<AudioContext | undefined>(undefined);
@@ -166,6 +170,12 @@ export function LoopButton({
         // sound!.play();
 
         //=======
+        dispatch(
+          actions.selectLoopSound({
+            location,
+            nowBar: "bar1",
+          })
+        );
 
         if (audioContext === undefined) return;
 

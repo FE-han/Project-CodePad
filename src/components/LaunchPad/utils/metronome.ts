@@ -9,7 +9,6 @@ export interface MetronomeParams {
 
 export const metronome = (params: MetronomeParams, delayTime: number) => {
   const { tempo, bar, beat, setBar, setBeat, isStop } = params;
-  console.log("처음받아온값", params);
   const intervalTime = (60 / tempo) * 1000;
   let expectedTime = Date.now() + intervalTime;
 

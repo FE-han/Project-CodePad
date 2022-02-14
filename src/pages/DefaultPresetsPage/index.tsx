@@ -42,7 +42,7 @@ const DefaultPresetsPageStyles = makeStyles({
     "launchPad presetList"
     "comment presetList"`,
 
-    ["@media (max-width: 600px)"]: {
+    ["@media (max-width: 800px)"]: {
       display: "grid",
       gridTemplateRows: "1fr 5fr 2fr 6fr",
       gridColumnGap: "20px",
