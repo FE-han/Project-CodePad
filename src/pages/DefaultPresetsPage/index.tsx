@@ -1,4 +1,8 @@
 import { makeStyles } from "@mui/styles";
+import Button from "@mui/material/Button";
+
+import { PageColors } from "../../utils/CommonStyle";
+
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Params, useParams } from "react-router-dom";
@@ -12,36 +16,49 @@ import { setNewPresetData } from "./setDefaultPresetData";
 import pororo from "./pororo.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import PresetToggleButton from "../../components/PresetToggleButton";
+
+import PresetToggleButton from "../../components/Preset/PresetToggleButton";
+import PresetList from "../../components/Preset/PresetList";
 import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
-    padding: "35px 60px 35px 60px",
+    height: `calc(100% - 64px)`,
+    minWidth: "1200px",
+  },
+  container: {
+    margin: "0 auto",
+    padding: "50px 0px",
+    width: "60%",
+    height: "90%",
+    minWidth: "1200px",
+    minHeight: "814.5px",
 
     display: "grid",
+    gridTemplateRows: "1fr 4fr 2fr",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "150px auto 200px",
-    gridColumnGap: "100px",
+    gridColumnGap: "20px",
     gridRowGap: "20px",
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "none presetList"`,
+    "comment presetList"`,
 
     "& > *": {
-      border: "1px solid gray",
-      minWidth: "500px",
+      backgroundColor: PageColors.BACKGROUND,
+      boxShadow: PageColors.SHADOW,
     },
   },
   launchPad: {
     gridArea: "launchPad",
+    minHeight: "570px",
   },
+
   togglePresetBtn: {
     gridArea: "togglePresetBtn",
-    backgroundColor: "#8E8E8E",
+
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
@@ -49,57 +66,11 @@ const DefaultPresetsPageStyles = makeStyles({
   },
   presetList: {
     gridArea: "presetList",
+    minWidth: "460px",
   },
-  pororoimage: {
-    paddingLeft: "200px",
-    paddingTop: "50px",
-    paddingBottom: "20px",
-    backgroundColor: "#8E8E8E",
-  },
-  listStyle: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    backgroundColor: "#8E8E8E",
-    height: "60%",
-    width: "100%",
-    fontWeight: "medium",
-    borderRadius: 1,
-  },
-  presetListStyles: {
-    width: "100%",
-    maxWidth: "500px",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    fontWeight: "medium",
-    paddingBottom: "20px",
-    textAlign: "center",
-    lineHeight: "50px",
-  },
-  plusPresetButtonStyles: {
-    width: "100%",
-    textAlignLast: "center",
-  },
-  page: {
-    paddingLeft: "90px",
-  },
-  changePresets: {
-    backgroundColor: "#8E8E8E",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    width: "70%",
-    justifyContent: "center",
-  },
-  buttonStyles: {
-    height: "50px",
-    width: "500px",
-    color: "white",
-    backgroundColor: "gray",
+  comment: {
+    gridArea: "comment",
+    // display: "none",
   },
 });
 
@@ -142,89 +113,21 @@ export function DefaultPresetsPage() {
 
   return (
     <div className={classes.root}>
-      <div className={classes.launchPad}>
-        {state.isLoading ? (
-          "로딩중"
-        ) : (
-          <LaunchPad presetData={defaultPresetData} />
-        )}
-      </div>
-      <div className={classes.togglePresetBtn}>
-        <PresetToggleButton />
-      </div>
-      <div className={classes.presetList}>
-        <div className={classes.pororoimage}>
-          <img src={pororo} width="55%" height="100%" />
+      <div className={classes.container}>
+        <div className={classes.launchPad}>
+          {state.isLoading ? (
+            "로딩중"
+          ) : (
+            <LaunchPad presetData={defaultPresetData} />
+          )}
         </div>
-        <div className={classes.listStyle}>
-          <Stack
-            className={classes.presetListStyles}
-            spacing={2}
-            direction="column"
-          >
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-                fontSize: "30px",
-              }}
-            >
-              +
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-          </Stack>
+        <div className={classes.togglePresetBtn}>
+          <PresetToggleButton />
         </div>
-        <div className={classes.page}>
-          <Stack spacing={1}>
-            <Pagination count={10} showFirstButton showLastButton />
-          </Stack>
+        <div className={classes.presetList}>
+          <PresetList />
         </div>
+        <div className={classes.comment}></div>
       </div>
     </div>
   );

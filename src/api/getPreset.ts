@@ -1,5 +1,4 @@
 import { AxiosRequestConfig } from "axios";
-import { Preset } from "../components/LaunchPad/utils/types";
 import { axiosInstance } from "./axiosInstance";
 
 export interface PresetParams {
