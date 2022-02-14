@@ -11,7 +11,7 @@ import { useState, ChangeEvent } from "react";
 import getProfileInfo from "../api/getProfileInfo";
 import editProfileInfo from "../api/editProfileInfo";
 import loginGoogle from "../api/loginGoogle";
-import { getCookie } from "./cookie";
+import { getCookie } from "../utils/cookie";
 interface LoginModalProps {
   open: boolean;
   onClose: () => void;
