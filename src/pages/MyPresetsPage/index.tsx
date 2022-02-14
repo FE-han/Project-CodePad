@@ -11,7 +11,7 @@ import { getPreset } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
-import pororo from "./pororo.png";
+
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -23,7 +23,7 @@ import Stack from "@mui/material/Stack";
 import { style } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import PresetToggleButton from "../../components/PresetToggleButton";
+import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
@@ -70,12 +70,7 @@ const MyPresetsPageStyles = makeStyles({
   presetList: {
     gridArea: "presetList",
   },
-  pororoimage: {
-    paddingLeft: "200px",
-    paddingTop: "50px",
-    paddingBottom: "20px",
-    backgroundColor: "#8E8E8E",
-  },
+
   listStyle: {
     display: "flex",
     alignItems: "center",
@@ -168,9 +163,7 @@ export function MyPresetsPage() {
         </List>
       </div>
       <div className={classes.presetList}>
-        <div className={classes.pororoimage}>
-          <img src={pororo} width="55%" height="100%" />
-        </div>
+        <div></div>
         <div className={classes.listStyle}>
           <Stack
             className={classes.presetListStyles}
