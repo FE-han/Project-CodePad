@@ -29,3 +29,7 @@ export enum PresetListBtnColors {
   COLOR = `rgba(0, 0, 0, 0.5)`,
   SHADOW = `rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px`,
 }
+
+export enum PresetImageColors {
+  SHADOW = `rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset`,
+}

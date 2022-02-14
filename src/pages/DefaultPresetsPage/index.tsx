@@ -22,11 +22,13 @@ import setPresetId from "../../utils/setPresetId";
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
   root: {
-    margin: "50px auto",
+    padding: "50px 0px",
+    minWidth: "1200px",
+  },
+  container: {
+    margin: "0 auto",
     width: "60%",
-    minWidth: "900px",
-    height: "83%",
-
+    minWidth: "1200px",
     display: "grid",
     gridTemplateRows: "1fr 4fr 2fr",
     gridTemplateColumns: "1fr 1fr",
@@ -57,7 +59,7 @@ const DefaultPresetsPageStyles = makeStyles({
   },
   presetList: {
     gridArea: "presetList",
-    minWidth: "410px",
+    minWidth: "460px",
   },
   comment: {
     gridArea: "comment",
@@ -105,16 +107,18 @@ export function DefaultPresetsPage() {
 
   return (
     <div className={classes.root}>
-      <div className={classes.launchPad}>
-        <LaunchPad presetData={defaultPresetData} />
+      <div className={classes.container}>
+        <div className={classes.launchPad}>
+          <LaunchPad presetData={defaultPresetData} />
+        </div>
+        <div className={classes.togglePresetBtn}>
+          <PresetToggleButton />
+        </div>
+        <div className={classes.presetList}>
+          <PresetList />
+        </div>
+        <div className={classes.comment}></div>
       </div>
-      <div className={classes.togglePresetBtn}>
-        <PresetToggleButton />
-      </div>
-      <div className={classes.presetList}>
-        <PresetList />
-      </div>
-      <div className={classes.comment}></div>
     </div>
   );
 }

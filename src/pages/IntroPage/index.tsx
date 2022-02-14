@@ -42,7 +42,7 @@ const introPageStyles = makeStyles({
 
     margin: "0 auto 0 auto",
     width: "75%",
-    minWidth: "900px",
+    minWidth: "1200px",
 
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",

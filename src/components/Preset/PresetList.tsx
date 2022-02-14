@@ -7,7 +7,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
 import Pagination from "@mui/material/Pagination";
-import { PresetListBtnColors } from "../../utils/CommonStyle";
+import {
+  PresetListBtnColors,
+  PresetImageColors,
+} from "../../utils/CommonStyle";
 
 import Reaction from "./Reaction";
 
@@ -23,6 +26,7 @@ const PresetsListStyles = makeStyles({
     "& > img": {
       width: "200px",
       height: "200px",
+      boxShadow: PresetImageColors.SHADOW,
     },
   },
   listBox: {
