@@ -48,52 +48,7 @@ const presetOptionHandleStyles = makeStyles({
   },
 });
 
-const label = { inputProps: { "aria-label": "Switch demo" } };
-
-const presetOptionHandleStyles = makeStyles({
-  root: {
-    "& button": {
-      lineHeight: "30px",
-      background: "transparent",
-      border: "1px solid white",
-      borderRadius: "5px",
-      color: "white",
-      fontWeight: "bold",
-      fontSize: "1rem",
-      cursor: "pointer",
-    },
-  },
-  toggleSwitchWrap: {
-    display: "flex",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "end",
-    marginTop: "10px",
-    marginBottom: "10px",
-
-    "& label": {
-      color: "white",
-      fontWeight: "bold",
-    },
-  },
-
-  buttonWrap: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-
-  saveBtn: {
-    width: "45%",
-  },
-  cancelBtn: {
-    width: "45%",
-  },
-});
-
 export default function PresetOptionHandle() {
-  const classes = presetOptionHandleStyles();
-  const navigate = useNavigate();
-
   const classes = presetOptionHandleStyles();
   const navigate = useNavigate();
 
