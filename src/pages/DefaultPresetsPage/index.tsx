@@ -63,7 +63,7 @@ const DefaultPresetsPageStyles = makeStyles({
   },
   comment: {
     gridArea: "comment",
-    display: "none",
+    // display: "none",
   },
 });
 
