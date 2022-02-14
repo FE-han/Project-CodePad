@@ -14,6 +14,7 @@ import RTKPage from "./pages/RTKPage";
 import MyPresetsUpdatePage from "./pages/NewMypresetsPage";
 import MyPresetsCreatePage from "./pages/MyPresetsCreatePage";
 
+
 const AppStyles = makeStyles({
   root: {
     minWidth: "1200px",
@@ -39,6 +40,7 @@ function App() {
           <Route path={"/userpresets/:userId"} element={<UserPresetsPage />} />
           <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
+          {/* <Route path={"/mypresets/enter/:articleId"} element={<ArticlePage />} /> */}
           {/* <Route path={"/newmypresets"} element={<NewMypresetsPage />} /> 중복된 페이지 삭제(한대현) */}
 
           <Route path={"/mypresets/update"} element={<MyPresetsUpdatePage />} />

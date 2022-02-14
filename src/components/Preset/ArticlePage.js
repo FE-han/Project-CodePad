@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { articleActions } from '../../modules/slice/articleSlice';
 
 //페이지 한개 불러오기
-function ArticlePage({ match, location }) {
+function ArticlePage() {
     const dispatch = useDispatch();
-
+    const { presetId } = useParams(); 
+    console.log(presetId);
     useEffect(()=>{
-        dispatch(articleActions.getArticle(match.params.articleId));
-    },[match.params.articleId]);
+        dispatch(articleActions.getArticle(presetId));
+    },[presetId]);
+
+    
 
     const { id, title } = useSelector((state)=>({
         id: state.articleReducers.id,
         title: state.articleReducers.title,
     }));
-
+    
     const views = useSelector((state)=> state.articleReducers.views)
     
-    return <div></div>
+    return (<div>{title}, {views}</div> )
+    
 }
+ 
+export default ArticlePage; 
 
-export default ArticlePage;

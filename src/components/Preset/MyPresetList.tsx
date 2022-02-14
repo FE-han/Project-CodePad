@@ -5,6 +5,7 @@ import * as React from "react";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import { useDispatch, useSelector } from "react-redux";
 
 import Pagination from "@mui/material/Pagination";
 import {
@@ -13,6 +14,7 @@ import {
 } from "../../utils/CommonStyle";
 
 import Reaction from "./Reaction";
+import { articleActions } from "../../modules/slice/articleSlice";
 
 const PresetsListStyles = makeStyles({
   root: {
@@ -69,13 +71,16 @@ export default function PresetToggleButton(props:any) {
   console.log(props.board)
   const classes = PresetsListStyles();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-
+  
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    index: any,
   ) => {
     setSelectedIndex(index);
     console.log(index);
+    console.log(index.id);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    window.location.href = `${index.id}`
   };
 
   return (

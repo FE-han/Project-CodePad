@@ -4,10 +4,10 @@ import {
   Translate,
 } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Link, Params, useParams } from "react-router-dom";
-import { getPreset } from "../../api/getPreset";
+import { getPreset } from "../../api/getPreset"; 
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
@@ -29,6 +29,9 @@ import setPresetData from "../../utils/setPresetData";
 import PresetList from "../../components/Preset/PresetList";
 import { PageColors } from "../../utils/CommonStyle";
 import MyPresetPage from '../../components/Preset/MypresetPage'
+import { articleActions } from "../../modules/slice/articleSlice";
+import ArticlePage from "../../components/Preset/ArticlePage";
+
 
 
 const MyPresetsPageStyles = makeStyles({
@@ -78,18 +81,21 @@ const MyPresetsPageStyles = makeStyles({
   },
   communityContainer: {},
 });
-
 export function MyPresetsPage() {
-  const classes = MyPresetsPageStyles();
-
+  const classes = MyPresetsPageStyles(); 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const presetId = useParams();
 
+  console.log(presetId);
+  console.log(myPresetData);
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    
+    console.log(presetId);
     // setDefaultPresetData(newPresetData);
 
     setPresetData({
@@ -102,6 +108,7 @@ export function MyPresetsPage() {
   useEffect(() => {
     getInitialData();
   }, []);
+
  
   return (
     <div className={classes.root}>
@@ -114,6 +121,7 @@ export function MyPresetsPage() {
       </div>
       <div className={classes.presetList}>
         <MyPresetPage />
+        <ArticlePage />
       </div>
       <div className={classes.communityContainer}>
         태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
