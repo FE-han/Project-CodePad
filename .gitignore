@@ -26,3 +26,7 @@ yarn-error.log*
 # 음원 셈플
 /SoundSample
 *.wav
+
+# json-server
+data.json
+routes.json
