@@ -170,6 +170,7 @@ export function LoopButton({
         if (audioContext === undefined) return;
 
         audioContext.start();
+        setIsPlay(true);
       }}
     >
       {/* <div className={getClassNameByBtnState()}> */}

@@ -117,10 +117,13 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
         <details>
           <summary>metronome기능</summary>
 
-          <label htmlFor="bpm">BPM : </label>
+          <label htmlFor="bpm">BPM : {tempo} </label>
           <input
-            type="number"
+            type="range"
             id="bpm"
+            min={60}
+            max={240}
+            step={1}
             value={tempo}
             onChange={handleSetTempo}
           />

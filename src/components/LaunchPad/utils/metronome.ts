@@ -15,45 +15,53 @@ export const metronome = (
   const intervalTime = (60 / tempo) * 1000;
   let expectedTime = Date.now() + intervalTime;
 
-  const Timer = setTimeout(() => {
-    const nextParams: MetronomeParams = {
-      ...params,
-    };
+  let timer: any;
 
-    const nextDelayTime = Date.now() - expectedTime;
+  if (isStop) {
+    clearTimeout(timer);
+    return;
+  } else {
+    timer = setTimeout(() => {
+      const nextParams: MetronomeParams = {
+        ...params,
+      };
 
-    //delay overFlow시 알림 (약 1시간까지는 뜨지않음)
-    if (nextDelayTime > intervalTime) {
-      console.log("에러 : 누적된 딜레이가 템포 이상입니다");
-    }
+      const nextDelayTime = Date.now() - expectedTime;
 
-    // (4/4)박자 기준으로 재생
-    if (beat < 4) {
-      nextParams.beat = beat + 1;
-      setBeat(nextParams.beat);
-    }
-    if (beat >= 4) {
-      nextParams.beat = 1;
-      setBeat(nextParams.beat);
-
-      //8beat시 1bar 올림
-      if (bar < 8) {
-        nextParams.bar = bar + 1;
-        setBar(nextParams.bar);
+      //delay overFlow시 알림 (약 1시간까지는 뜨지않음)
+      if (nextDelayTime > intervalTime) {
+        console.log("에러 : 누적된 딜레이가 템포 이상입니다");
       }
-      if (bar >= 8) {
-        nextParams.bar = 1;
-        setBar(nextParams.bar);
+
+      // (4/4)박자 기준으로 재생
+      if (beat < 4) {
+        nextParams.beat = beat + 1;
+        setBeat(nextParams.beat);
       }
-    }
+      if (beat >= 4) {
+        nextParams.beat = 1;
+        setBeat(nextParams.beat);
 
-    if (isStop) {
-      console.log("멈춰!");
-      clearTimeout(Timer);
-      return;
-    }
+        //8beat시 1bar 올림
+        if (bar < 8) {
+          nextParams.bar = bar + 1;
+          setBar(nextParams.bar);
+        }
+        if (bar >= 8) {
+          nextParams.bar = 1;
+          setBar(nextParams.bar);
+        }
+      }
 
-    //다음 메트로눔 시작
-    metronome(nextParams, Math.max(0, intervalTime - nextDelayTime));
-  }, intervalTime);
+      if (isStop) {
+        console.log("멈춰1!");
+        clearTimeout(timer);
+        return;
+      } else {
+        metronome(nextParams, Math.max(0, intervalTime - nextDelayTime));
+      }
+
+      //다음 메트로눔 시작
+    }, intervalTime);
+  }
 };
