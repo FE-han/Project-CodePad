@@ -1,38 +1,23 @@
 import { makeStyles } from "@mui/styles";
+import { useNavigate } from "react-router-dom";
+
 import { useState, memo } from "react";
 import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
+import LaunchpadHeaderConatiner from "./LaunchPadHeaderContainer";
 
 const LaunchPadStyles = makeStyles({
-  //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
-  root: {
-    margin: "10px",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-
-    marginBottom: "10px",
-  },
-  presetName: {
-    flex: "1",
-    color: "white",
-  },
-  forkBtn: {
-    background: "none",
-    color: "white",
-    border: "1px solid gray",
-    borderRadius: "4px",
-  },
   btnContainer: {
     display: "grid",
-    //버튼 크기 기준 재정립 필요
-    gridTemplateRows: "repeat(8, 4vw)",
-    gridTemplateColumns: "repeat(8, 4vw)",
-    gridGap: "5px",
+    justifyContent: "space-evenly",
+
+    gridTemplateRows: "repeat(8, 52px)",
+    gridTemplateColumns: "repeat(8, 52px)",
+    gridGap: "7px",
+
+    margin: "0px 15px",
   },
 });
 interface LaunchPadProps {
@@ -50,6 +35,7 @@ interface BeatMatch {
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
+  const navigate = useNavigate();
 
   //박자 맟추기 테스트
   const [tempo, setTempo] = useState<number>(112);
@@ -108,14 +94,8 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
 
   return (
     <>
-      <div className={classes.root}>
-        <div className={classes.header}>
-          <div className={classes.presetName}>{presetData.presetTitle}</div>
-          <button className={classes.forkBtn}>FORK</button>
-        </div>
-
-        {/* 템포테스트 */}
-        <div>
+      {/* 템포테스트 */}
+      {/* <div>
           <label htmlFor={"tempo"}>tempo(bpm)</label>
           <input
             id={"tempo"}
@@ -137,50 +117,43 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
             <div>bar: {bar}</div>
             <div>beat: {beat}</div>
           </div>
-        </div>
-        {/* 템포테스트 */}
+        </div> */}
+      {/* 템포테스트 */}
 
-        <div className={classes.btnContainer}>
-          {presetData.soundSamples.map(
-            (
-              {
-                soundSampleId,
-                soundSampleURL,
-                buttonType,
-                soundType,
-                location,
-              },
-              idx
-            ) => {
-              switch (buttonType) {
-                case "ONESHOT":
-                  return (
-                    <OneShotButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
+      <div className={classes.btnContainer}>
+        {presetData.soundSamples.map(
+          (
+            { soundSampleId, soundSampleURL, buttonType, soundType, location },
+            idx
+          ) => {
+            switch (buttonType) {
+              case "ONESHOT":
+                return (
+                  <OneShotButton
+                    key={soundSampleId + location}
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                );
 
-                case "LOOP":
-                  return (
-                    <LoopButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
+              case "LOOP":
+                return (
+                  <LoopButton
+                    key={soundSampleId + location}
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                );
 
-                default:
-                  return <EmptyButton key={soundSampleId + location} />;
-              }
+              default:
+                return <EmptyButton key={soundSampleId + location} />;
             }
-          )}
-        </div>
+          }
+        )}
       </div>
     </>
   );
