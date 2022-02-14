@@ -30,12 +30,15 @@ const PresetThumbnailUploadStyles = makeStyles({
     },
 
     uploadButtonWrap: {
+        width: "100%",
+        textAlign: "center",
     },
     uploadInput: {
         display: 'none',
     },
 
     uploadButton: {
+        width: "50%",
         lineHeight: "30px",
         background: "transparent",
         border: "1px solid white",
