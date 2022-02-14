@@ -11,7 +11,6 @@ import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
-import { metronome, MetronomeParams } from "./utils/metronome";
 import Metronome from "./Metronome";
 
 const LaunchPadStyles = makeStyles({
@@ -120,35 +119,6 @@ function RenderButtons({ presetData }: LaunchPadProps) {
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
-
-  //박자 맟추기 테스트
-  const [tempo, setTempo] = useState<number>(112);
-  const handleSetTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempo(Number(e.target.value));
-  };
-
-  const [bar, setBar] = useState<number>(1);
-  const [beat, setBeat] = useState<number>(1);
-  const [isStop, setIsStop] = useState<boolean>(true);
-
-  //
-
-  useEffect(() => {
-    const timer = () => {
-      setTimeout(() => {
-        console.log(isStop);
-      }, 1000);
-    };
-    if (isStop) {
-      // console.log("정지상태");
-    } else {
-      // console.log("재생상태");
-      const timer = setTimeout(() => {
-        console.log(isStop);
-      }, 1000);
-    }
-    // return () => clearTimeout(timer);
-  }, [isStop]);
 
   return (
     <>

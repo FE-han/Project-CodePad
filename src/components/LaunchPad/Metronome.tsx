@@ -33,7 +33,7 @@ export default function Metronome() {
   delayTimeRef.current = delayTime;
 
   const dispatch = useDispatch();
-  const { isPlay, soundGroup, nowStagedSampleCount, nowBar } = useAppSelector(
+  const { isPlay, soundGroup, nowStagedSampleSounds, nowBar } = useAppSelector(
     (state) => state.loopSoundGroupSlice
   );
   const isPlayRef = useRef(isPlay);
@@ -118,7 +118,7 @@ export default function Metronome() {
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <button
           onClick={() => {
-            console.log({ isPlay, soundGroup, nowStagedSampleCount, nowBar });
+            console.log({ isPlay, soundGroup, nowStagedSampleSounds, nowBar });
           }}
         >
           reduxValue!

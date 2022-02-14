@@ -12,7 +12,7 @@ interface LoopSoundGroupState {
     bar7: Array<string>;
     bar8: Array<string>;
   };
-  nowStagedSampleCount: number;
+  nowStagedSampleSounds: Array<string>;
   nowBar: Bar;
 }
 
@@ -28,7 +28,7 @@ const initialState: LoopSoundGroupState = {
     bar7: [],
     bar8: [],
   },
-  nowStagedSampleCount: 0,
+  nowStagedSampleSounds: [],
   nowBar: "bar1",
 };
 
@@ -56,6 +56,21 @@ export const loopSoundGroupSlice = createSlice({
       action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
     ) => {
       state.isPlay = true;
+
+      const currentStagedSampleSounds = state.nowStagedSampleSounds;
+      const unduplicatedStagedSampleSoundsSet = new Set(
+        currentStagedSampleSounds
+      );
+      unduplicatedStagedSampleSoundsSet.add(action.payload.location);
+      const newStagedSampleSounds = Array.from(
+        unduplicatedStagedSampleSoundsSet
+      );
+
+      state.nowStagedSampleSounds = newStagedSampleSounds;
+
+      if (newStagedSampleSounds.length === currentStagedSampleSounds.length)
+        return;
+
       state.soundGroup = {
         ...state.soundGroup,
         [state.nowBar]: [
@@ -63,13 +78,12 @@ export const loopSoundGroupSlice = createSlice({
           action.payload.location,
         ],
       };
-      state.nowStagedSampleCount += 1;
     },
     deselectLoopSound: (
       state,
       action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
     ) => {
-      state.nowStagedSampleCount -= 1;
+      // state.nowStagedSampleCount -= 1;
       // for ( const bar in state.soundGroup) {
       //   bar.
       // }
