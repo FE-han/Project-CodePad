@@ -1,11 +1,11 @@
 import { makeStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
 
 import { PageColors } from "../../utils/CommonStyle";
+import { ToggleType } from "../../utils/CommonValue";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Params, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -14,10 +14,12 @@ import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { setNewPresetData } from "./setDefaultPresetData";
 
+import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
 import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
+import PresetImage from "../../components/Preset/PresetImage";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -51,6 +53,12 @@ const DefaultPresetsPageStyles = makeStyles({
   launchPad: {
     gridArea: "launchPad",
     minHeight: "570px",
+
+    "& > .launchPadContainer": {
+      margin: "10px",
+      display: "flex",
+      flexDirection: "column",
+    },
   },
 
   togglePresetBtn: {
@@ -64,10 +72,18 @@ const DefaultPresetsPageStyles = makeStyles({
   presetList: {
     gridArea: "presetList",
     minWidth: "460px",
+    display: "grid",
+    alignItems: "center",
+
+    "& > .presetListContainer": {
+      display: "flex",
+      flexDirection: "column",
+      margin: "23px 30px",
+    },
   },
   comment: {
     gridArea: "comment",
-    // display: "none",
+    display: "none",
   },
 });
 
@@ -113,13 +129,22 @@ export function DefaultPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPad presetData={defaultPresetData} />
+          <div className="launchPadContainer">
+            <LaunchpadHeaderConatiner
+              title={defaultPresetData.presetTitle}
+              onlyFork={true}
+            />
+            <LaunchPad presetData={defaultPresetData} />
+          </div>
         </div>
         <div className={classes.togglePresetBtn}>
-          <PresetToggleButton />
+          <PresetToggleButton type={ToggleType.default} />
         </div>
         <div className={classes.presetList}>
-          <PresetList />
+          <div className="presetListContainer">
+            <PresetImage />
+            <PresetList createBtn={false} />
+          </div>
         </div>
         <div className={classes.comment}></div>
       </div>

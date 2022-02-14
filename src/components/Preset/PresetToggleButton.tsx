@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-
+import { useNavigate } from "react-router-dom";
 import { Fonts, ToggleBtnColors } from "../../utils/CommonStyle";
 
 import TabsUnstyled from "@mui/base/TabsUnstyled";
@@ -55,12 +55,26 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-export default function PresetToggleButton() {
+export default function PresetToggleButton(props: { type: number }) {
+  const navigate = useNavigate();
+
   return (
-    <TabsUnstyled defaultValue={0}>
+    <TabsUnstyled defaultValue={props.type}>
       <TabsList>
-        <Tab>Default Presets</Tab>
-        <Tab>My Presets</Tab>
+        <Tab
+          onClick={() => {
+            navigate("/defaultpresets/enter");
+          }}
+        >
+          Default Presets
+        </Tab>
+        <Tab
+          onClick={() => {
+            navigate("/mypresets/enter");
+          }}
+        >
+          My Presets
+        </Tab>
       </TabsList>
     </TabsUnstyled>
   );

@@ -1,8 +1,6 @@
-import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { CommunityContentType } from "../../utils/CommonValue";
-import { Link } from "react-router-dom";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 

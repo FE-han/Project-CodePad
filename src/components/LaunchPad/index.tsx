@@ -1,57 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
-import AddLinkIcon from "@mui/icons-material/AddLink";
-import BuildIcon from "@mui/icons-material/Build";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-
-import { Fonts, ButtonColors } from "../../utils/CommonStyle";
+import { useNavigate } from "react-router-dom";
 
 import { useState, memo } from "react";
 import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
+import LaunchpadHeaderConatiner from "./LaunchPadHeaderContainer";
 
 const LaunchPadStyles = makeStyles({
-  //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
-  root: {
-    margin: "10px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  launchPadHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    margin: "18px 15px",
-    justifyContent: "space-between",
-
-    "& > :nth-child(1)": {
-      fontWeight: "700",
-      opacity: "50%",
-      fontSize: "22px",
-    },
-  },
-
-  launchPadHeaderBtnContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    "& > Button": {
-      float: "right",
-      color: ButtonColors.COLOR,
-      border: `1px solid ${ButtonColors.COLOR}`,
-      borderRadius: "12px",
-      boxShadow: ButtonColors.SHADOW,
-      margin: "0px 3px",
-
-      "&:hover": {
-        border: `1px solid white`,
-      },
-    },
-  },
   btnContainer: {
     display: "grid",
     justifyContent: "space-evenly",
@@ -78,6 +35,7 @@ interface BeatMatch {
 //8x8 scale
 export function LaunchPad({ presetData }: LaunchPadProps) {
   const classes = LaunchPadStyles();
+  const navigate = useNavigate();
 
   //박자 맟추기 테스트
   const [tempo, setTempo] = useState<number>(112);
@@ -136,28 +94,8 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
 
   return (
     <>
-      <div className={classes.root}>
-        <div className={classes.launchPadHeader}>
-          <h2>{presetData.presetTitle}</h2>
-          <div className={classes.launchPadHeaderBtnContainer}>
-            <Button variant="outlined" size="small" startIcon={<AddLinkIcon />}>
-              FORK
-            </Button>
-            <Button variant="outlined" size="small" startIcon={<BuildIcon />}>
-              UPDATE
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<DeleteForeverIcon />}
-            >
-              Delete
-            </Button>
-          </div>
-        </div>
-
-        {/* 템포테스트 */}
-        {/* <div>
+      {/* 템포테스트 */}
+      {/* <div>
           <label htmlFor={"tempo"}>tempo(bpm)</label>
           <input
             id={"tempo"}
@@ -180,49 +118,42 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
             <div>beat: {beat}</div>
           </div>
         </div> */}
-        {/* 템포테스트 */}
+      {/* 템포테스트 */}
 
-        <div className={classes.btnContainer}>
-          {presetData.soundSamples.map(
-            (
-              {
-                soundSampleId,
-                soundSampleURL,
-                buttonType,
-                soundType,
-                location,
-              },
-              idx
-            ) => {
-              switch (buttonType) {
-                case "ONESHOT":
-                  return (
-                    <OneShotButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
+      <div className={classes.btnContainer}>
+        {presetData.soundSamples.map(
+          (
+            { soundSampleId, soundSampleURL, buttonType, soundType, location },
+            idx
+          ) => {
+            switch (buttonType) {
+              case "ONESHOT":
+                return (
+                  <OneShotButton
+                    key={soundSampleId + location}
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                );
 
-                case "LOOP":
-                  return (
-                    <LoopButton
-                      key={soundSampleId + location}
-                      soundSampleURL={soundSampleURL}
-                      buttonType={buttonType}
-                      soundType={soundType}
-                      location={location}
-                    />
-                  );
+              case "LOOP":
+                return (
+                  <LoopButton
+                    key={soundSampleId + location}
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                );
 
-                default:
-                  return <EmptyButton key={soundSampleId + location} />;
-              }
+              default:
+                return <EmptyButton key={soundSampleId + location} />;
             }
-          )}
-        </div>
+          }
+        )}
       </div>
     </>
   );

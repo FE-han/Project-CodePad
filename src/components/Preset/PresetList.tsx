@@ -1,34 +1,15 @@
-import { makeStyles } from "@mui/styles";
-import testImage from "../../assets/testImage.png";
-
 import * as React from "react";
+import { useNavigate } from "react-router";
+
+import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
-import Pagination from "@mui/material/Pagination";
-import {
-  PresetListBtnColors,
-  PresetImageColors,
-} from "../../utils/CommonStyle";
-
 import Reaction from "./Reaction";
+import { PresetListBtnColors } from "../../utils/CommonStyle";
 
 const PresetsListStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "23px 30px",
-  },
-  presetImage: {
-    margin: `0 auto`,
-
-    "& > img": {
-      width: "200px",
-      height: "200px",
-      boxShadow: PresetImageColors.SHADOW,
-    },
-  },
   listBox: {
     marginTop: "8px",
   },
@@ -61,13 +42,11 @@ const PresetsListStyles = makeStyles({
   createBtn: {
     textAlign: "center",
   },
-  pagination: {
-    margin: `0px auto`,
-  },
 });
-export default function PresetToggleButton() {
+export default function PresetList(props: { createBtn: Boolean }) {
   const classes = PresetsListStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const navigate = useNavigate();
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -77,32 +56,32 @@ export default function PresetToggleButton() {
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.presetImage}>
-        <img src={testImage} alt="" />
-      </div>
-      <div className={classes.listBox}>
-        <List component="nav" className={classes.presetList}>
+    <div className={classes.listBox}>
+      <List component="nav" className={classes.presetList}>
+        {props.createBtn ? (
           <ListItemButton
             selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0)}
+            onClick={(event) => {
+              navigate("/mypresets/create");
+              handleListItemClick(event, 0);
+            }}
           >
             <ListItemText primary="+" className={classes.createBtn} />
           </ListItemButton>
-          {[1, 2, 3, 4, 5].map((value) => (
-            <ListItemButton
-              selected={selectedIndex === value}
-              onClick={(event) => handleListItemClick(event, value)}
-            >
-              <ListItemText primary="presetTitle" />
-              <Reaction></Reaction>
-            </ListItemButton>
-          ))}
-        </List>
-      </div>
-      <div className={classes.pagination}>
-        <Pagination count={10} variant="outlined" shape="rounded" />
-      </div>
+        ) : (
+          ""
+        )}
+
+        {[1, 2, 3, 4, 5].map((value) => (
+          <ListItemButton
+            selected={selectedIndex === value}
+            onClick={(event) => handleListItemClick(event, value)}
+          >
+            <ListItemText primary="presetTitle" />
+            <Reaction></Reaction>
+          </ListItemButton>
+        ))}
+      </List>
     </div>
   );
 }

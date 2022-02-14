@@ -1,67 +1,139 @@
 import { makeStyles } from "@mui/styles";
-import { Link, Params, useParams } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { getPreset } from "../../api/getPreset";
+
+import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
+import PresetToggleButton from "../../components/Preset/PresetToggleButton";
+import PresetList from "../../components/Preset/PresetList";
+import PresetImage from "../../components/Preset/PresetImage";
+import PaginationContainer from "../../components/Preset/PaginationContainer";
+import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
+import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
+import LaunchPad from "../../components/LaunchPad";
+
+import { ToggleType } from "../../utils/CommonValue";
+import { PageColors } from "../../utils/CommonStyle";
+import setPresetId from "../../utils/setPresetId";
+import setPresetData from "../../utils/setPresetData";
+
 import UserInfo from "./components/UserInfo";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
-    background: "#3fa1a5",
-
-    padding: "35px 60px 35px 60px",
+    height: `calc(100% - 64px)`,
+    minWidth: "1200px",
+  },
+  container: {
+    margin: "0 auto",
+    padding: "50px 0px",
+    width: "60%",
+    height: "90%",
+    minWidth: "1200px",
+    minHeight: "814.5px",
 
     display: "grid",
+    gridTemplateRows: "1fr 4fr 2fr",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "150px auto 200px",
-    gridColumnGap: "100px",
+    gridColumnGap: "20px",
     gridRowGap: "20px",
     gridTemplateAreas: `
-    "launchPad userInfo"
+    "launchPad UserInfo"
     "launchPad presetList"
-    "communityContainer presetList"`,
+    "comment presetList"`,
 
     "& > *": {
-      border: "1px solid gray",
-      minWidth: "500px",
+      backgroundColor: PageColors.BACKGROUND,
+      boxShadow: PageColors.SHADOW,
     },
   },
   launchPad: {
     gridArea: "launchPad",
+    minHeight: "570px",
+
+    "& > .launchPadContainer": {
+      margin: "10px",
+      display: "flex",
+      flexDirection: "column",
+    },
   },
-  userInfo: {
-    gridArea: "userInfo",
+
+  UserInfo: {
+    gridArea: "UserInfo",
   },
   presetList: {
     gridArea: "presetList",
+    minWidth: "460px",
+    display: "grid",
+    alignItems: "center",
+
+    "& > .presetListContainer": {
+      display: "flex",
+      flexDirection: "column",
+      margin: "23px 30px",
+    },
   },
-  communityContainer: {},
+  comment: {
+    gridArea: "comment",
+    // display: "none",
+  },
 });
 
-//에러 처리 고민 후 타입 변경할 것
 type UserPresetsPageParams = {
   userId: any;
-}
+};
 
 export function UserPresetsPage() {
-  
-  const { userId } = useParams<UserPresetsPageParams>();
-  
   const classes = UserPresetsPageStyles();
+
+  const { userId } = useParams<UserPresetsPageParams>();
+
+  const [myPresetData, setMyPresetData] = useState<Preset>(
+    initialPresetGenerator(LaunchPadScale.DEFAULT)
+  );
+  const presetId = useParams();
+
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // setDefaultPresetData(newPresetData);
+
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
+  };
+
+  useEffect(() => {
+    getInitialData();
+  }, []);
 
   return (
     <div className={classes.root}>
-      <div className={classes.launchPad}>
-        <Link to={"/"}>인트로 페이지 이동버튼</Link>
-        런치패드 올곳
-        {/* <LaunchPad /> */}
-      </div>
-      <div className={classes.userInfo}>
-        <UserInfo userId={userId} />
-      </div>
-      <div className={classes.presetList}>
-        프리셋 리스트 올곳
-        {/* <PresetList /> */}
-      </div>
-      <div className={classes.communityContainer}>
-        태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
+      <div className={classes.container}>
+        <div className={classes.launchPad}>
+          <div className="launchPadContainer">
+            <LaunchpadHeaderConatiner
+              title={myPresetData.presetTitle}
+              onlyFork={true}
+            />
+            <LaunchPad presetData={myPresetData} />
+          </div>
+        </div>
+        <div className={classes.UserInfo}>
+          <UserInfo userId={userId} />
+        </div>
+        <div className={classes.presetList}>
+          <div className="presetListContainer">
+            <PresetImage />
+            <PresetList createBtn={false} />
+            <PaginationContainer />
+          </div>
+        </div>
+        <div className={classes.comment}></div>
       </div>
     </div>
   );
