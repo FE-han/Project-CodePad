@@ -12,6 +12,7 @@ import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
 import EmptyButton from "./EmptyButton";
 import { metronome, MetronomeParams } from "./utils/metronome";
+import Metronome from "./Metronome";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -81,28 +82,34 @@ function RenderButtons({ presetData }: LaunchPadProps) {
           switch (buttonType) {
             case "ONESHOT":
               return (
-                <OneShotButton
-                  key={soundSampleId + location}
-                  soundSampleURL={soundSampleURL}
-                  buttonType={buttonType}
-                  soundType={soundType}
-                  location={location}
-                />
+                <div key={soundSampleId + location}>
+                  <OneShotButton
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                </div>
               );
 
             case "LOOP":
               return (
-                <LoopButton
-                  key={soundSampleId + location}
-                  soundSampleURL={soundSampleURL}
-                  buttonType={buttonType}
-                  soundType={soundType}
-                  location={location}
-                />
+                <div key={soundSampleId + location}>
+                  <LoopButton
+                    soundSampleURL={soundSampleURL}
+                    buttonType={buttonType}
+                    soundType={soundType}
+                    location={location}
+                  />
+                </div>
               );
 
             default:
-              return <EmptyButton key={soundSampleId + location} />;
+              return (
+                <div key={soundSampleId + location}>
+                  <EmptyButton />
+                </div>
+              );
           }
         }
       )}
@@ -140,7 +147,7 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
         console.log(isStop);
       }, 1000);
     }
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, [isStop]);
 
   return (
@@ -165,52 +172,7 @@ export function LaunchPad({ presetData }: LaunchPadProps) {
           </div>
         </div>
 
-        {/* 템포테스트 */}
-        <details>
-          <summary>metronome기능</summary>
-
-          <label htmlFor="bpm">BPM : {tempo} </label>
-          <input
-            type="range"
-            id="bpm"
-            min={60}
-            max={240}
-            step={1}
-            value={tempo}
-            onChange={handleSetTempo}
-          />
-          <div>tempoTest</div>
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <button
-              onClick={() => {
-                setIsStop(false);
-                // const startMetronomeParams: MetronomeParams = {
-                //   tempo,
-                //   bar,
-                //   setBar,
-                //   beat,
-                //   setBeat,
-                //   isStop,
-                // };
-                // const initialIntervalTime = 0;
-                // metronome(startMetronomeParams, initialIntervalTime);
-              }}
-            >
-              start!
-            </button>
-            <button
-              onClick={() => {
-                setIsStop(true);
-              }}
-            >
-              stop!
-            </button>
-            <div>bar: {bar}</div>
-            <div>beat: {beat}</div>
-            <div>상태: {isStop ? "멈춤" : "재생"}</div>
-          </div>
-        </details>
-        {/* 템포테스트 */}
+        <Metronome />
 
         <RenderButtons presetData={presetData} />
       </div>

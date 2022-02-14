@@ -1,5 +1,4 @@
 import { makeStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
 
 import { PageColors } from "../../utils/CommonStyle";
 
@@ -13,9 +12,6 @@ import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { setNewPresetData } from "./setDefaultPresetData";
-import pororo from "./pororo.png";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
@@ -45,6 +41,18 @@ const DefaultPresetsPageStyles = makeStyles({
     "launchPad togglePresetBtn"
     "launchPad presetList"
     "comment presetList"`,
+
+    ["@media (max-width: 600px)"]: {
+      display: "grid",
+      gridTemplateRows: "1fr 5fr 2fr 6fr",
+      gridColumnGap: "20px",
+      gridRowGap: "20px",
+      gridTemplateAreas: `
+    "togglePresetBtn"
+    "launchPad"
+    "comment"
+    "presetList"`,
+    },
 
     "& > *": {
       backgroundColor: PageColors.BACKGROUND,
