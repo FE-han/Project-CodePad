@@ -33,7 +33,7 @@ const PresetsListStyles = makeStyles({
         border: "1px solid white",
       },
 
-      "& > div > span": {
+      "& > div > .MuiTypography-root": {
         color: PresetListBtnColors.COLOR,
         fontWeight: "600",
       },

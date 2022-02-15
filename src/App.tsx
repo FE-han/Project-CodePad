@@ -16,7 +16,7 @@ import ModifyPresetsPage from "./pages/UpdatePresetsPage";
 
 const AppStyles = makeStyles({
   root: {
-    minWidth: "1020px",
+    minWidth: "1041px",
     height: "100vh",
     overflow: "auto",
     background: `url(${bg}) no-repeat center center`,

@@ -24,14 +24,14 @@ import PresetImage from "../../components/Preset/PresetImage";
 const DefaultPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -42,7 +42,7 @@ const DefaultPresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "community presetList"`,
+    "none presetList"`,
 
     ["@media (max-width: 800px)"]: {
       display: "grid",

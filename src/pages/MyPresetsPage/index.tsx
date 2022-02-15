@@ -42,14 +42,14 @@ import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 const MyPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -135,6 +135,8 @@ const MyPresetsPageStyles = makeStyles({
   community: {
     gridArea: "community",
     padding: "18px",
+    display: "grid",
+    alignItems: "center",
   },
 });
 
@@ -174,7 +176,7 @@ export function MyPresetsPage() {
           <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.togglePresetBtn}>
-          <PresetToggleButton type={ToggleType.default} />
+          <PresetToggleButton type={ToggleType.myPreset} />
         </div>
 
         <div className={classes.presetList}>

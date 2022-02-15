@@ -104,7 +104,7 @@ const likePresetsPageStyles = makeStyles({
 
     margin: "0 auto 0 auto",
     width: "75%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     overflow: "hidden",
   },
   likeTitle: {

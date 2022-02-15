@@ -34,14 +34,14 @@ import testImage from "../../assets/testImage.png";
 const CreatePresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -52,7 +52,7 @@ const CreatePresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad presetInfo"
     "launchPad soundInfo"
-    "none soundInfo"`,
+    "tags soundInfo"`,
 
     "& > *": {
       backgroundColor: PageColors.BACKGROUND,
@@ -147,6 +147,9 @@ const CreatePresetsPageStyles = makeStyles({
   },
   uploadInput: {
     display: "none",
+  },
+  tags: {
+    gridArea: "tags",
   },
 });
 
@@ -324,6 +327,7 @@ export function CreatePresetsPage() {
             </FormControl>
           </div>
         </div>
+        <div className={classes.tags}></div>
       </div>
     </div>
   );

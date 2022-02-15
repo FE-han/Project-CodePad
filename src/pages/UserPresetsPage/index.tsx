@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { getPreset } from "../../api/getPreset";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
-import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
 import PaginationContainer from "../../components/Preset/PaginationContainer";
@@ -14,7 +13,6 @@ import { initialPresetGenerator } from "../../components/LaunchPad/utils/initial
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
 
-import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
@@ -24,14 +22,14 @@ import UserInfo from "./components/UserInfo";
 const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -78,7 +76,8 @@ const UserPresetsPageStyles = makeStyles({
   },
   community: {
     gridArea: "community",
-    // display: "none",
+    display: "grid",
+    alignItems: "center",
   },
 });
 
