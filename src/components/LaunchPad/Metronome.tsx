@@ -101,7 +101,7 @@ export default function Metronome() {
   }, [isPlay]);
 
   return (
-    <details open>
+    <details>
       <summary>metronome기능</summary>
 
       <label htmlFor="bpm">BPM : {tempo} </label>
