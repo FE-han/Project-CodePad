@@ -105,6 +105,7 @@ const MyPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
+    padding: "10px",
 
     "& > .launchPadContainer": {
       margin: "10px",

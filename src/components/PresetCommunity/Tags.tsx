@@ -17,7 +17,7 @@ export default function Tags() {
   const classes = tagsStyles();
   return (
     <Stack direction="row" spacing={1} className={classes.chip}>
-      <Chip label="house" size="small" />
+      <Chip label="housㄹㅇㄴㄹㅇㄴㅁㄹe" size="small" />
       <Chip label="house" size="small" />
       <Chip label="house" size="small" />
       <Chip label="house" size="small" />
