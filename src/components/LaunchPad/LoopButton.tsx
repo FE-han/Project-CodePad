@@ -149,14 +149,14 @@ export function LoopButton({
             );
             break;
 
-          // case "PLAY":
-          // dispatch(
-          //   actions.deselectLoopSound({
-          //     location,
-          //     nowBar,
-          //   })
-          // );
-          // break;
+          case "PLAY":
+            dispatch(
+              loopSoundGroupActions.deselectLoopSound({
+                location,
+                nowBar,
+              })
+            );
+            break;
 
           case "WAIT_PLAY":
             // dispatch(

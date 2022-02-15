@@ -4,14 +4,7 @@ import { bindNextbar } from "../../utils/bindNextbar";
 interface LoopSoundGroupState {
   isPlay: boolean;
   soundGroup: {
-    bar1: Array<string>;
-    bar2: Array<string>;
-    bar3: Array<string>;
-    bar4: Array<string>;
-    bar5: Array<string>;
-    bar6: Array<string>;
-    bar7: Array<string>;
-    bar8: Array<string>;
+    [key: string]: Array<string>;
   };
   nowStagedSampleSounds: Array<string>;
   nowBar: Bar;
@@ -52,10 +45,7 @@ export const loopSoundGroupSlice = createSlice({
   name: "loopSoundGroup",
   initialState,
   reducers: {
-    selectLoopSound: (
-      state,
-      action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
-    ) => {
+    selectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
       state.isPlay = true;
 
       const currentStagedSampleSounds = state.nowStagedSampleSounds;
@@ -78,19 +68,18 @@ export const loopSoundGroupSlice = createSlice({
         [targetbar]: [...state.soundGroup[targetbar], action.payload.location],
       };
     },
-    deselectLoopSound: (
-      state,
-      action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
-    ) => {
+    deselectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
       state.nowStagedSampleSounds = state.nowStagedSampleSounds.filter(
         (StagedSampleSound) => StagedSampleSound !== action.payload.location
       );
 
-      const group = state.soundGroup;
-      const bars = Object.keys(state.soundGroup);
-      // bars.map(bar => {
-      //   group[bar]
-      // })
+      for (const bars in state.soundGroup) {
+        if (action.payload.location in state.soundGroup[bars]) {
+          state.soundGroup[bars] = state.soundGroup[bars].filter(
+            (stagedLocation) => stagedLocation !== action.payload.location
+          );
+        }
+      }
 
       if (state.nowStagedSampleSounds.length === 0) {
         state.isPlay = false;
