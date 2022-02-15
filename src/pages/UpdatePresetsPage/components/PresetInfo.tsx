@@ -11,6 +11,7 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
+import { useNavigate } from "react-router-dom";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -55,13 +56,35 @@ const PresetInfoStyles = makeStyles({
     },
   },
 });
+
 export default function PresetInfo() {
   const classes = PresetInfoStyles();
+  const navigate = useNavigate();
+
+  const [thumbnailImg, setThumbnailImg] = useState<File | undefined>();
+  const [title, setTitle] = useState<string>("");
   const [privacy, setPrivacy] = useState(PrivacyType.public);
 
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrivacy(parseInt((event.target as HTMLInputElement).value));
   };
+
+  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if(window.confirm("변경을 취소하시겠습니까?")){
+      navigate(-1);
+    } else {
+      return;
+    }
+  }
+
+  const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    alert("세이브");
+  }
+
+  const handleThumbnailImgChange = (file:File) => {
+    setThumbnailImg(file)
+  }
+
   return (
     <div className={classes.root}>
       <TextField
@@ -96,10 +119,10 @@ export default function PresetInfo() {
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button variant="outlined" startIcon={<ClearIcon />}>
+        <Button variant="outlined" startIcon={<ClearIcon />} onClick={handleCancelClick}>
           CANCLE
         </Button>
-        <Button variant="outlined" startIcon={<SaveIcon />}>
+        <Button variant="outlined" startIcon={<SaveIcon />} onClick={handleSaveClick}>
           SAVE
         </Button>
       </Stack>

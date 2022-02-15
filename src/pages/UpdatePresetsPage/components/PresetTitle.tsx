@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import { useAppSelector } from "../../../modules/hooks";
 
 const presetTitleStyles = makeStyles({
     titleWrap: {
@@ -23,11 +24,12 @@ const presetTitleStyles = makeStyles({
 export default function PresetTitle(){
 
     const classes = presetTitleStyles();
-
+    const state = useAppSelector((state) => state.getPresetInfoSlice);
+    
     return (
         <div className={classes.titleWrap}>
             <h2>Title</h2>
-            <input type="text" name="title"/>
+            <input type="text" name="title" value={state.presetTitle}/>
         </div>
     )
 }

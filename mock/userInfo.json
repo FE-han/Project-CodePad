@@ -20,5 +20,21 @@
             "name": "Zedd",
             "thumbnailURL" : "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS5PHk8x4P8cq_DjjPzF5M3SZ0Sbki04exXIYXsEZXv01zFS9B-"
         }
+    ],
+
+    "presets": [
+        {
+            "id": 1,
+            "presetTitle": "취향저격나의프리셋",
+            "presetId": "1",
+            "thumbnailImageURL": "https://t1.daumcdn.net/thumb/R720x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/8fXh/image/0_JTh3JET7ZCHaT_IJhG4VbhEpI.png",
+            "isPrivate": true
+        }
+    ],
+
+    "launchpad": [
+        {
+            
+        }
     ]
 }

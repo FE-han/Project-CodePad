@@ -14,8 +14,12 @@ import { Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../modules/hooks";
+import { actions as getPresetInfoDataActions } from "../../modules/actions/getPresetInfoSlice";
 
 import { getPreset } from "../../api/getPreset";
+import { getPresetInfo } from "../../api/getPresetInfo";
 
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -29,6 +33,7 @@ import setPresetData from "../../utils/setPresetData";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
+import { PresetInfoType } from "./utils/types";
 
 const UpdatePresetsPageStyles = makeStyles({
   root: {
@@ -152,12 +157,18 @@ const UpdatePresetsPageStyles = makeStyles({
   },
 });
 
+
+
 export function UpdatePresetsPage() {
+
   const classes = UpdatePresetsPageStyles();
+  const dispatch = useDispatch();
+  // const presetInfoState = useAppSelector((state) => state.getPresetInfoSlice);
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+
   const presetId = useParams();
 
   const getInitialData = async () => {
@@ -172,7 +183,20 @@ export function UpdatePresetsPage() {
     });
   };
 
+  const getPresetInfoData = async () => {
+    try {
+      const nowPresetInfo: PresetInfoType = await getPresetInfo(presetId);
+      console.log(nowPresetInfo);
+      dispatch(getPresetInfoDataActions.getPresetDataFulfilled(nowPresetInfo))
+    } catch(err) {
+      dispatch(getPresetInfoDataActions.getPresetDataRejected())
+      alert("에러 발생");
+    }
+    
+  }
+
   useEffect(() => {
+    getPresetInfoData();
     getInitialData();
   }, []);
 
@@ -206,8 +230,8 @@ export function UpdatePresetsPage() {
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo />
+            <PresetThumbnailUpload />
+            <PresetInfo  />
           </div>
         </div>
         <div className={classes.soundInfo}>

@@ -43,7 +43,7 @@ function App() {
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
           <Route path={"/mypresets/create"} element={<CreatePresetsPage />} />
-          <Route path={"/mypresets/update"} element={<ModifyPresetsPage />} />
+          <Route path={"/mypresets/:presetId/update"} element={<ModifyPresetsPage />} />
         </Routes>
       </div>
     </>

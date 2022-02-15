@@ -1,8 +1,9 @@
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonColors, PresetImageColors } from "../../../utils/CommonStyle";
+import { useAppSelector } from "../../../modules/hooks";
 
 const PresetThumbnailUploadStyles = makeStyles({
   root: {
@@ -34,16 +35,23 @@ const PresetThumbnailUploadStyles = makeStyles({
   },
 });
 
-type PresetThumbnailUploadProps = {
-  imgURL: string;
-};
+// type PresetThumbnailUploadProps = {
+//   imgURL: string;
+// };
 
-export default function PresetThumbnailUpload({
-  imgURL,
-}: PresetThumbnailUploadProps) {
+// export default function PresetThumbnailUpload({
+//   imgURL,
+// }: PresetThumbnailUploadProps) {
+export default function PresetThumbnailUpload(){
   const classes = PresetThumbnailUploadStyles();
 
-  const [currImg, setCurrImg] = useState(imgURL);
+  const state = useAppSelector((state) => state.getPresetInfoSlice);
+  const [currImg, setCurrImg] = useState("");
+  //state 확인
+  console.log(state);
+  useEffect(() => {
+    setCurrImg(state.thumbnailImageURL);
+  }, [])
 
   //파일 변환
   const encodeFileToBase64 = (file: File) => {
@@ -67,7 +75,7 @@ export default function PresetThumbnailUpload({
   return (
     <div className={classes.root}>
       <div>
-        <img className={classes.imageWrap} src={currImg} alt="preset-image" />
+        <img className={classes.imageWrap} src={currImg} alt="presetimage" />
       </div>
       <div>
         <label>
