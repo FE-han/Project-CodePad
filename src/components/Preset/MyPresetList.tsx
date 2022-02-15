@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
 
 import Pagination from "@mui/material/Pagination";
+import usePagination from '../../api/Pagination';
 import {
   PresetListBtnColors,
   PresetImageColors,
@@ -71,6 +72,15 @@ export default function PresetToggleButton(props:any) {
   console.log(props.board)
   const classes = PresetsListStyles();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [page,setPage] = React.useState(1);
+  const PER_PAGE = 5;
+  const count = Math.ceil(props.board.length/PER_PAGE);
+  const _DATA = usePagination(props.board, PER_PAGE);
+
+  const handleChange = (e:any,p:any) => {
+    setPage(p);
+    _DATA.jump(p);
+  }
   
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -101,14 +111,7 @@ export default function PresetToggleButton(props:any) {
           >
             <ListItemText primary="+" className={classes.createBtn} />
           </ListItemButton>
-          {/* {props.board.map((article:any)=>{
-              <ListItemButton onClick={(event)=> handleListItemClick(event,article)}>
-                  {article.title}
-                  <ListItemText primary={article.title}/>
-                  <Reaction></Reaction>
-              </ListItemButton>
-          })} */}
-          {props.board.map((article:any) => (
+          {_DATA.currentData().map((article:any) => (
             <ListItemButton
               selected={selectedIndex === article}
               onClick={(event) => handleListItemClick(event, article)}
@@ -117,10 +120,19 @@ export default function PresetToggleButton(props:any) {
               <Reaction></Reaction>
             </ListItemButton>
           ))}
+          {/* {props.board.map((article:any) => (
+            <ListItemButton
+              selected={selectedIndex === article}
+              onClick={(event) => handleListItemClick(event, article)}
+            >
+              <ListItemText primary={article.title} />
+              <Reaction></Reaction>
+            </ListItemButton>
+          ))} */}
         </List>
       </div>
       <div className={classes.pagination}>
-        <Pagination count={10} variant="outlined" shape="rounded" />
+        <Pagination count={count} page={page} onChange={handleChange} variant="outlined" shape="rounded" />
       </div>
     </div>
   );
