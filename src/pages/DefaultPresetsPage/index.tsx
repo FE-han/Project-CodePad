@@ -13,7 +13,7 @@ import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
 import { actions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 
-import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
+import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
 import setPresetData from "../../utils/setPresetData";
@@ -24,14 +24,14 @@ import PresetImage from "../../components/Preset/PresetImage";
 const DefaultPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -42,7 +42,7 @@ const DefaultPresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "comment presetList"`,
+    "none presetList"`,
 
     ["@media (max-width: 800px)"]: {
       display: "grid",
@@ -52,7 +52,7 @@ const DefaultPresetsPageStyles = makeStyles({
       gridTemplateAreas: `
     "togglePresetBtn"
     "launchPad"
-    "comment"
+    "community"
     "presetList"`,
     },
 
@@ -70,7 +70,6 @@ const DefaultPresetsPageStyles = makeStyles({
     "& > .launchPadContainer": {
       margin: "10px",
       display: "grid",
-      rowGap: "10px",
     },
   },
 
@@ -94,9 +93,9 @@ const DefaultPresetsPageStyles = makeStyles({
       margin: "23px 30px",
     },
   },
-  comment: {
-    gridArea: "comment",
-    //display: "none",
+  community: {
+    gridArea: "community",
+    display: "none",
   },
 });
 
@@ -165,7 +164,7 @@ export function DefaultPresetsPage() {
             <PresetList createBtn={false} />
           </div>
         </div>
-        <div className={classes.comment}></div>
+        <div className={classes.community}></div>
       </div>
     </div>
   );

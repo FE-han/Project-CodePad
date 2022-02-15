@@ -6,7 +6,7 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
-import Reaction from "./Reaction";
+import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
 
 const PresetsListStyles = makeStyles({
@@ -33,7 +33,7 @@ const PresetsListStyles = makeStyles({
         border: "1px solid white",
       },
 
-      "& > div > span": {
+      "& > div > .MuiTypography-root": {
         color: PresetListBtnColors.COLOR,
         fontWeight: "600",
       },
@@ -78,7 +78,7 @@ export default function PresetList(props: { createBtn: Boolean }) {
             onClick={(event) => handleListItemClick(event, value)}
           >
             <ListItemText primary="presetTitle" />
-            <Reaction></Reaction>
+            <Reactions></Reactions>
           </ListItemButton>
         ))}
       </List>

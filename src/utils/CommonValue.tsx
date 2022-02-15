@@ -22,3 +22,8 @@ export enum BtnType {
   effect = 0,
   loop = 1,
 }
+
+export enum ScrollListContainerSize {
+  introPage = 202,
+  searchResultPage = 286,
+}

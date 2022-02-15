@@ -9,6 +9,7 @@ export enum HeaderColors {
 }
 
 export enum PageColors {
+  COLOR = `rgba(0, 0, 0, 0.5)`,
   BACKGROUND = "rgba(255, 255, 255, 0.8)",
   SHADOW = `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`,
 }
@@ -32,4 +33,9 @@ export enum PresetListBtnColors {
 
 export enum PresetImageColors {
   SHADOW = `rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset`,
+}
+
+export enum TagColors {
+  COLOR = `rgba(0, 0, 0, 0.5)`,
+  BACKGROUND = "#ffe4c4",
 }
