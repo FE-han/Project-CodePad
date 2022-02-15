@@ -11,7 +11,7 @@ export function* registerArticleAsync(action) {
     console.log(response.data.id);
 
     //저장 후 페이지 이동경로 
-    history.push(`/mypresets/enter/${response.data.id}`, response.data.id);
+    history.push(`/mypresets/enter/`, response.data.id);
     // yield put(articleActions.registerArticleAsync(data)); //redux-saga의 dispatch
     // debugger;
 }
@@ -25,6 +25,7 @@ export function* getArticleAsync(action) {
         ...response.data,
         views: parseInt(response.data.views) + 1,
     })
+
 
     yield put(articleActions.getArticleAsync(response.data))
 }

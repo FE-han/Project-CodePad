@@ -6,5 +6,9 @@ import { boardActions } from '../slice/boardSlice';
 export function* getBoardAsync() {
     const response = yield Axios.get(`http://localhost:3001/board`);
 
-    yield put(boardActions.getBoardAsync(response.data));
+    try {
+        yield put(boardActions.getBoardSuccessAsync(response.data))
+    } catch (e) {
+        yield put(boardActions.getBoardFailedAsync(e.message))
+    }
 }

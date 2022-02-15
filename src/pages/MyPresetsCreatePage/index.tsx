@@ -9,7 +9,7 @@ import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import PresetTitle from "./components/PresetTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { articleActions } from "../../modules/slice/articleSlice";
-
+ 
 const MyPresetsCreatePageStyles = makeStyles({
   root: {
     background: "#4b7a1f",
@@ -64,9 +64,10 @@ export function MyPresetsCreatePage() {
       alert('제목을 작성하세요')
       return false;
     }
-    const article = { title : titleValue, views : views };
+    const article = { title : titleValue, views : views};
     dispatch(articleActions.registerArticle(article))
     console.log(article);
+    
   }
 
   return (

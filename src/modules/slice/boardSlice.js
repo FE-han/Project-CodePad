@@ -10,16 +10,33 @@ export const boardSlice = createSlice({
     },
     reducers: {
         getBoard: (state, { payload }) => {
-            console.log('getBoard 액션 호출');
+            console.log('게시글 목록 조회 액션 호출 -- getboard');
         },
-        getBoardAsync: (state, { payload: data }) => {
+        getBoardSuccessAsync: (state, { payload: data }) => {
+            console.log('saga에서 put 액션 호출 -- getboardSuccessAsync')
             return {
                 ...state,
                 board: data,
-                inSuccess: true,
+                isSuccess: true,
                 isLoading: false,
             }
-        }
+        },
+        getBoardFailedAsync: (state, { payload: error }) => {
+            console.log('saga에서 put 액션 호출 -- getboardFailedAsync')
+            return {
+                ...state,
+                isLoading: false,
+                error: error,
+            }
+        },
+        // getBoardAsync: (state, { payload: data }) => {
+        //     return {
+        //         ...state,
+        //         board: data,
+        //         inSuccess: true,
+        //         isLoading: false,
+        //     }
+        // }
     }
 });
 

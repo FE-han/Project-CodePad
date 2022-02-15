@@ -2,38 +2,18 @@
   "board": [
     {
       "title": "test1",
-      "views": 3,
+      "views": 5,
       "id": 1
     },
     {
       "title": "test2",
-      "views": 9,
+      "views": 3,
       "id": 2
     },
     {
       "title": "test3",
-      "views": 5,
+      "views": 2,
       "id": 3
-    },
-    {
-      "title": "test4",
-      "views": 3,
-      "id": 4
-    },
-    {
-      "title": "test5",
-      "views": 5,
-      "id": 5
-    },
-    {
-      "title": "test22",
-      "views": 0,
-      "id": 6
-    },
-    {
-      "title": "23",
-      "views": 0,
-      "id": 7
     }
   ]
 }

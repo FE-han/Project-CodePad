@@ -117,15 +117,6 @@ export default function PresetToggleButton(props:any) {
               <Reaction></Reaction>
             </ListItemButton>
           ))}
-          {/* {[1, 2, 3, 4, 5].map((value) => (
-            <ListItemButton
-              selected={selectedIndex === value}
-              onClick={(event) => handleListItemClick(event, value)}
-            >
-              <ListItemText primary="presetTitle" />
-              <Reaction></Reaction>
-            </ListItemButton>
-          ))} */}
         </List>
       </div>
       <div className={classes.pagination}>
