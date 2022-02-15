@@ -6,6 +6,7 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
+import PianoIcon from "@mui/icons-material/Piano";
 
 import Pagination from "@mui/material/Pagination";
 import usePagination from '../../api/Pagination';
@@ -117,7 +118,7 @@ export default function PresetToggleButton(props:any) {
               onClick={(event) => handleListItemClick(event, article)}
             >
               <ListItemText primary={article.title} />
-              <Reaction></Reaction>
+              <Reaction views={article.views}></Reaction>
             </ListItemButton>
           ))}
           {/* {props.board.map((article:any) => (

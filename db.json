@@ -2,22 +2,22 @@
   "board": [
     {
       "title": "test1",
-      "views": 12,
+      "views": 23,
       "id": 1
     },
     {
       "title": "test2",
-      "views": 12,
+      "views": 13,
       "id": 2
     },
     {
       "title": "test3",
-      "views": 11,
+      "views": 14,
       "id": 3
     },
     {
       "title": "test3333",
-      "views": 7,
+      "views": 10,
       "id": 4
     },
     {
