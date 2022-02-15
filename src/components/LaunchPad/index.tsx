@@ -16,6 +16,7 @@ import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { useDispatch } from "react-redux";
 import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
+import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -93,9 +94,8 @@ function RenderButtons({ presetData }: Pick<LaunchPadProps, "presetData">) {
 export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   const classes = LaunchPadStyles();
   const dispatch = useDispatch();
-  const { nowBar, soundGroup } = useAppSelector(
-    (state) => state.loopSoundGroupSlice
-  );
+  const { nowBar, soundGroup, nowPlayingSampleSounds, nowWaitStopSampleSound } =
+    useAppSelector((state) => state.loopSoundGroupSlice);
   const [alreadyPlayedSoundSamples, setAlreadyPlayedSoundSamples] = useState(
     new Map()
   );
@@ -123,14 +123,54 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   };
 
   const stopBufferSource = async (
+    btnLocation: string,
     sourcePromise: Promise<AudioBufferSourceNode | undefined>
   ) => {
+    if (sourcePromise === undefined) return;
     await sourcePromise.then((res) => {
       if (res === undefined) return;
       const context = new AudioContext();
+
+      setTimeout(() => {
+        dispatch(
+          soundButtonsActions.changeButtonState({
+            location: btnLocation,
+            state: "STOP",
+          })
+        );
+      }, res.buffer!.duration * 1000);
+
       res.stop(context.currentTime + res.buffer!.duration); //남은 한 사이클 재생후 정지
+      // res.stop(); //일단 바로정지하는 기능만 올려두고 나중에 바꾸기
+      const newPlayedSoundSamples = alreadyPlayedSoundSamples;
+      newPlayedSoundSamples.delete(btnLocation);
+      setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
     });
   };
+
+  useEffect(() => {
+    const newPlayedSoundSamples = alreadyPlayedSoundSamples;
+
+    console.log(
+      "삭제대상",
+      nowWaitStopSampleSound,
+      alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
+    );
+    stopBufferSource(
+      nowWaitStopSampleSound,
+      alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
+    );
+    newPlayedSoundSamples.delete(nowWaitStopSampleSound);
+
+    dispatch(loopSoundGroupActions.clearWaitStopQueue());
+    dispatch(
+      soundButtonsActions.changeButtonState({
+        location: nowWaitStopSampleSound,
+        state: "WAIT_STOP",
+      })
+    );
+    setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
+  }, [nowWaitStopSampleSound]);
 
   useEffect(() => {
     console.log(alreadyPlayedSoundSamples);
@@ -146,7 +186,7 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
         newPlayedSet.set(btnLocation, sourcePromise);
         setAlreadyPlayedSoundSamples(newPlayedSet);
 
-        stopBufferSource(sourcePromise);
+        // stopBufferSource(btnLocation, sourcePromise);
       }
     });
   }, [nowBar]);

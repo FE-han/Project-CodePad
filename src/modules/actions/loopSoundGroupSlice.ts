@@ -7,6 +7,7 @@ interface LoopSoundGroupState {
     [key: string]: Array<string>;
   };
   nowPlayingSampleSounds: Array<string>;
+  nowWaitStopSampleSound: string;
   nowBar: Bar;
 }
 
@@ -23,7 +24,7 @@ const initialState: LoopSoundGroupState = {
     bar8: [],
   },
   nowPlayingSampleSounds: [],
-
+  nowWaitStopSampleSound: "",
   nowBar: "bar1",
 };
 
@@ -84,12 +85,17 @@ export const loopSoundGroupSlice = createSlice({
         });
       }
 
+      state.nowWaitStopSampleSound = action.payload.location;
+
       if (state.nowPlayingSampleSounds.length === 0) {
         state.isPlay = false;
       }
     },
     checkNowBar: (state, action: PayloadAction<Bar>) => {
       state.nowBar = action.payload;
+    },
+    clearWaitStopQueue: (state) => {
+      state.nowWaitStopSampleSound = "";
     },
   },
 });
