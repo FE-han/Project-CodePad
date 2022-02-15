@@ -86,6 +86,9 @@ export const loopSoundGroupSlice = createSlice({
       // for ( const bar in state.soundGroup) {
       //   bar.
       // }
+      const newStagedSampleSounds = state.nowStagedSampleSounds.filter(
+        (StagedSampleSound) => StagedSampleSound !== action.payload.location
+      );
     },
     checkNowBar: (state, action: PayloadAction<Bar>) => {
       state.nowBar = action.payload;

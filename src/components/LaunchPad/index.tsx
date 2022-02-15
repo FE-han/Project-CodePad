@@ -14,6 +14,8 @@ import Metronome from "./Metronome";
 import { useAppSelector } from "../../modules/hooks";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { ButtonColors } from "../../utils/CommonStyle";
+import { useDispatch } from "react-redux";
+import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -123,6 +125,7 @@ function RenderButtons({ presetData }: Pick<LaunchPadProps, "presetData">) {
 //8x8 scale
 export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   const classes = LaunchPadStyles();
+  const dispatch = useDispatch();
   const { nowBar, soundGroup } = useAppSelector(
     (state) => state.loopSoundGroupSlice
   );
@@ -130,7 +133,7 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     new Map()
   );
 
-  const getBufferSource = async (url: string | undefined) => {
+  const getBufferSource = async (url: string | undefined, location: string) => {
     if (url === undefined) return;
     const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
@@ -142,6 +145,12 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     source.loop = true;
     source.connect(audioContext.destination);
     source.start();
+    dispatch(
+      soundButtonsActions.changeButtonState({
+        location,
+        state: "PLAY",
+      })
+    );
   };
 
   useEffect(() => {
@@ -150,7 +159,7 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
       if (alreadyPlayedSoundSamples.get(sound)) {
         console.log("이미 재생했어!");
       } else {
-        getBufferSource(sampleSoundMap.get(sound));
+        getBufferSource(sampleSoundMap.get(sound), sound);
         const newPlayedSet = alreadyPlayedSoundSamples;
         newPlayedSet.set(sound, true);
         setAlreadyPlayedSoundSamples(newPlayedSet);

@@ -52,9 +52,23 @@ export const soundButtonsStateSlice = createSlice({
           });
         }
       });
-
       state.soundSamples = newSoundSamplesMap;
       console.log(state.soundSamples);
+    },
+    changeButtonState: (
+      state,
+      action: PayloadAction<SoundButtonElementState>
+    ) => {
+      const newSoundButtonsState = state.soundSamples.map((soundSample) => {
+        if (soundSample.location === action.payload.location) {
+          return {
+            location: action.payload.location,
+            state: action.payload.state,
+          };
+        }
+        return soundSample;
+      });
+      state.soundSamples = newSoundButtonsState;
     },
   },
 });
