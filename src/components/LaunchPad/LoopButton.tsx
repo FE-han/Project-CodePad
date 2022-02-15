@@ -75,16 +75,12 @@ export function LoopButton({
   location,
 }: Omit<SoundSample, "soundSampleId">) {
   const classes = LoopButtonStyles();
-  const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
   const [isWait, setIsWait] = useState<boolean>(false);
   const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
   const dispatch = useDispatch();
   const { isPlay } = useAppSelector((state) => state.loopSoundGroupSlice);
-
-  // const [audioContext, setAudioContext] =
-  //   useState<AudioContext | undefined>(undefined);
 
   const [audioContext, setAudioContext] =
     useState<AudioBufferSourceNode | undefined>(undefined);
@@ -109,9 +105,6 @@ export function LoopButton({
     return classes.errorBtn;
   };
 
-  // const [bufferSource, setBufferSource] =
-  //   useState<ArrayBuffer | undefined>(undefined);
-
   const getBufferSource = async (url: string) => {
     const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
@@ -126,26 +119,6 @@ export function LoopButton({
   };
 
   useEffect(() => {
-    // const audioSource = new Audio(soundSampleURL);
-    // audioSource.crossOrigin = "anonymous";
-    // setSound(audioSource);
-
-    // audioSource.addEventListener("ended", () => {
-    //   console.log("끝");
-    //   setIsPlay(false);
-    // });
-
-    // //web audio api
-    // const audioContext = new AudioContext();
-    // // const track = audioContext.createMediaElementSource(audioSource);
-    // // track.connect(audioContext.destination);
-
-    // const track = audioContext.createBufferSource();
-    // // track.loop;
-
-    // setAudioContext(audioContext);
-
-    //=======
     if (soundSampleURL === undefined) return;
     getBufferSource(soundSampleURL);
   }, []);
@@ -154,25 +127,6 @@ export function LoopButton({
     <div
       className={getClassNameByBtnState()}
       onClick={() => {
-        // // if (sound === undefined) return;
-
-        // // sound.play();
-        // // setIsPlay(true);
-
-        // if (audioContext === undefined) {
-        //   console.log("음원배정되지 않음");
-        //   return;
-        // }
-
-        // if (audioContext.state === "suspended") {
-        //   console.log("음원 reload");
-        //   audioContext.resume();
-        // }
-
-        // sound!.play();
-
-        //=======
-
         if (isPlaySample) {
           // dispatch;
           setIsPlaySample(false);
