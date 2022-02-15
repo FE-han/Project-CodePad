@@ -74,11 +74,14 @@ export const loopSoundGroupSlice = createSlice({
       );
 
       for (const bars in state.soundGroup) {
-        if (action.payload.location in state.soundGroup[bars]) {
-          state.soundGroup[bars] = state.soundGroup[bars].filter(
-            (stagedLocation) => stagedLocation !== action.payload.location
-          );
-        }
+        state.soundGroup[bars].map((stagedLocation) => {
+          if (stagedLocation === action.payload.location) {
+            console.log("찾았다!", bars, "에 있었어");
+            state.soundGroup[bars] = state.soundGroup[bars].filter(
+              (stagedLocation) => stagedLocation !== action.payload.location
+            );
+          }
+        });
       }
 
       if (state.nowStagedSampleSounds.length === 0) {
