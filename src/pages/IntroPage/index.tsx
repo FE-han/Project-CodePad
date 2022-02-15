@@ -1,8 +1,6 @@
-import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { CommunityContentType } from "../../utils/CommonValue";
-import { Link } from "react-router-dom";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 
@@ -42,7 +40,7 @@ const introPageStyles = makeStyles({
 
     margin: "0 auto 0 auto",
     width: "75%",
-    minWidth: "1200px",
+    minWidth: "1020px",
 
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",

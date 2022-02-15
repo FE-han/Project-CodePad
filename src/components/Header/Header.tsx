@@ -14,6 +14,7 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { HeaderColors } from "../../utils/CommonStyle";
+import { LoginModal, ProfileModal } from "../Modal";
 
 export default function Header() {
   const classes = HeaderStyles();
@@ -23,8 +24,29 @@ export default function Header() {
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const [loginOpen, setLoginOpen] = React.useState<boolean>(false);
+  const [profileOpen, setProfileOpen] = React.useState<boolean>(false);
+
+  const handleLoginOpen = () => {
+    handleMenuClose();
+    setLoginOpen(true);
+  };
+
+  const handleLoginClose = () => {
+    setLoginOpen(false);
+  };
+
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileOpen = () => {
+    handleMenuClose();
+    setProfileOpen(true);
+  };
+
+  const handleProfileClose = () => {
+    setProfileOpen(false);
   };
 
   const handleMenuClose = () => {
@@ -56,9 +78,13 @@ export default function Header() {
       >
         My Page
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileOpen}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Likes</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      {/* 임시 로그인 버튼*/}
+      <MenuItem onClick={handleLoginOpen}>Login</MenuItem>
+      <LoginModal open={loginOpen} onClose={handleLoginClose} />
+      <ProfileModal open={profileOpen} onClose={handleProfileClose} />
     </Menu>
   );
 

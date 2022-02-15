@@ -1,82 +1,82 @@
 import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
-import { 
-    getUserInfo,
-} from "../../../api/getUserInfo";
+import { getUserInfo } from "../../../api/getUserInfo";
+import testImage from "../../../assets/testImage.png";
 
-const UserInfoStyles = makeStyles ({
-    container: {
-        height: "100%" ,
-        display: "flex",
-        justifyContent: "center",
+const UserInfoStyles = makeStyles({
+  container: {
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  userImageWrap: {
+    marginTop: "auto",
+    marginBottom: "auto",
+    height: "125px",
+    width: "125px",
+    marginRight: "50px",
+
+    "& img": {
+      height: "100%",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "70%",
     },
+  },
 
-    userImageWrap: {
-        marginTop: "auto",
-        marginBottom: "auto",
-        height: "125px",
-        width: "125px",
-        marginRight: "50px",
+  userNameWrap: {
+    textAlign: "center",
+    fontSize: "25px",
+    fontWeight: "bold",
 
-        "& img": {
-            height: "100%",
-            width: "100%",
-            objectFit: "cover",
-            borderRadius: "70%",
-            border: "1px solid gray",
-        }
+    "& p": {
+      lineHeight: "150px",
     },
-
-    userNameWrap: {
-        textAlign: "center",
-        fontSize: "25px",
-        fontWeight: "bold",
-
-        "& p": {
-            lineHeight: "150px",
-        }
-    },
-})
+  },
+});
 
 type UserInfoTypes = {
-    name: string;
-    thumbnailURL: string;
-}
+  name: string;
+  thumbnailURL: string;
+};
 
 type UserInfoProps = {
-    userId: string;
-}
+  userId: string;
+};
 
-export default function UserInfo({userId}:UserInfoProps){
+export default function UserInfo({ userId }: UserInfoProps) {
+  const classes = UserInfoStyles();
 
-    const classes = UserInfoStyles();
-  
-    const [userInfo, setUserInfo] = useState<UserInfoTypes>({
-        name: "",
-        thumbnailURL: ""
-    });
+  const [userInfo, setUserInfo] = useState<UserInfoTypes>({
+    name: "",
+    thumbnailURL: "",
+  });
 
-    const getInitialData = async () => {
-        try{
-            const userInfoData: UserInfoTypes = await getUserInfo({userId: userId})
-            setUserInfo(userInfoData);
-        } catch(err) {
-            console.log(err);
-        }
+  const getInitialData = async () => {
+    try {
+      const userInfoData: UserInfoTypes = await getUserInfo({ userId: userId });
+      setUserInfo(userInfoData);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-    useEffect(() => {
-        getInitialData();
-    }, []);
+  useEffect(() => {
+    getInitialData();
+  }, []);
 
-    return (
-        <div className={classes.container}>
-            <div className={classes.userImageWrap}>
-                <img src={userInfo.thumbnailURL} alt="유저 프로필" />
-            </div>
-            <div className={classes.userNameWrap}>
-                <p>{userInfo.name}</p>
-            </div>
-        </div>
-    );
+  return (
+    <div className={classes.container}>
+      <div className={classes.userImageWrap}>
+        {/* <img src={userInfo.thumbnailURL} alt="user-profile" /> */}
+        <img src={testImage} alt="user-profile" />
+      </div>
+      <div className={classes.userNameWrap}>
+        {/* <p>{userInfo.name}</p> */}
+        <p>eundore</p>
+      </div>
+    </div>
+  );
 }
