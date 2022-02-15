@@ -12,6 +12,7 @@ export const articleSlice = createSlice({
         },
         getArticleAsync: (state, { payload: article }) => {
             console.log(article);
+            console.log('saga에서 put 액션 호출 -- getArticleAsync');
             return {
                 ...state,
                 id: article.id,

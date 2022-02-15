@@ -15,11 +15,9 @@ function BoardPage(props) {
     const board = useSelector((state) => state.boardReducers.board);
 
     return (
-
         <
         MyPresetList board = { board }
         />
-
     )
 }
 

@@ -14,12 +14,13 @@ function ArticlePage() {
 
     
 
-    const { id, title } = useSelector((state)=>({
+    const { id, title, views } = useSelector((state)=>({
         id: state.articleReducers.id,
         title: state.articleReducers.title,
+        views : state.articleReducers.views,
     }));
     
-    const views = useSelector((state)=> state.articleReducers.views)
+    // const views = useSelector((state)=> state.articleReducers.views)
     
     return (<div>{title}, {views}</div> )
     
