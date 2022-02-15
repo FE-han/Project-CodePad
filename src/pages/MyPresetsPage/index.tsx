@@ -164,107 +164,14 @@ export function MyPresetsPage() {
 
   return (
     <div className={classes.root}>
-      <div className={classes.launchPad}>
-        <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
-        런치패드 올곳
-        <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
-      </div>
-      <div className={classes.togglePresetBtn}>
-        <List className={classes.changePresets}>
-          <ListItemButton
-            component={Link}
-            to="/defaultpresets/enter"
-            sx={{
-              border: "1px solid white",
-              width: "50%",
-              textAlign: "center",
-            }}
-          >
-            <ListItemText primary="Default presets" />
-          </ListItemButton>
-          <ListItemButton
-            component={Link}
-            to="/mypresets"
-            sx={{
-              border: "1px solid white",
-              width: "50%",
-              textAlign: "center",
-            }}
-          >
-            <ListItemText primary="My presets" />
-          </ListItemButton>
-        </List>
-      </div>
-      <div className={classes.presetList}>
-        <div></div>
-        <div className={classes.listStyle}>
-          <Stack
-            className={classes.presetListStyles}
-            spacing={2}
-            direction="column"
-          >
-            {/* <Button component={Link} to='/newmypresets' sx={{color:'white', backgroundColor:'#8e8e8e', height:"50px", width:"500px", border:'1px solid white', fontSize:'30px'}}>+</Button> */}
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-                fontSize: "30px",
-              }}
-            >
-              +
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-            <div
-              style={{
-                height: "50px",
-                width: "500px",
-                border: "1px solid white",
-                color: "white",
-                backgroundColor: "#8e8e8e",
-              }}
-            >
-              1a2s3d
-            </div>
-          </Stack>
+      <div className={classes.container}>
+        <div className={classes.launchPad}>
+          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.togglePresetBtn}>
-          <PresetToggleButton type={ToggleType.myPreset} />
+          <PresetToggleButton type={ToggleType.default} />
         </div>
+
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
