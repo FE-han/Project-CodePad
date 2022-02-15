@@ -6,7 +6,7 @@ interface LoopSoundGroupState {
   soundGroup: {
     [key: string]: Array<string>;
   };
-  nowStagedSampleSounds: Array<string>;
+  nowPlayingSampleSounds: Array<string>;
   nowBar: Bar;
 }
 
@@ -22,7 +22,8 @@ const initialState: LoopSoundGroupState = {
     bar7: [],
     bar8: [],
   },
-  nowStagedSampleSounds: [],
+  nowPlayingSampleSounds: [],
+
   nowBar: "bar1",
 };
 
@@ -48,7 +49,7 @@ export const loopSoundGroupSlice = createSlice({
     selectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
       state.isPlay = true;
 
-      const currentStagedSampleSounds = state.nowStagedSampleSounds;
+      const currentStagedSampleSounds = state.nowPlayingSampleSounds;
       const unduplicatedStagedSampleSoundsSet = new Set(
         currentStagedSampleSounds
       );
@@ -57,7 +58,7 @@ export const loopSoundGroupSlice = createSlice({
         unduplicatedStagedSampleSoundsSet
       );
 
-      state.nowStagedSampleSounds = newStagedSampleSounds;
+      state.nowPlayingSampleSounds = newStagedSampleSounds;
 
       if (newStagedSampleSounds.length === currentStagedSampleSounds.length)
         return;
@@ -69,14 +70,13 @@ export const loopSoundGroupSlice = createSlice({
       };
     },
     deselectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
-      state.nowStagedSampleSounds = state.nowStagedSampleSounds.filter(
+      state.nowPlayingSampleSounds = state.nowPlayingSampleSounds.filter(
         (StagedSampleSound) => StagedSampleSound !== action.payload.location
       );
 
       for (const bars in state.soundGroup) {
         state.soundGroup[bars].map((stagedLocation) => {
           if (stagedLocation === action.payload.location) {
-            console.log("찾았다!", bars, "에 있었어");
             state.soundGroup[bars] = state.soundGroup[bars].filter(
               (stagedLocation) => stagedLocation !== action.payload.location
             );
@@ -84,7 +84,7 @@ export const loopSoundGroupSlice = createSlice({
         });
       }
 
-      if (state.nowStagedSampleSounds.length === 0) {
+      if (state.nowPlayingSampleSounds.length === 0) {
         state.isPlay = false;
       }
     },

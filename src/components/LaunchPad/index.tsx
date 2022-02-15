@@ -100,11 +100,7 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     new Map()
   );
 
-  const getBufferSource = async (
-    url: string | undefined,
-    location: string,
-    startTime: number
-  ) => {
+  const getBufferSource = async (url: string | undefined, location: string) => {
     if (url === undefined) return;
     const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
@@ -122,20 +118,35 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
         state: "PLAY",
       })
     );
-    console.log(Date.now() - startTime);
+
+    return source;
+  };
+
+  const stopBufferSource = async (
+    sourcePromise: Promise<AudioBufferSourceNode | undefined>
+  ) => {
+    await sourcePromise.then((res) => {
+      if (res === undefined) return;
+      const context = new AudioContext();
+      res.stop(context.currentTime + res.buffer!.duration); //남은 한 사이클 재생후 정지
+    });
   };
 
   useEffect(() => {
     console.log(alreadyPlayedSoundSamples);
-    const startTime = Date.now();
-    soundGroup[nowBar].map((sound) => {
-      if (alreadyPlayedSoundSamples.get(sound)) {
+    soundGroup[nowBar].map((btnLocation) => {
+      if (alreadyPlayedSoundSamples.get(btnLocation)) {
         console.log("이미 재생했어!");
       } else {
-        getBufferSource(sampleSoundMap.get(sound), sound, startTime);
+        const sourcePromise = getBufferSource(
+          sampleSoundMap.get(btnLocation),
+          btnLocation
+        );
         const newPlayedSet = alreadyPlayedSoundSamples;
-        newPlayedSet.set(sound, true);
+        newPlayedSet.set(btnLocation, sourcePromise);
         setAlreadyPlayedSoundSamples(newPlayedSet);
+
+        stopBufferSource(sourcePromise);
       }
     });
   }, [nowBar]);

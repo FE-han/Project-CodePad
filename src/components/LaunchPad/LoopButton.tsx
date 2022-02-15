@@ -156,6 +156,12 @@ export function LoopButton({
                 nowBar,
               })
             );
+            dispatch(
+              soundButtonsActions.changeButtonState({
+                location,
+                state: "WAIT_STOP",
+              })
+            );
             break;
 
           case "WAIT_PLAY":
