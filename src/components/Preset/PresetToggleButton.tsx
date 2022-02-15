@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Fonts, ToggleBtnColors } from "../../utils/CommonStyle";
 
 import TabsUnstyled from "@mui/base/TabsUnstyled";
@@ -7,7 +8,6 @@ import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 
 import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
-
 
 const Tab = styled(TabUnstyled)`
   width: 100%;
@@ -56,30 +56,41 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-
-
-const toggleDefaultValue:toggleDefaultValueTypes = {
+const toggleDefaultValue: toggleDefaultValueTypes = {
   defaultpresets: 0,
   mypresets: 1,
-}
+};
 
 type toggleDefaultValueTypes = {
-  [index: string]: number,
-  defaultpresets: number,
-  mypresets: number
-}
+  [index: string]: number;
+  defaultpresets: number;
+  mypresets: number;
+};
 
-  
-export default function PresetToggleButton() {
-  const location = useLocation();
-  const currPath = location.pathname.split("/")[1];
+export default function PresetToggleButton(props: { type: number }) {
+  // const location = useLocation();
+  // const currPath = location.pathname.split("/")[1];
+  const navigate = useNavigate();
+
   return (
-    <TabsUnstyled defaultValue={toggleDefaultValue[currPath]}>
-            <TabsList>
-              <Tab>Default Presets</Tab>
-              <Tab>My Presets</Tab>
-            </TabsList>
-          </TabsUnstyled >
-
+    // <TabsUnstyled defaultValue={toggleDefaultValue[currPath]}>
+    <TabsUnstyled defaultValue={props.type}>
+      <TabsList>
+        <Tab
+          onClick={() => {
+            navigate("/defaultpresets/enter");
+          }}
+        >
+          Default Presets
+        </Tab>
+        <Tab
+          onClick={() => {
+            navigate("/mypresets/enter");
+          }}
+        >
+          My Presets
+        </Tab>
+      </TabsList>
+    </TabsUnstyled>
   );
 }

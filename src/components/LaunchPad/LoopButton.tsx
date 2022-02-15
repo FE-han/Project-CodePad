@@ -3,6 +3,10 @@ import { makeStyles } from "@mui/styles";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
+import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
+import { useDispatch } from "react-redux";
+import { actions } from "../../modules/actions/loopSoundGroupSlice";
+import { useAppSelector } from "../../modules/hooks";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {
@@ -72,38 +76,21 @@ export function LoopButton({
 }: Omit<SoundSample, "soundSampleId">) {
   const classes = LoopButtonStyles();
   const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
-  const [sound2, setSound2] = useState<HTMLAudioElement | undefined>(undefined);
   const [isWait, setIsWait] = useState<boolean>(false);
-  const [isPlay, setIsPlay] = useState<boolean>(false);
+  const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
-  const toggleSoundPlay = (
-    evt: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (sound === undefined) {
-      console.log("음악이 없음");
-      return;
-    }
+  const dispatch = useDispatch();
+  const { isPlay } = useAppSelector((state) => state.loopSoundGroupSlice);
 
-    if (isPlay) {
-      setIsPlay(false);
-      sound.pause();
+  // const [audioContext, setAudioContext] =
+  //   useState<AudioContext | undefined>(undefined);
 
-      return;
-    }
-
-    setIsPlay(true);
-    sound.play();
-
-    if (sound.onended) {
-      console.log("End");
-    }
-
-    console.log(sound);
-  };
+  const [audioContext, setAudioContext] =
+    useState<AudioBufferSourceNode | undefined>(undefined);
 
   const getClassNameByBtnState = () => {
-    if (isPlay) {
+    if (isPlaySample) {
       return classes.nowPlayingBtn;
     }
 
@@ -122,66 +109,89 @@ export function LoopButton({
     return classes.errorBtn;
   };
 
-  useEffect(() => {
-    if (soundSampleURL === undefined) {
-      //URL없을경우 에러컨트롤
-      setSound(undefined);
-    } else {
-      // const soundTag: React.DetailedHTMLProps<
-      //   React.AudioHTMLAttributes<HTMLAudioElement>,
-      //   HTMLAudioElement
-      // > = (
-      //   <audio
-      //     src={soundSampleURL}
-      //     preload="auto"
-      //     onPlay={() => {
+  // const [bufferSource, setBufferSource] =
+  //   useState<ArrayBuffer | undefined>(undefined);
 
-      //     }}
-      //     onEnded={() => {
-      //       console.log("end");
-      //     }}
-      //   ></audio>
-      // );
-      // setSound(soundTag);
+  const getBufferSource = async (url: string) => {
+    const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
-      setSound(new Audio(soundSampleURL));
-      setSound2(new Audio(soundSampleURL));
-    }
-  }, [setSound]);
+    const audioContext = new AudioContext();
+    const audioBuffer = await audioContext.decodeAudioData(data);
 
-  const handleTempoStart = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    const intervalTime = (60 / 112) * 1000;
-    let expected = Date.now() + intervalTime;
-
-    console.log(intervalTime);
-
-    const step = () => {
-      const delayTime = Date.now() - expected;
-      if (delayTime > intervalTime) {
-        console.log("딜레이가 너무 커졌습니다");
-      }
-
-      console.log(isPlay);
-      if (isPlay) {
-        console.log("clap!");
-        sound2!.play();
-      } else {
-        console.log("clap!!!");
-        sound!.play();
-        setIsPlay(true);
-      }
-
-      expected += intervalTime;
-      setTimeout(step, Math.max(0, intervalTime - delayTime));
-    };
-
-    setTimeout(step, intervalTime);
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.loop = true;
+    source.connect(audioContext.destination);
+    setAudioContext(source);
   };
 
+  useEffect(() => {
+    // const audioSource = new Audio(soundSampleURL);
+    // audioSource.crossOrigin = "anonymous";
+    // setSound(audioSource);
+
+    // audioSource.addEventListener("ended", () => {
+    //   console.log("끝");
+    //   setIsPlay(false);
+    // });
+
+    // //web audio api
+    // const audioContext = new AudioContext();
+    // // const track = audioContext.createMediaElementSource(audioSource);
+    // // track.connect(audioContext.destination);
+
+    // const track = audioContext.createBufferSource();
+    // // track.loop;
+
+    // setAudioContext(audioContext);
+
+    //=======
+    if (soundSampleURL === undefined) return;
+    getBufferSource(soundSampleURL);
+  }, []);
+
   return (
-    <div className={getClassNameByBtnState()} onClick={handleTempoStart}>
+    <div
+      className={getClassNameByBtnState()}
+      onClick={() => {
+        // // if (sound === undefined) return;
+
+        // // sound.play();
+        // // setIsPlay(true);
+
+        // if (audioContext === undefined) {
+        //   console.log("음원배정되지 않음");
+        //   return;
+        // }
+
+        // if (audioContext.state === "suspended") {
+        //   console.log("음원 reload");
+        //   audioContext.resume();
+        // }
+
+        // sound!.play();
+
+        //=======
+
+        if (isPlaySample) {
+          // dispatch;
+          setIsPlaySample(false);
+        }
+
+        dispatch(
+          actions.selectLoopSound({
+            location,
+            nowBar: "bar1",
+          })
+        );
+
+        if (audioContext === undefined) return;
+
+        setIsPlaySample(true);
+        // audioContext.start(); 음원재생
+        // setIsPlay(true);
+      }}
+    >
       {/* <div className={getClassNameByBtnState()}> */}
       <div className={classes.buttonText}>{soundType || ""}</div>
       <div className={classes.buttonIcon}>

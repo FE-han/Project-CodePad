@@ -27,7 +27,7 @@ export default function PresetTitle(){
     return (
         <div className={classes.titleWrap}>
             <h2>Title</h2>
-            <input type="text" />
+            <input type="text" name="title"/>
         </div>
     )
 }

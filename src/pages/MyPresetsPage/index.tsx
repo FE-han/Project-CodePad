@@ -1,16 +1,30 @@
+import { makeStyles } from "@mui/styles";
+
+import { useEffect, useState } from "react";
+
+import { getPreset } from "../../api/getPreset";
+
+import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
+import PresetToggleButton from "../../components/Preset/PresetToggleButton";
+import PresetList from "../../components/Preset/PresetList";
+import PresetImage from "../../components/Preset/PresetImage";
+import PaginationContainer from "../../components/Preset/PaginationContainer";
+import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
+import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
+import LaunchPad from "../../components/LaunchPad";
+
+import { ToggleType } from "../../utils/CommonValue";
+import { PageColors } from "../../utils/CommonStyle";
+import setPresetId from "../../utils/setPresetId";
+import setPresetData from "../../utils/setPresetData";
+
 import {
   ConstructionRounded,
   HdrEnhancedSelectOutlined,
   Translate,
 } from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { Link, Params, useParams } from "react-router-dom";
-import { getPreset } from "../../api/getPreset";
-import LaunchPad from "../../components/LaunchPad";
-import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
-import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -23,41 +37,34 @@ import Stack from "@mui/material/Stack";
 import { style } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import PresetToggleButton from "../../components/Preset/PresetToggleButton";
-import setPresetId from "../../utils/setPresetId";
-import setPresetData from "../../utils/setPresetData";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
-    background: "#4b7a1f",
-
-    padding: "35px 60px 35px 60px",
+    height: `calc(100% - 64px)`,
+    minWidth: "1020px",
+  },
+  container: {
+    margin: "0 auto",
+    padding: "50px 0px",
+    width: "60%",
+    height: "90%",
+    minWidth: "1020px",
+    minHeight: "814.5px",
 
     display: "grid",
+    gridTemplateRows: "1fr 4fr 3fr",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "150px auto 200px",
-    gridColumnGap: "100px",
+    gridColumnGap: "20px",
     gridRowGap: "20px",
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "communityContainer presetList"`,
+    "comment presetList"`,
 
     "& > *": {
-      border: "1px solid gray",
-      minWidth: "500px",
+      backgroundColor: PageColors.BACKGROUND,
+      boxShadow: PageColors.SHADOW,
     },
-  },
-  launchPad: {
-    gridArea: "launchPad",
-  },
-  togglePresetBtn: {
-    gridArea: "togglePresetBtn",
-    backgroundColor: "#8E8E8E",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
   },
   changePresets: {
     backgroundColor: "#8E8E8E",
@@ -67,10 +74,6 @@ const MyPresetsPageStyles = makeStyles({
     width: "70%",
     justifyContent: "center",
   },
-  presetList: {
-    gridArea: "presetList",
-  },
-
   listStyle: {
     display: "flex",
     alignItems: "center",
@@ -95,14 +98,44 @@ const MyPresetsPageStyles = makeStyles({
     textAlign: "center",
     lineHeight: "50px",
   },
-  plusPresetButtonStyles: {
-    width: "100%",
-    textAlignLast: "center",
+
+  launchPad: {
+    gridArea: "launchPad",
+    minHeight: "570px",
+    display: "grid",
+    alignItems: "center",
+
+    "& > .launchPadContainer": {
+      margin: "10px",
+      display: "grid",
+      rowGap: "10px",
+    },
   },
-  page: {
-    paddingLeft: "90px",
+
+  togglePresetBtn: {
+    gridArea: "togglePresetBtn",
+
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
-  communityContainer: {},
+  presetList: {
+    gridArea: "presetList",
+    minWidth: "460px",
+    display: "grid",
+    alignItems: "center",
+
+    "& > .presetListContainer": {
+      display: "flex",
+      flexDirection: "column",
+      margin: "23px 30px",
+    },
+  },
+  comment: {
+    gridArea: "comment",
+    // display: "none",
+  },
 });
 
 export function MyPresetsPage() {
@@ -134,7 +167,7 @@ export function MyPresetsPage() {
       <div className={classes.launchPad}>
         <Link to={"/mypresets/update"}>프리셋 수정 페이지 이동</Link>
         런치패드 올곳
-        <LaunchPad presetData={myPresetData} />
+        <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
       </div>
       <div className={classes.togglePresetBtn}>
         <List className={classes.changePresets}>
@@ -229,20 +262,17 @@ export function MyPresetsPage() {
             </div>
           </Stack>
         </div>
-        <div className={classes.page}>
-          <Stack spacing={2}>
-            <Pagination count={10} showFirstButton showLastButton />
-          </Stack>
+        <div className={classes.togglePresetBtn}>
+          <PresetToggleButton type={ToggleType.myPreset} />
         </div>
-        <PresetToggleButton />
-      </div>
-      <div className={classes.presetList}>
-        프리셋 리스트 올곳
-        <Link to={"/mypresets/create"}>나의 새 프리셋 생성 페이지 이동</Link>
-        {/* <PresetList /> */}
-      </div>
-      <div className={classes.communityContainer}>
-        태그, 댓글 등등 기타 커뮤니티 기능 들어올곳
+        <div className={classes.presetList}>
+          <div className="presetListContainer">
+            <PresetImage />
+            <PresetList createBtn={true} />
+            <PaginationContainer />
+          </div>
+        </div>
+        <div className={classes.comment}></div>
       </div>
     </div>
   );
