@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { getPreset } from "../../api/getPreset";
 
-import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
+import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
@@ -37,6 +37,7 @@ import Stack from "@mui/material/Stack";
 import { style } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -59,7 +60,7 @@ const MyPresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad togglePresetBtn"
     "launchPad presetList"
-    "comment presetList"`,
+    "community presetList"`,
 
     "& > *": {
       backgroundColor: PageColors.BACKGROUND,
@@ -108,7 +109,6 @@ const MyPresetsPageStyles = makeStyles({
     "& > .launchPadContainer": {
       margin: "10px",
       display: "grid",
-      rowGap: "10px",
     },
   },
 
@@ -132,9 +132,9 @@ const MyPresetsPageStyles = makeStyles({
       margin: "23px 30px",
     },
   },
-  comment: {
-    gridArea: "comment",
-    // display: "none",
+  community: {
+    gridArea: "community",
+    padding: "18px",
   },
 });
 
@@ -166,6 +166,11 @@ export function MyPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
+          <LaunchpadHeaderContainer
+            title={myPresetData.presetTitle}
+            onlyFork={false}
+          />
+
           <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.togglePresetBtn}>
@@ -179,7 +184,9 @@ export function MyPresetsPage() {
             <PaginationContainer />
           </div>
         </div>
-        <div className={classes.comment}></div>
+        <div className={classes.community}>
+          <PresetCommunity />
+        </div>
       </div>
     </div>
   );

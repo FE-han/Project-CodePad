@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import { getPreset } from "../../api/getPreset";
 
-import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
+import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
 import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
@@ -42,7 +42,7 @@ const UserPresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad UserInfo"
     "launchPad presetList"
-    "comment presetList"`,
+    "community presetList"`,
 
     "& > *": {
       backgroundColor: PageColors.BACKGROUND,
@@ -58,7 +58,6 @@ const UserPresetsPageStyles = makeStyles({
     "& > .launchPadContainer": {
       margin: "10px",
       display: "grid",
-      rowGap: "10px",
     },
   },
 
@@ -77,8 +76,8 @@ const UserPresetsPageStyles = makeStyles({
       margin: "23px 30px",
     },
   },
-  comment: {
-    gridArea: "comment",
+  community: {
+    gridArea: "community",
     // display: "none",
   },
 });
@@ -118,7 +117,7 @@ export function UserPresetsPage() {
       <div className={classes.container}>
         <div className={classes.launchPad}>
           <div className="launchPadContainer">
-            <LaunchpadHeaderConatiner
+            <LaunchpadHeaderContainer
               title={myPresetData.presetTitle}
               onlyFork={true}
             />
@@ -135,7 +134,7 @@ export function UserPresetsPage() {
             <PaginationContainer />
           </div>
         </div>
-        <div className={classes.comment}></div>
+        <div className={classes.community}></div>
       </div>
     </div>
   );
