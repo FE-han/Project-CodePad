@@ -6,16 +6,18 @@ import CommentsContainer from "./CommentsContainer";
 const PresetCommunityStyles = makeStyles({
   root: {
     display: `grid`,
-    gridTemplateColumns: `1fr 1fr`,
-    gridTemplateRows: `1fr 7fr`,
-    rowGap: "10px",
-    columnGap: "20px",
-    maxHeight: "188px",
+
+    rowGap: "15px",
+    columnGap: "15px",
+    maxHeight: "189px",
     alignItems: "center",
   },
   tags: {
     display: "flex",
-    alignItems: "center",
+    overflow: "auto",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   },
   reactions: {
     display: "flex",

@@ -52,6 +52,7 @@ const UserPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
+    padding: "10px",
 
     "& > .launchPadContainer": {
       margin: "10px",
@@ -115,13 +116,11 @@ export function UserPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <div className="launchPadContainer">
-            <LaunchpadHeaderContainer
-              title={myPresetData.presetTitle}
-              onlyFork={true}
-            />
-            <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
-          </div>
+          <LaunchpadHeaderContainer
+            title={myPresetData.presetTitle}
+            onlyFork={true}
+          />
+          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={userId} />

@@ -6,6 +6,7 @@ const commentsContainerStyles = makeStyles({
   root: {
     border: `1px solid gray`,
     padding: "15px",
+    height: "97px",
     overflow: "auto",
   },
 });
