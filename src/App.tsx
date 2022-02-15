@@ -33,7 +33,7 @@ function App() {
 
         <Routes>
           <Route path={"/"} element={<IntroPage />} />
-          <Route path={"/search"} element={<SearchReasultPage />} />
+          <Route path={"/search/:keyword"} element={<SearchReasultPage />} />
           <Route
             path={"/defaultpresets/:presetId"}
             element={<DefaultPresetsPage />}

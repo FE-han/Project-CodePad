@@ -9,6 +9,7 @@ export enum HeaderColors {
 }
 
 export enum PageColors {
+  COLOR = `rgba(0, 0, 0, 0.5)`,
   BACKGROUND = "rgba(255, 255, 255, 0.8)",
   SHADOW = `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`,
 }
