@@ -75,11 +75,11 @@ export function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <Link to="/auth/google" className={classes.loginLink}>
-          <button className={classes.loginButton} onClick={login}>
-            구글 로그인
-          </button>
-        </Link>
+        {/* <Link to="/auth/google" className={classes.loginLink}> */}
+        <button className={classes.loginButton} onClick={login}>
+          구글 로그인
+        </button>
+        {/* </Link> */}
       </DialogActions>
     </Dialog>
   );
@@ -141,9 +141,8 @@ export function ProfileModal(props: ProfileModalProps) {
   const [profileModalState, setProfileModalState] = useState<string>("CLOSE");
   const [userNameInput, setUserNameInput] = useState<string>("");
   //이미지 관련 state
-  const [userProfileImageBase64, setUserProfileImageBase64] = useState<
-    string | undefined
-  >("");
+  const [userProfileImageBase64, setUserProfileImageBase64] =
+    useState<string | undefined>("");
 
   const classes = ProfileModalStyles();
 

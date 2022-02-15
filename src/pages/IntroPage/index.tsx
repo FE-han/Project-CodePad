@@ -1,6 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
-import { CommunityContentType } from "../../utils/CommonValue";
+import {
+  CommunityContentType,
+  ScrollListContainerSize,
+} from "../../utils/CommonValue";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 
@@ -13,6 +16,7 @@ export default function IntroPage() {
           title="CHART : TOP 50"
           listName="top50"
           type={CommunityContentType.preset}
+          scrollSize={ScrollListContainerSize.introPage}
         />
       </div>
       <div className={classes.used}>
@@ -20,13 +24,15 @@ export default function IntroPage() {
           title="Recently Used"
           listName="used"
           type={CommunityContentType.preset}
+          scrollSize={ScrollListContainerSize.introPage}
         />
       </div>
       <div className={classes.artist}>
         <CommunityContentsScrollList
-          title="Artist Profiles"
+          title="Artist Profile"
           listName="artist"
           type={CommunityContentType.profile}
+          scrollSize={ScrollListContainerSize.introPage}
         />
       </div>
     </div>
@@ -40,7 +46,7 @@ const introPageStyles = makeStyles({
 
     margin: "0 auto 0 auto",
     width: "75%",
-    minWidth: "1020px",
+    minWidth: "1041px",
 
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",

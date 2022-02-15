@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ButtonColors } from "../../utils/CommonStyle";
 
-const LaunchpadHeaderConatinerStyles = makeStyles({
+const LaunchpadHeaderContainerStyles = makeStyles({
   launchPadHeader: {
     display: "flex",
     flexDirection: "row",
@@ -43,11 +43,11 @@ const LaunchpadHeaderConatinerStyles = makeStyles({
   },
 });
 
-export default function LaunchpadHeaderConatiner(props: {
+export default function LaunchpadHeaderContainer(props: {
   title: String | undefined;
   onlyFork: Boolean;
 }) {
-  const classes = LaunchpadHeaderConatinerStyles();
+  const classes = LaunchpadHeaderContainerStyles();
   const navigate = useNavigate();
   return (
     <div className={classes.launchPadHeader}>

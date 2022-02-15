@@ -24,39 +24,6 @@ const LaunchPadStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
   },
-  launchPadHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    margin: "18px 15px",
-    justifyContent: "space-between",
-
-    "& > :nth-child(1)": {
-      fontWeight: "700",
-      opacity: "50%",
-      fontSize: "22px",
-    },
-  },
-
-  launchPadHeaderBtnContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    "& > Button": {
-      float: "right",
-      color: ButtonColors.COLOR,
-      border: `1px solid ${ButtonColors.COLOR}`,
-      borderRadius: "12px",
-      boxShadow: ButtonColors.SHADOW,
-      margin: "0px 3px",
-
-      "&:hover": {
-        border: `1px solid white`,
-      },
-    },
-  },
   btnContainer: {
     display: "grid",
     justifyContent: "space-evenly",
@@ -133,7 +100,11 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     new Map()
   );
 
-  const getBufferSource = async (url: string | undefined, location: string) => {
+  const getBufferSource = async (
+    url: string | undefined,
+    location: string,
+    startTime: number
+  ) => {
     if (url === undefined) return;
     const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
@@ -151,15 +122,17 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
         state: "PLAY",
       })
     );
+    console.log(Date.now() - startTime);
   };
 
   useEffect(() => {
     console.log(alreadyPlayedSoundSamples);
+    const startTime = Date.now();
     soundGroup[nowBar].map((sound) => {
       if (alreadyPlayedSoundSamples.get(sound)) {
         console.log("이미 재생했어!");
       } else {
-        getBufferSource(sampleSoundMap.get(sound), sound);
+        getBufferSource(sampleSoundMap.get(sound), sound, startTime);
         const newPlayedSet = alreadyPlayedSoundSamples;
         newPlayedSet.set(sound, true);
         setAlreadyPlayedSoundSamples(newPlayedSet);
@@ -170,25 +143,6 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   return (
     <>
       <div className={classes.root}>
-        <div className={classes.launchPadHeader}>
-          <h2>{presetData.presetTitle}</h2>
-          <div className={classes.launchPadHeaderBtnContainer}>
-            <Button variant="outlined" size="small" startIcon={<AddLinkIcon />}>
-              FORK
-            </Button>
-            <Button variant="outlined" size="small" startIcon={<BuildIcon />}>
-              UPDATE
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<DeleteForeverIcon />}
-            >
-              Delete
-            </Button>
-          </div>
-        </div>
-
         <Metronome />
 
         <RenderButtons presetData={presetData} />

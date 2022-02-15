@@ -82,13 +82,19 @@ export const loopSoundGroupSlice = createSlice({
       state,
       action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
     ) => {
-      // state.nowStagedSampleCount -= 1;
-      // for ( const bar in state.soundGroup) {
-      //   bar.
-      // }
-      const newStagedSampleSounds = state.nowStagedSampleSounds.filter(
+      state.nowStagedSampleSounds = state.nowStagedSampleSounds.filter(
         (StagedSampleSound) => StagedSampleSound !== action.payload.location
       );
+
+      const group = state.soundGroup;
+      const bars = Object.keys(state.soundGroup);
+      // bars.map(bar => {
+      //   group[bar]
+      // })
+
+      if (state.nowStagedSampleSounds.length === 0) {
+        state.isPlay = false;
+      }
     },
     checkNowBar: (state, action: PayloadAction<Bar>) => {
       state.nowBar = action.payload;

@@ -18,7 +18,7 @@ const PresetContent = (props: { presetData: PresetData }) => {
 
 const PresetContentStyles = makeStyles({
   albumCoverContainer: {
-    marginBottom: "42px",
+    margin: `23px auto`,
   },
   albumCoverImg: {
     width: "200px",
