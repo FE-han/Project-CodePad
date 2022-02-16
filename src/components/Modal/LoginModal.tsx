@@ -72,7 +72,7 @@ export default function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <Link to="/auth/google" className={classes.loginLink}>
+        <Link to="/api/auth/google" className={classes.loginLink}>
           <button className={classes.loginButton} onClick={login}>
             구글 로그인
           </button>
