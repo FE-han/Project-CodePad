@@ -186,10 +186,12 @@ export function UpdatePresetsPage() {
     }
   };
 
-  const [btnType, setBtnType] = useState(BtnType.effect);
+  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
 
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBtnType(parseInt((event.target as HTMLInputElement).value));
+    const target = event.target as HTMLInputElement;
+    const value = target.value as BtnType;
+    setBtnType(value);
   };
 
   const [soundType, setSoundType] = useState("");
@@ -280,7 +282,7 @@ export function UpdatePresetsPage() {
                 }}
               >
                 <FormControlLabel
-                  value={BtnType.effect}
+                  value="EFFECT"
                   control={<Radio color="default" />}
                   label={<ArrowForwardIcon />}
                   sx={{
@@ -290,7 +292,7 @@ export function UpdatePresetsPage() {
                   }}
                 />
                 <FormControlLabel
-                  value={BtnType.loop}
+                  value="LOOP"
                   control={<Radio color="default" />}
                   label={<LoopIcon />}
                   sx={{

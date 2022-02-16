@@ -39,3 +39,7 @@ export enum TagColors {
   COLOR = `rgba(0, 0, 0, 0.5)`,
   BACKGROUND = "#ffe4c4",
 }
+
+export enum CommentColors {
+  COLOR = `rgba(0, 0, 0, 0.75)`,
+}

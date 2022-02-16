@@ -4,16 +4,10 @@ import { bindNextbar } from "../../utils/bindNextbar";
 interface LoopSoundGroupState {
   isPlay: boolean;
   soundGroup: {
-    bar1: Array<string>;
-    bar2: Array<string>;
-    bar3: Array<string>;
-    bar4: Array<string>;
-    bar5: Array<string>;
-    bar6: Array<string>;
-    bar7: Array<string>;
-    bar8: Array<string>;
+    [key: string]: Array<string>;
   };
-  nowStagedSampleSounds: Array<string>;
+  nowPlayingSampleSounds: Array<string>;
+  nowWaitStopSampleSound: string;
   nowBar: Bar;
 }
 
@@ -29,7 +23,8 @@ const initialState: LoopSoundGroupState = {
     bar7: [],
     bar8: [],
   },
-  nowStagedSampleSounds: [],
+  nowPlayingSampleSounds: [],
+  nowWaitStopSampleSound: "",
   nowBar: "bar1",
 };
 
@@ -52,13 +47,10 @@ export const loopSoundGroupSlice = createSlice({
   name: "loopSoundGroup",
   initialState,
   reducers: {
-    selectLoopSound: (
-      state,
-      action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
-    ) => {
+    selectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
       state.isPlay = true;
 
-      const currentStagedSampleSounds = state.nowStagedSampleSounds;
+      const currentStagedSampleSounds = state.nowPlayingSampleSounds;
       const unduplicatedStagedSampleSoundsSet = new Set(
         currentStagedSampleSounds
       );
@@ -67,28 +59,45 @@ export const loopSoundGroupSlice = createSlice({
         unduplicatedStagedSampleSoundsSet
       );
 
-      state.nowStagedSampleSounds = newStagedSampleSounds;
+      state.nowPlayingSampleSounds = newStagedSampleSounds;
 
       if (newStagedSampleSounds.length === currentStagedSampleSounds.length)
         return;
 
       const targetbar = bindNextbar(state.nowBar);
+      console.log("클릭한 마디", state.nowBar, "들어간 마디", targetbar);
       state.soundGroup = {
         ...state.soundGroup,
         [targetbar]: [...state.soundGroup[targetbar], action.payload.location],
       };
     },
-    deselectLoopSound: (
-      state,
-      action: PayloadAction<Omit<SelectLoopParams, "nowStagedSampleCount">>
-    ) => {
-      // state.nowStagedSampleCount -= 1;
-      // for ( const bar in state.soundGroup) {
-      //   bar.
-      // }
+    deselectLoopSound: (state, action: PayloadAction<SelectLoopParams>) => {
+      state.nowPlayingSampleSounds = state.nowPlayingSampleSounds.filter(
+        (StagedSampleSound) => StagedSampleSound !== action.payload.location
+      );
+
+      for (const bars in state.soundGroup) {
+        state.soundGroup[bars].map((stagedLocation) => {
+          if (stagedLocation === action.payload.location) {
+            state.soundGroup[bars] = state.soundGroup[bars].filter(
+              (stagedLocation) => stagedLocation !== action.payload.location
+            );
+          }
+        });
+      }
+
+      state.nowWaitStopSampleSound = action.payload.location;
+
+      if (state.nowPlayingSampleSounds.length === 0) {
+        state.isPlay = false;
+        state.nowBar = "bar1";
+      }
     },
     checkNowBar: (state, action: PayloadAction<Bar>) => {
       state.nowBar = action.payload;
+    },
+    clearWaitStopQueue: (state) => {
+      state.nowWaitStopSampleSound = "";
     },
   },
 });

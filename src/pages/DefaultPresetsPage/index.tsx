@@ -10,7 +10,7 @@ import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
-import { actions } from "../../modules/actions/getPresetSlice";
+import { actions as getPresetActions } from "../../modules/actions/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
@@ -19,6 +19,7 @@ import PresetList from "../../components/Preset/PresetList";
 import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
 import PresetImage from "../../components/Preset/PresetImage";
+import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -66,6 +67,7 @@ const DefaultPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
+    padding: "10px",
 
     "& > .launchPadContainer": {
       margin: "10px",
@@ -86,11 +88,13 @@ const DefaultPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
   community: {
@@ -117,12 +121,18 @@ export function DefaultPresetsPage() {
       const nowPresetData: Preset = await getPreset(
         setPresetId(defaultPresetId)
       );
-      dispatch(actions.getPresetDataFulfilled(nowPresetData));
+      dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
         defaultPresetData: defaultPresetData,
         setDefaultPresetData: setDefaultPresetData,
       });
+
+      dispatch(
+        soundButtonsActions.setButtonState({
+          soundSamples: nowPresetData.soundSamples,
+        })
+      );
 
       const currentSampleSoundMap = sampleSoundMap;
       nowPresetData.soundSamples.map((soundSample) => {
@@ -134,7 +144,7 @@ export function DefaultPresetsPage() {
       setSampleSoundMap(currentSampleSoundMap);
     } catch (err) {
       console.log("프리셋 Api에러", err);
-      dispatch(actions.getPresetDataRejected());
+      dispatch(getPresetActions.getPresetDataRejected());
     }
   };
 
@@ -146,6 +156,10 @@ export function DefaultPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
+          <LaunchpadHeaderContainer
+            title={defaultPresetData.presetTitle}
+            onlyFork={true}
+          />
           {state.isLoading ? (
             "로딩중"
           ) : (

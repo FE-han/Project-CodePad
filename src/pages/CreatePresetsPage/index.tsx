@@ -30,6 +30,7 @@ import setPresetData from "../../utils/setPresetData";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
+import LaunchPadEdit from "../../components/LaunchPadEdit";
 
 const CreatePresetsPageStyles = makeStyles({
   root: {
@@ -177,12 +178,6 @@ export function CreatePresetsPage() {
     getInitialData();
   }, []);
 
-  const [privacy, setPrivacy] = useState(PrivacyType.public);
-
-  const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivacy(parseInt((event.target as HTMLInputElement).value));
-  };
-
   const [sample, setSample] = useState<string>("");
 
   const handleSampleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,10 +188,12 @@ export function CreatePresetsPage() {
     }
   };
 
-  const [btnType, setBtnType] = useState(BtnType.effect);
+  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
 
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBtnType(parseInt((event.target as HTMLInputElement).value));
+    const target = event.target as HTMLInputElement;
+    const value = target.value as BtnType;
+    setBtnType(value);
   };
 
   const [soundType, setSoundType] = useState("");
@@ -209,7 +206,7 @@ export function CreatePresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
@@ -287,7 +284,7 @@ export function CreatePresetsPage() {
                 }}
               >
                 <FormControlLabel
-                  value={BtnType.effect}
+                  value="EFFECT"
                   control={<Radio color="default" />}
                   label={<ArrowForwardIcon />}
                   sx={{
@@ -297,7 +294,7 @@ export function CreatePresetsPage() {
                   }}
                 />
                 <FormControlLabel
-                  value={BtnType.loop}
+                  value="LOOP"
                   control={<Radio color="default" />}
                   label={<LoopIcon />}
                   sx={{

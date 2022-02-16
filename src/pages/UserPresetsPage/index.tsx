@@ -18,6 +18,7 @@ import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
+import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -53,11 +54,6 @@ const UserPresetsPageStyles = makeStyles({
     display: "grid",
     alignItems: "center",
     padding: "10px",
-
-    "& > .launchPadContainer": {
-      margin: "10px",
-      display: "grid",
-    },
   },
 
   UserInfo: {
@@ -68,17 +64,20 @@ const UserPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
   community: {
     gridArea: "community",
     display: "grid",
-    alignItems: "center",
+    padding: "18px",
+    // alignItems: "center",
   },
 });
 
@@ -132,7 +131,9 @@ export function UserPresetsPage() {
             <PaginationContainer />
           </div>
         </div>
-        <div className={classes.community}></div>
+        <div className={classes.community}>
+          <PresetCommunity />
+        </div>
       </div>
     </div>
   );
