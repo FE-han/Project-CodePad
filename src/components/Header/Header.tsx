@@ -79,7 +79,14 @@ export default function Header() {
         My Page
       </MenuItem>
       <MenuItem onClick={handleProfileOpen}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Likes</MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/likepresets");
+          handleMenuClose();
+        }}
+      >
+        Likes
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
       {/* 임시 로그인 버튼*/}
       <MenuItem onClick={handleLoginOpen}>Login</MenuItem>

@@ -16,7 +16,7 @@ import ModifyPresetsPage from "./pages/UpdatePresetsPage";
 
 const AppStyles = makeStyles({
   root: {
-    minWidth: "1020px",
+    minWidth: "1041px",
     height: "100vh",
     overflow: "auto",
     background: `url(${bg}) no-repeat center center`,
@@ -33,7 +33,7 @@ function App() {
 
         <Routes>
           <Route path={"/"} element={<IntroPage />} />
-          <Route path={"/search"} element={<SearchReasultPage />} />
+          <Route path={"/search/:keyword"} element={<SearchReasultPage />} />
           <Route
             path={"/defaultpresets/:presetId"}
             element={<DefaultPresetsPage />}

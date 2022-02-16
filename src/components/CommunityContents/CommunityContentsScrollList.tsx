@@ -16,7 +16,30 @@ const CommunityContentsScrollList = (props: {
   title: string;
   listName: string;
   type: number;
+  scrollSize: number;
 }) => {
+  const ScrollListStyles = makeStyles({
+    ScrollListContainer: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      alignItems: "center",
+      PaddingTop: "42px",
+      PaddingBottom: "42px",
+      textAlign: "center",
+      height: `calc(100vh - ${props.scrollSize}px)`,
+      overflow: "auto",
+
+      "&::-webkit-scrollbar": {
+        display: "none",
+      },
+    },
+
+    Loader: {
+      marginBottom: "50px",
+    },
+  });
+
   const classes = ScrollListStyles();
 
   const [target, setTarget] = useState<any>(null);
@@ -114,27 +137,5 @@ const CommunityContentsScrollList = (props: {
     </>
   );
 };
-
-const ScrollListStyles = makeStyles({
-  ScrollListContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
-    PaddingTop: "42px",
-    PaddingBottom: "42px",
-    textAlign: "center",
-    height: `calc(100vh - 202px)`,
-    overflow: "auto",
-
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-  },
-
-  Loader: {
-    marginBottom: "50px",
-  },
-});
 
 export default memo(CommunityContentsScrollList);

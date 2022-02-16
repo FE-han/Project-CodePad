@@ -5,8 +5,7 @@ import { useParams } from "react-router-dom";
 
 import { getPreset } from "../../api/getPreset";
 
-import LaunchpadHeaderConatiner from "../../components/LaunchPad/LaunchPadHeaderContainer";
-import PresetToggleButton from "../../components/Preset/PresetToggleButton";
+import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
 import PaginationContainer from "../../components/Preset/PaginationContainer";
@@ -14,24 +13,24 @@ import { initialPresetGenerator } from "../../components/LaunchPad/utils/initial
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
 
-import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
+import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
-    minWidth: "1020px",
+    minWidth: "1041px",
   },
   container: {
     margin: "0 auto",
     padding: "50px 0px",
     width: "60%",
     height: "90%",
-    minWidth: "1020px",
+    minWidth: "1041px",
     minHeight: "814.5px",
 
     display: "grid",
@@ -42,7 +41,7 @@ const UserPresetsPageStyles = makeStyles({
     gridTemplateAreas: `
     "launchPad UserInfo"
     "launchPad presetList"
-    "comment presetList"`,
+    "community presetList"`,
 
     "& > *": {
       backgroundColor: PageColors.BACKGROUND,
@@ -54,12 +53,7 @@ const UserPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
-
-    "& > .launchPadContainer": {
-      margin: "10px",
-      display: "grid",
-      rowGap: "10px",
-    },
+    padding: "10px",
   },
 
   UserInfo: {
@@ -70,16 +64,20 @@ const UserPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
-  comment: {
-    gridArea: "comment",
-    // display: "none",
+  community: {
+    gridArea: "community",
+    display: "grid",
+    padding: "18px",
+    // alignItems: "center",
   },
 });
 
@@ -117,13 +115,11 @@ export function UserPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <div className="launchPadContainer">
-            <LaunchpadHeaderConatiner
-              title={myPresetData.presetTitle}
-              onlyFork={true}
-            />
-            <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
-          </div>
+          <LaunchpadHeaderContainer
+            title={myPresetData.presetTitle}
+            onlyFork={true}
+          />
+          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={userId} />
@@ -135,7 +131,9 @@ export function UserPresetsPage() {
             <PaginationContainer />
           </div>
         </div>
-        <div className={classes.comment}></div>
+        <div className={classes.community}>
+          <PresetCommunity />
+        </div>
       </div>
     </div>
   );
