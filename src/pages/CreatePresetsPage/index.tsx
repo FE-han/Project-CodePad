@@ -30,6 +30,7 @@ import setPresetData from "../../utils/setPresetData";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
+import LaunchPadEdit from "../../components/LaunchPadEdit";
 
 const CreatePresetsPageStyles = makeStyles({
   root: {
@@ -209,7 +210,7 @@ export function CreatePresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
