@@ -15,7 +15,7 @@ import { memo } from "react";
 const CommunityContentsScrollList = (props: {
   title: string;
   listName: string;
-  type: number;
+  type: CommunityContentType;
   scrollSize: number;
 }) => {
   const ScrollListStyles = makeStyles({
@@ -110,13 +110,13 @@ const CommunityContentsScrollList = (props: {
     const type = props.type;
     let li: Array<ReactElement> = [];
 
-    if (CommunityContentType.preset === type) {
+    if (type === "PRESET") {
       itemLists.map((preset, idx) =>
         li.push(<PresetContent key={preset.presetId} presetData={preset} />)
       );
     }
 
-    if (CommunityContentType.profile === type) {
+    if (type === "PROFILE") {
       itemLists.map((preset, idx) =>
         li.push(<ArtistContent key={preset.presetId} presetData={preset} />)
       );

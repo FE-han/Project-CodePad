@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
 import { getUserInfo } from "../../../api/getUserInfo";
 import testImage from "../../../assets/testImage.png";
+import { PageColors } from "../../../utils/CommonStyle";
 
 const UserInfoStyles = makeStyles({
   container: {
@@ -9,14 +10,12 @@ const UserInfoStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    gap: "40px",
   },
 
   userImageWrap: {
-    marginTop: "auto",
-    marginBottom: "auto",
     height: "125px",
     width: "125px",
-    marginRight: "50px",
 
     "& img": {
       height: "100%",
@@ -30,6 +29,7 @@ const UserInfoStyles = makeStyles({
     textAlign: "center",
     fontSize: "25px",
     fontWeight: "bold",
+    color: PageColors.COLOR,
 
     "& p": {
       lineHeight: "150px",

@@ -57,10 +57,13 @@ const PresetInfoStyles = makeStyles({
 });
 export default function PresetInfo() {
   const classes = PresetInfoStyles();
-  const [privacy, setPrivacy] = useState(PrivacyType.public);
+  const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
 
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivacy(parseInt((event.target as HTMLInputElement).value));
+    const target = event.target as HTMLInputElement;
+    const value = target.value as PrivacyType;
+
+    setPrivacy(value);
   };
   return (
     <div className={classes.root}>
@@ -84,12 +87,12 @@ export default function PresetInfo() {
           }}
         >
           <FormControlLabel
-            value={PrivacyType.public}
+            value="PUBLIC"
             control={<Radio color="default" />}
             label="public"
           />
           <FormControlLabel
-            value={PrivacyType.private}
+            value="PRIVATE"
             control={<Radio color="default" />}
             label="private"
           />
