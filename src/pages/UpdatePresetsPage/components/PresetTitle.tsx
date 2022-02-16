@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../modules/hooks";
 
 const presetTitleStyles = makeStyles({
@@ -25,11 +26,14 @@ export default function PresetTitle(){
 
     const classes = presetTitleStyles();
     const state = useAppSelector((state) => state.getPresetInfoSlice);
-    
+    const [title,setTitle] = useState<string>("");
+    useEffect(() => {
+        setTitle(state.presetTitle);
+    },[state])
     return (
         <div className={classes.titleWrap}>
             <h2>Title</h2>
-            <input type="text" name="title" value={state.presetTitle}/>
+            <input type="text" name="title" value={title} placeholder={title}/>
         </div>
     )
 }

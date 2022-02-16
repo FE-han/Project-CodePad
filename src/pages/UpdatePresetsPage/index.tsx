@@ -12,7 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Divider } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../modules/hooks";
@@ -164,16 +164,26 @@ export function UpdatePresetsPage() {
   const classes = UpdatePresetsPageStyles();
   const dispatch = useDispatch();
   // const presetInfoState = useAppSelector((state) => state.getPresetInfoSlice);
-
+  const presetState = useAppSelector((state) => state.getPresetInfoSlice);
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
 
   const presetId = useParams();
 
+  const [formData, setFormData] = useState({
+    presetTitle: "",
+    presetId: presetId.presetId,
+    thumbnailImageFile: "",
+    isPrivate: false,
+    soundSamples: [],
+    tags: [],
+  });
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    try{
+      const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
 
     setPresetData({
@@ -181,13 +191,17 @@ export function UpdatePresetsPage() {
       defaultPresetData: myPresetData,
       setDefaultPresetData: setMyPresetData,
     });
+    }catch(err){
+      console.log(err)
+    }
+    
   };
 
   const getPresetInfoData = async () => {
     try {
       const nowPresetInfo: PresetInfoType = await getPresetInfo(presetId);
-      console.log(nowPresetInfo);
       dispatch(getPresetInfoDataActions.getPresetDataFulfilled(nowPresetInfo))
+
     } catch(err) {
       dispatch(getPresetInfoDataActions.getPresetDataRejected())
       alert("에러 발생");
@@ -196,9 +210,18 @@ export function UpdatePresetsPage() {
   }
 
   useEffect(() => {
-    getPresetInfoData();
     getInitialData();
+    getPresetInfoData();
   }, []);
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      presetTitle: presetState.presetTitle,
+      thumbnailImageFile: presetState.thumbnailImageURL,
+      isPrivate: presetState.isPrivate
+    })
+  }, [presetState])
 
   const [sample, setSample] = useState<string>("");
 
@@ -222,6 +245,28 @@ export function UpdatePresetsPage() {
     setSoundType(event.target.value);
   };
 
+  const handleThumbnailImageChange = (imgURL:any) => {
+    setFormData({
+      ...formData,
+      thumbnailImageFile: imgURL
+    });
+  }
+
+  const handleTitleChange = (event: any) => {
+    setFormData({
+      ...formData,
+      presetTitle: event.target.value
+    });
+
+  }
+  
+  const handlePrivacyChange = (event: any) => {
+    setFormData({
+      ...formData,
+      isPrivate: parseInt(event.target.value) ? true : false
+    })
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -230,8 +275,17 @@ export function UpdatePresetsPage() {
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload />
-            <PresetInfo  />
+            <PresetThumbnailUpload 
+              imgURL={formData.thumbnailImageFile}
+              handleThumbnailImageChange={handleThumbnailImageChange}
+            />
+            <PresetInfo 
+              title={formData.presetTitle}
+              private={formData.isPrivate}
+              formData={formData}
+              handleTitleChange={handleTitleChange}
+              handlePrivacyChange={handlePrivacyChange}
+            />
           </div>
         </div>
         <div className={classes.soundInfo}>

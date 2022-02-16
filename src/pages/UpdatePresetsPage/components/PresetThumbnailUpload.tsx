@@ -35,23 +35,25 @@ const PresetThumbnailUploadStyles = makeStyles({
   },
 });
 
-// type PresetThumbnailUploadProps = {
-//   imgURL: string;
-// };
+type PresetThumbnailUploadProps = {
+  imgURL: any;
+  handleThumbnailImageChange: any;
+};
 
 // export default function PresetThumbnailUpload({
 //   imgURL,
 // }: PresetThumbnailUploadProps) {
-export default function PresetThumbnailUpload(){
+export default function PresetThumbnailUpload({
+  imgURL,
+  handleThumbnailImageChange,
+}:PresetThumbnailUploadProps){
   const classes = PresetThumbnailUploadStyles();
-
   const state = useAppSelector((state) => state.getPresetInfoSlice);
-  const [currImg, setCurrImg] = useState("");
-  //state 확인
-  console.log(state);
+  const [currImg, setCurrImg] = useState(imgURL);
+
   useEffect(() => {
     setCurrImg(state.thumbnailImageURL);
-  }, [])
+  }, [state])
 
   //파일 변환
   const encodeFileToBase64 = (file: File) => {
@@ -69,6 +71,7 @@ export default function PresetThumbnailUpload(){
     const files = event.target.files;
     if (files) {
       encodeFileToBase64(files[0]);
+      handleThumbnailImageChange(files[0])
     }
   };
 

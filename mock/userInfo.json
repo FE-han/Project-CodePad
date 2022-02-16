@@ -1,40 +1,37 @@
 {
-    "userInfo": [
-        {
-            "id": 1,
-            "name": "Avicii",
-            "thumbnailURL" : "https://i1.sndcdn.com/avatars-000330767037-lhcj27-t500x500.jpg"
-        },
-        {
-            "id": 2,
-            "name": "Martin Garrix",
-            "thumbnailURL" : "https://yt3.ggpht.com/in7ji16oeon_ypiAMeH-ZdTWSaIC54yZqMsFg0X3uhTBk4MDCuIkRf6TIoQQCqjl20DSdakhSQ=s900-c-k-c0x00ffffff-no-rj"
-        },
-        {
-            "id": 3,
-            "name": "Skrillex",
-            "thumbnailURL" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe8eap-rxRsm7uD5zwjtQCk5nGlIMQmb0VO7_3GU-idi7_Jzlt"
-        },
-        {
-            "id": 4,
-            "name": "Zedd",
-            "thumbnailURL" : "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS5PHk8x4P8cq_DjjPzF5M3SZ0Sbki04exXIYXsEZXv01zFS9B-"
-        }
-    ],
-
-    "presets": [
-        {
-            "id": 1,
-            "presetTitle": "취향저격나의프리셋",
-            "presetId": "1",
-            "thumbnailImageURL": "https://t1.daumcdn.net/thumb/R720x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/8fXh/image/0_JTh3JET7ZCHaT_IJhG4VbhEpI.png",
-            "isPrivate": true
-        }
-    ],
-
-    "launchpad": [
-        {
-            
-        }
-    ]
+  "userInfo": [
+    {
+      "id": 1,
+      "name": "Avicii",
+      "thumbnailURL": "https://i1.sndcdn.com/avatars-000330767037-lhcj27-t500x500.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Martin Garrix",
+      "thumbnailURL": "https://yt3.ggpht.com/in7ji16oeon_ypiAMeH-ZdTWSaIC54yZqMsFg0X3uhTBk4MDCuIkRf6TIoQQCqjl20DSdakhSQ=s900-c-k-c0x00ffffff-no-rj"
+    },
+    {
+      "id": 3,
+      "name": "Skrillex",
+      "thumbnailURL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe8eap-rxRsm7uD5zwjtQCk5nGlIMQmb0VO7_3GU-idi7_Jzlt"
+    },
+    {
+      "id": 4,
+      "name": "Zedd",
+      "thumbnailURL": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS5PHk8x4P8cq_DjjPzF5M3SZ0Sbki04exXIYXsEZXv01zFS9B-"
+    }
+  ],
+  "presets": [
+    {
+      "presetTitle": "취향저격나의프리셋",
+      "thumbnailImageURL": "https://t1.daumcdn.net/thumb/R720x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/8fXh/image/0_JTh3JET7ZCHaT_IJhG4VbhEpI.png",
+      "isPrivate": false,
+      "soundSample": [],
+      "tags": [],
+      "id": 1
+    }
+  ],
+  "launchpad": [
+    {}
+  ]
 }

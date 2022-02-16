@@ -8,10 +8,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { useNavigate } from "react-router-dom";
+import { updatePreset } from "../../../api/updatePreset";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -57,32 +57,28 @@ const PresetInfoStyles = makeStyles({
   },
 });
 
-export default function PresetInfo() {
+type PresetInfoProps = {
+  title: string;
+  private: boolean;
+  formData: any;
+  handleTitleChange: any;
+  handlePrivacyChange: any;
+}
+
+export default function PresetInfo(props:PresetInfoProps) {
   const classes = PresetInfoStyles();
   const navigate = useNavigate();
-
-  const [thumbnailImg, setThumbnailImg] = useState<File | undefined>();
-  const [title, setTitle] = useState<string>("");
-  const [privacy, setPrivacy] = useState(PrivacyType.public);
-
-  const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivacy(parseInt((event.target as HTMLInputElement).value));
-  };
 
   const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if(window.confirm("변경을 취소하시겠습니까?")){
       navigate(-1);
-    } else {
-      return;
-    }
+    } 
   }
 
   const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    alert("세이브");
-  }
-
-  const handleThumbnailImgChange = (file:File) => {
-    setThumbnailImg(file)
+    updatePreset(props.formData);
+    alert("저장이 완료되었습니다.")
+    navigate("/mypresets/enter")
   }
 
   return (
@@ -92,19 +88,21 @@ export default function PresetInfo() {
         label="Title"
         variant="outlined"
         className={classes.title}
+        value={props.title}
+        onChange={props.handleTitleChange}
       />
       <FormControl>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={privacy}
-          onChange={handlePrivacyChange}
+          value={props.private ? 1 : 0}
           className={classes.radioContainer}
           sx={{
             justifyContent: "space-evenly",
             color: ButtonColors.COLOR,
           }}
+          onChange={props.handlePrivacyChange}
         >
           <FormControlLabel
             value={PrivacyType.public}
