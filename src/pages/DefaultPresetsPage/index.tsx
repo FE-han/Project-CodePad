@@ -66,6 +66,7 @@ const DefaultPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
+    padding: "10px",
 
     "& > .launchPadContainer": {
       margin: "10px",
@@ -86,11 +87,13 @@ const DefaultPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
   community: {
@@ -146,6 +149,10 @@ export function DefaultPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
+          <LaunchpadHeaderContainer
+            title={defaultPresetData.presetTitle}
+            onlyFork={true}
+          />
           {state.isLoading ? (
             "로딩중"
           ) : (
