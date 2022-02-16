@@ -7,7 +7,6 @@ export default async function editProfileInfo(
 ) {
   await axios.put(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/userProfile`, {
     headers: {
-      Cookie: `${accessToken}`,
       "Contents-Type": "multipart/form-data",
     },
     body: userFormData,
