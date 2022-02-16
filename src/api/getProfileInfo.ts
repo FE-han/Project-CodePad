@@ -7,6 +7,6 @@ export default async function getProfileInfo(accessToken: string) {
       Cookie: `${accessToken}`,
     },
   };
-  const response = await axiosInstance(config).get(`/auth/userProfile`);
+  const response = await axiosInstance(config).get(`/api/auth/userProfile`);
   return response.data;
 }

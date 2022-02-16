@@ -1,11 +1,7 @@
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@mui/styles";
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import AddLinkIcon from "@mui/icons-material/AddLink";
-import BuildIcon from "@mui/icons-material/Build";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-import { useState, memo, useEffect } from "react";
 import { Preset } from "./utils/types";
 import OneShotButton from "./OneShotButton";
 import LoopButton from "./LoopButton";
@@ -13,12 +9,10 @@ import EmptyButton from "./EmptyButton";
 import Metronome from "./Metronome";
 import { useAppSelector } from "../../modules/hooks";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
-import { ButtonColors } from "../../utils/CommonStyle";
-import { useDispatch } from "react-redux";
 import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
 import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
 
-const LaunchPadStyles = makeStyles({
+export const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
   root: {
     margin: "10px",

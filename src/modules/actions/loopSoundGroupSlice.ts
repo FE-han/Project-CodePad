@@ -65,6 +65,7 @@ export const loopSoundGroupSlice = createSlice({
         return;
 
       const targetbar = bindNextbar(state.nowBar);
+      console.log("클릭한 마디", state.nowBar, "들어간 마디", targetbar);
       state.soundGroup = {
         ...state.soundGroup,
         [targetbar]: [...state.soundGroup[targetbar], action.payload.location],
@@ -89,6 +90,7 @@ export const loopSoundGroupSlice = createSlice({
 
       if (state.nowPlayingSampleSounds.length === 0) {
         state.isPlay = false;
+        state.nowBar = "bar1";
       }
     },
     checkNowBar: (state, action: PayloadAction<Bar>) => {
