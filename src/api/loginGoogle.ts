@@ -1,6 +1,7 @@
-import axios from "axios";
+import { AxiosRequestConfig } from "axios";
+import { axiosInstance } from "./axiosInstance";
 
 export default async function loginGoogle() {
-  const response = await axios.get(`https://elice.codepad.gq/auth/google`);
-  return response.data;
+  const config: AxiosRequestConfig = {};
+  await axiosInstance(config).get(`/auth/google`);
 }
