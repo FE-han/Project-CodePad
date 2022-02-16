@@ -18,7 +18,7 @@ export default function PresetSoundInfo() {
   const classes = CreatePresetsPageStyles();
   return (
     <div className={classes.soundInfo}>
-      <div
+      {/* <div
         style={{
           height: "40%",
         }}
@@ -125,7 +125,7 @@ export default function PresetSoundInfo() {
             <MenuItem value={3}>PERC</MenuItem>
           </Select>
         </FormControl>
-      </div>
+      </div> */}
     </div>
   );
 }

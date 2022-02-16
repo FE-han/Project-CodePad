@@ -23,7 +23,7 @@ import {
   HdrEnhancedSelectOutlined,
   Translate,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
 
 import List from "@mui/material/List";
@@ -38,6 +38,7 @@ import { style } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
+import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -146,8 +147,9 @@ export function MyPresetsPage() {
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const presetId = useParams();
+  const dispatch = useDispatch();
 
-  const getInitialData = async () => {
+  const getPresetData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
@@ -157,10 +159,12 @@ export function MyPresetsPage() {
       defaultPresetData: myPresetData,
       setDefaultPresetData: setMyPresetData,
     });
+
+    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
   };
 
   useEffect(() => {
-    getInitialData();
+    getPresetData();
   }, []);
 
   return (

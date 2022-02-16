@@ -29,6 +29,7 @@ import setPresetData from "../../utils/setPresetData";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
+import { useAppSelector } from "../../modules/hooks";
 
 const UpdatePresetsPageStyles = makeStyles({
   root: {
@@ -160,6 +161,10 @@ export function UpdatePresetsPage() {
   );
   const presetId = useParams();
 
+  const currentPresetState = useAppSelector(
+    (state) => state.setNowPresetValueSlice
+  );
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
@@ -174,6 +179,7 @@ export function UpdatePresetsPage() {
 
   useEffect(() => {
     getInitialData();
+    console.log(currentPresetState);
   }, []);
 
   const [sample, setSample] = useState<string>("");
