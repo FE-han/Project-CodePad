@@ -3,9 +3,9 @@ export enum ScrollValues {
   limitNum = 10,
 }
 
-export enum CommunityContentType {
-  preset = 0,
-  profile = 1,
+export enum ScrollListContainerSize {
+  introPage = 202,
+  searchResultPage = 286,
 }
 
 export enum ToggleType {
@@ -13,17 +13,8 @@ export enum ToggleType {
   myPreset = 1,
 }
 
-export enum PrivacyType {
-  public = 0,
-  private = 1,
-}
+export type CommunityContentType = "PRESET" | "PROFILE";
 
-export enum BtnType {
-  effect = 0,
-  loop = 1,
-}
+export type PrivacyType = "PUBLIC" | "PRIVATE";
 
-export enum ScrollListContainerSize {
-  introPage = 202,
-  searchResultPage = 286,
-}
+export type BtnType = "EFFECT" | "LOOP";

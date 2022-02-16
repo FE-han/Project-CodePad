@@ -1,9 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
-import {
-  CommunityContentType,
-  ScrollListContainerSize,
-} from "../../utils/CommonValue";
+import { ScrollListContainerSize } from "../../utils/CommonValue";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 
@@ -15,7 +12,7 @@ export default function IntroPage() {
         <CommunityContentsScrollList
           title="CHART : TOP 50"
           listName="top50"
-          type={CommunityContentType.preset}
+          type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
       </div>
@@ -23,7 +20,7 @@ export default function IntroPage() {
         <CommunityContentsScrollList
           title="Recently Used"
           listName="used"
-          type={CommunityContentType.preset}
+          type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
       </div>
@@ -31,7 +28,7 @@ export default function IntroPage() {
         <CommunityContentsScrollList
           title="Artist Profile"
           listName="artist"
-          type={CommunityContentType.profile}
+          type="PROFILE"
           scrollSize={ScrollListContainerSize.introPage}
         />
       </div>

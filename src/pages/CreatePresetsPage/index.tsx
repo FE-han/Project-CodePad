@@ -177,12 +177,6 @@ export function CreatePresetsPage() {
     getInitialData();
   }, []);
 
-  const [privacy, setPrivacy] = useState(PrivacyType.public);
-
-  const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivacy(parseInt((event.target as HTMLInputElement).value));
-  };
-
   const [sample, setSample] = useState<string>("");
 
   const handleSampleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,10 +187,12 @@ export function CreatePresetsPage() {
     }
   };
 
-  const [btnType, setBtnType] = useState(BtnType.effect);
+  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
 
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBtnType(parseInt((event.target as HTMLInputElement).value));
+    const target = event.target as HTMLInputElement;
+    const value = target.value as BtnType;
+    setBtnType(value);
   };
 
   const [soundType, setSoundType] = useState("");
@@ -287,7 +283,7 @@ export function CreatePresetsPage() {
                 }}
               >
                 <FormControlLabel
-                  value={BtnType.effect}
+                  value="EFFECT"
                   control={<Radio color="default" />}
                   label={<ArrowForwardIcon />}
                   sx={{
@@ -297,7 +293,7 @@ export function CreatePresetsPage() {
                   }}
                 />
                 <FormControlLabel
-                  value={BtnType.loop}
+                  value="LOOP"
                   control={<Radio color="default" />}
                   label={<LoopIcon />}
                   sx={{
