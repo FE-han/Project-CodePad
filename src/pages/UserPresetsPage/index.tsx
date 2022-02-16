@@ -18,6 +18,7 @@ import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
+import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -52,11 +53,7 @@ const UserPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
-
-    "& > .launchPadContainer": {
-      margin: "10px",
-      display: "grid",
-    },
+    padding: "10px",
   },
 
   UserInfo: {
@@ -67,17 +64,20 @@ const UserPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
   community: {
     gridArea: "community",
     display: "grid",
-    alignItems: "center",
+    padding: "18px",
+    // alignItems: "center",
   },
 });
 
@@ -115,13 +115,11 @@ export function UserPresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <div className="launchPadContainer">
-            <LaunchpadHeaderContainer
-              title={myPresetData.presetTitle}
-              onlyFork={true}
-            />
-            <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
-          </div>
+          <LaunchpadHeaderContainer
+            title={myPresetData.presetTitle}
+            onlyFork={true}
+          />
+          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={userId} />
@@ -133,7 +131,9 @@ export function UserPresetsPage() {
             <PaginationContainer />
           </div>
         </div>
-        <div className={classes.community}></div>
+        <div className={classes.community}>
+          <PresetCommunity />
+        </div>
       </div>
     </div>
   );

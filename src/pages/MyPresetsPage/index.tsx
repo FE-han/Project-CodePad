@@ -105,11 +105,7 @@ const MyPresetsPageStyles = makeStyles({
     minHeight: "570px",
     display: "grid",
     alignItems: "center",
-
-    "& > .launchPadContainer": {
-      margin: "10px",
-      display: "grid",
-    },
+    padding: "10px",
   },
 
   togglePresetBtn: {
@@ -125,18 +121,21 @@ const MyPresetsPageStyles = makeStyles({
     minWidth: "460px",
     display: "grid",
     alignItems: "center",
+    justifyItems: "center",
 
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
       margin: "23px 30px",
+      gap: "8px",
+      width: "93%",
     },
   },
   community: {
     gridArea: "community",
     padding: "18px",
     display: "grid",
-    alignItems: "center",
+    // alignItems: "center",
   },
 });
 

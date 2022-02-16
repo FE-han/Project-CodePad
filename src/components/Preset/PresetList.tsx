@@ -10,14 +10,12 @@ import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
 
 const PresetsListStyles = makeStyles({
-  listBox: {
-    marginTop: "8px",
-  },
+  listBox: {},
 
   presetList: {
     "& > div": {
       border: `1px solid ${PresetListBtnColors.COLOR}`,
-      margin: "10px 0",
+      marginTop: "10px",
 
       "&.Mui-selected": {
         backgroundColor: "white",
