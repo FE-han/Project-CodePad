@@ -5,8 +5,9 @@ import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { useDispatch } from "react-redux";
-import { actions } from "../../modules/actions/loopSoundGroupSlice";
+import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
+import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {
@@ -75,121 +76,114 @@ export function LoopButton({
   location,
 }: Omit<SoundSample, "soundSampleId">) {
   const classes = LoopButtonStyles();
-  const [sound, setSound] = useState<HTMLAudioElement | undefined>(undefined);
-  const [isWait, setIsWait] = useState<boolean>(false);
-  const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
+  // const [isWait, setIsWait] = useState<boolean>(false);
+  // const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
+  const [buttonState, setButtonState] = useState({
+    location: "",
+    state: "EMPTY",
+  });
+
   const dispatch = useDispatch();
-  const { isPlay } = useAppSelector((state) => state.loopSoundGroupSlice);
+  const { nowBar } = useAppSelector((state) => state.loopSoundGroupSlice);
+  const { soundSamples } = useAppSelector(
+    (state) => state.soundButtonsStateSlice
+  );
 
-  // const [audioContext, setAudioContext] =
-  //   useState<AudioContext | undefined>(undefined);
-
-  const [audioContext, setAudioContext] =
-    useState<AudioBufferSourceNode | undefined>(undefined);
+  useEffect(() => {
+    soundSamples.map((soundSample) => {
+      if (soundSample.location === location) {
+        setButtonState(soundSample);
+      }
+    });
+  }, [soundSamples]);
 
   const getClassNameByBtnState = () => {
-    if (isPlaySample) {
-      return classes.nowPlayingBtn;
-    }
-
-    if (isWait) {
-      return classes.waitingBtn;
-    }
-
-    if (isEven) {
+    if (isEven && buttonState.state === "STOP") {
       return classes.loopEvenBtn;
     }
 
-    if (!isEven) {
+    if (!isEven && buttonState.state === "STOP") {
       return classes.loopOddBtn;
+    }
+
+    if (
+      buttonState.state === "WAIT_PLAY" ||
+      buttonState.state === "WAIT_STOP"
+    ) {
+      return classes.waitingBtn;
+    }
+
+    if (buttonState.state === "PLAY") {
+      return classes.nowPlayingBtn;
     }
 
     return classes.errorBtn;
   };
 
-  // const [bufferSource, setBufferSource] =
-  //   useState<ArrayBuffer | undefined>(undefined);
-
-  const getBufferSource = async (url: string) => {
-    const data: ArrayBuffer = await getAudioArrayBuffer(url);
-
-    const audioContext = new AudioContext();
-    const audioBuffer = await audioContext.decodeAudioData(data);
-
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.loop = true;
-    source.connect(audioContext.destination);
-    setAudioContext(source);
-  };
-
-  useEffect(() => {
-    // const audioSource = new Audio(soundSampleURL);
-    // audioSource.crossOrigin = "anonymous";
-    // setSound(audioSource);
-
-    // audioSource.addEventListener("ended", () => {
-    //   console.log("끝");
-    //   setIsPlay(false);
-    // });
-
-    // //web audio api
-    // const audioContext = new AudioContext();
-    // // const track = audioContext.createMediaElementSource(audioSource);
-    // // track.connect(audioContext.destination);
-
-    // const track = audioContext.createBufferSource();
-    // // track.loop;
-
-    // setAudioContext(audioContext);
-
-    //=======
-    if (soundSampleURL === undefined) return;
-    getBufferSource(soundSampleURL);
-  }, []);
-
   return (
     <div
       className={getClassNameByBtnState()}
       onClick={() => {
-        // // if (sound === undefined) return;
+        //처음 클릭시
+        // 1. (stop) 버튼 state를 wait_play로 바꿈, 그룹에 선택한 셈플로써 올림
+        // (이후 메트로눔을 통해서 재생시 state를 play로 바꿈)
+        // 2. (play) 버튼 state를 wait_stop으로 바꿈
+        // (이후 메트로눔을 통해서 해당 음원을 stop하고 unstaging처리함 )
+        // 3. (wait_play) 버튼 state를 stop으로 바꿈, 바로 그룹에서 unstaging처리
+        // 4. (wait_stop) 버튼 state를 play로 바꿈
+        switch (buttonState.state) {
+          case "STOP":
+            dispatch(
+              loopSoundGroupActions.selectLoopSound({
+                location,
+                nowBar,
+              })
+            );
+            dispatch(
+              soundButtonsActions.changeButtonState({
+                location,
+                state: "WAIT_PLAY",
+              })
+            );
+            break;
 
-        // // sound.play();
-        // // setIsPlay(true);
+          case "PLAY":
+            dispatch(
+              loopSoundGroupActions.deselectLoopSound({
+                location,
+                nowBar,
+              })
+            );
+            dispatch(
+              soundButtonsActions.changeButtonState({
+                location,
+                state: "WAIT_STOP",
+              })
+            );
+            break;
 
-        // if (audioContext === undefined) {
-        //   console.log("음원배정되지 않음");
-        //   return;
-        // }
+          case "WAIT_PLAY":
+            // dispatch(
+            //   actions.selectLoopSound({
+            //     location,
+            //     nowBar,
+            //   })
+            // );
+            break;
 
-        // if (audioContext.state === "suspended") {
-        //   console.log("음원 reload");
-        //   audioContext.resume();
-        // }
-
-        // sound!.play();
-
-        //=======
-
-        if (isPlaySample) {
-          // dispatch;
-          setIsPlaySample(false);
+          case "WAIT_STOP":
+            dispatch(
+              soundButtonsActions.changeButtonState({
+                location,
+                state: "PLAY",
+              })
+            );
+            break;
+          default:
+            break;
         }
-
-        dispatch(
-          actions.selectLoopSound({
-            location,
-            nowBar: "bar1",
-          })
-        );
-
-        if (audioContext === undefined) return;
-
-        setIsPlaySample(true);
-        // audioContext.start(); 음원재생
-        // setIsPlay(true);
       }}
     >
       {/* <div className={getClassNameByBtnState()}> */}

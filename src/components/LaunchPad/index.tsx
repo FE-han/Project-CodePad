@@ -14,6 +14,9 @@ import Metronome from "./Metronome";
 import { useAppSelector } from "../../modules/hooks";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { ButtonColors } from "../../utils/CommonStyle";
+import { useDispatch } from "react-redux";
+import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
+import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
 
 const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함
@@ -90,14 +93,14 @@ function RenderButtons({ presetData }: Pick<LaunchPadProps, "presetData">) {
 //8x8 scale
 export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   const classes = LaunchPadStyles();
-  const { nowBar, soundGroup } = useAppSelector(
-    (state) => state.loopSoundGroupSlice
-  );
+  const dispatch = useDispatch();
+  const { nowBar, soundGroup, nowPlayingSampleSounds, nowWaitStopSampleSound } =
+    useAppSelector((state) => state.loopSoundGroupSlice);
   const [alreadyPlayedSoundSamples, setAlreadyPlayedSoundSamples] = useState(
     new Map()
   );
 
-  const getBufferSource = async (url: string | undefined) => {
+  const getBufferSource = async (url: string | undefined, location: string) => {
     if (url === undefined) return;
     const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
@@ -109,18 +112,90 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     source.loop = true;
     source.connect(audioContext.destination);
     source.start();
+    dispatch(
+      soundButtonsActions.changeButtonState({
+        location,
+        state: "PLAY",
+      })
+    );
+
+    return source;
+  };
+
+  const stopBufferSource = async (
+    btnLocation: string,
+    sourcePromise: Promise<AudioBufferSourceNode | undefined>
+  ) => {
+    if (sourcePromise === undefined) return;
+    await sourcePromise.then((res) => {
+      if (res === undefined) return;
+      const context = new AudioContext();
+
+      // //남은 한 사이클 재생후 정지
+      // setTimeout(() => {
+      //   dispatch(
+      //     soundButtonsActions.changeButtonState({
+      //       location: btnLocation,
+      //       state: "STOP",
+      //     })
+      //   );
+      // }, res.buffer!.duration * 1000);
+      // res.stop(context.currentTime + res.buffer!.duration);
+
+      //바로정지
+      dispatch(
+        soundButtonsActions.changeButtonState({
+          location: btnLocation,
+          state: "STOP",
+        })
+      );
+      res.stop();
+
+      const newPlayedSoundSamples = alreadyPlayedSoundSamples;
+      newPlayedSoundSamples.delete(btnLocation);
+      setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
+    });
   };
 
   useEffect(() => {
+    const newPlayedSoundSamples = alreadyPlayedSoundSamples;
+
+    console.log(
+      "삭제대상",
+      nowWaitStopSampleSound,
+      alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
+    );
+    stopBufferSource(
+      nowWaitStopSampleSound,
+      alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
+    );
+    newPlayedSoundSamples.delete(nowWaitStopSampleSound);
+
+    dispatch(loopSoundGroupActions.clearWaitStopQueue());
+    dispatch(
+      soundButtonsActions.changeButtonState({
+        location: nowWaitStopSampleSound,
+        state: "WAIT_STOP",
+      })
+    );
+    setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
+  }, [nowWaitStopSampleSound]);
+
+  useEffect(() => {
     console.log(alreadyPlayedSoundSamples);
-    soundGroup[nowBar].map((sound) => {
-      if (alreadyPlayedSoundSamples.get(sound)) {
+    soundGroup[nowBar].map((btnLocation) => {
+      if (alreadyPlayedSoundSamples.get(btnLocation)) {
         console.log("이미 재생했어!");
       } else {
-        getBufferSource(sampleSoundMap.get(sound));
+        const sourcePromise = getBufferSource(
+          sampleSoundMap.get(btnLocation),
+          btnLocation
+        );
         const newPlayedSet = alreadyPlayedSoundSamples;
-        newPlayedSet.set(sound, true);
+        newPlayedSet.set(btnLocation, sourcePromise);
         setAlreadyPlayedSoundSamples(newPlayedSet);
+
+        // stopBufferSource(btnLocation, sourcePromise);
       }
     });
   }, [nowBar]);

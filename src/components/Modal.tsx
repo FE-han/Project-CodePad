@@ -143,12 +143,10 @@ export function ProfileModal(props: ProfileModalProps) {
   const [profileModalState, setProfileModalState] = useState<string>("CLOSE");
   const [userNameInput, setUserNameInput] = useState<string>("");
   //이미지 관련 state
-  const [userProfileImageSrc, setUserProfileImageSrc] = useState<
-    string | undefined
-  >("");
-  const [userProfileImageFile, setUserProfileImageFile] = useState<
-    Blob | string
-  >("");
+  const [userProfileImageSrc, setUserProfileImageSrc] =
+    useState<string | undefined>("");
+  const [userProfileImageFile, setUserProfileImageFile] =
+    useState<Blob | string>("");
 
   const classes = ProfileModalStyles();
 
