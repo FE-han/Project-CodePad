@@ -6,7 +6,7 @@ import {
   DialogActions,
   DialogContent,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import loginGoogle from "../../api/loginGoogle";
 
@@ -31,13 +31,10 @@ const LoginModalStyles = makeStyles({
     top: "-10px",
     cursor: "pointer",
   },
-  loginLink: {
-    margin: "0px auto 60px",
-  },
   loginButton: {
     width: "250px",
     height: "50px",
-
+    margin: "0px auto 60px",
     backgroundColor: "white",
     borderRadius: "5px",
     cursor: "pointer",
@@ -47,9 +44,11 @@ const LoginModalStyles = makeStyles({
 export default function LoginModal(props: LoginModalProps) {
   const { onClose, open } = props;
 
+  const navigate = useNavigate();
   const classes = LoginModalStyles();
 
   const login = () => {
+    navigate(`/api/auth/google`);
     loginGoogle();
     handleClose();
   };
@@ -72,11 +71,9 @@ export default function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <Link to="/api/auth/google" className={classes.loginLink}>
-          <button className={classes.loginButton} onClick={login}>
-            구글 로그인
-          </button>
-        </Link>
+        <button className={classes.loginButton} onClick={login}>
+          구글 로그인
+        </button>
       </DialogActions>
     </Dialog>
   );
