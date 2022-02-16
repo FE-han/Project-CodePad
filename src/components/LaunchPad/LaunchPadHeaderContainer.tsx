@@ -27,6 +27,7 @@ const LaunchpadHeaderContainerStyles = makeStyles({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    gap: "5px",
 
     "& > Button": {
       float: "right",
@@ -34,7 +35,6 @@ const LaunchpadHeaderContainerStyles = makeStyles({
       border: `1px solid ${ButtonColors.COLOR}`,
       borderRadius: "12px",
       boxShadow: ButtonColors.SHADOW,
-      margin: "0px 3px",
 
       "&:hover": {
         border: `1px solid white`,
