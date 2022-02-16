@@ -139,7 +139,7 @@ export default function ProfileModal(props: ProfileModalProps) {
       if (res.name) setUserNameInput(res.name);
       if (res.thumbnail)
         setUserProfileImageSrc(
-          `${process.env.REACT_APP_SERVER_BASE_URL} + ${res.thumbnail}`
+          `https://elice-kdt-sw-1st-team7.elicecoding.com${res.thumbnail}`
         );
     });
   };

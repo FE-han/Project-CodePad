@@ -31,10 +31,12 @@ const LoginModalStyles = makeStyles({
     top: "-10px",
     cursor: "pointer",
   },
+  loginlink: {
+    margin: "0px auto 60px",
+  },
   loginButton: {
     width: "250px",
     height: "50px",
-    margin: "0px auto 60px",
     backgroundColor: "white",
     borderRadius: "5px",
     cursor: "pointer",
@@ -71,9 +73,14 @@ export default function LoginModal(props: LoginModalProps) {
       </DialogTitle>
       <DialogContent></DialogContent>
       <DialogActions>
-        <button className={classes.loginButton} onClick={login}>
-          구글 로그인
-        </button>
+        <a
+          href="https://elice-kdt-sw-1st-team7.elicecoding.com/api/auth/google"
+          className={classes.loginlink}
+        >
+          <button className={classes.loginButton} onClick={login}>
+            구글 로그인
+          </button>
+        </a>
       </DialogActions>
     </Dialog>
   );
