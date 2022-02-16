@@ -14,7 +14,8 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { HeaderColors } from "../../utils/CommonStyle";
-import { LoginModal, ProfileModal } from "../Modal";
+import LoginModal from "../Modal/LoginModal";
+import ProfileModal from "../Modal/ProfileModal";
 import logout from "../../api/logout";
 
 export default function Header() {
