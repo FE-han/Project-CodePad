@@ -91,6 +91,10 @@ export default function Metronome() {
           }
         }
         if (isPlayRef.current) metronome();
+        if (!isPlayRef.current) {
+          setBar(1);
+          setBeat(1);
+        }
       },
       isPlayRef.current
         ? Math.max(0, intervalTimeRef.current - delayTimeRef.current)

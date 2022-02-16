@@ -131,17 +131,26 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
       if (res === undefined) return;
       const context = new AudioContext();
 
-      setTimeout(() => {
-        dispatch(
-          soundButtonsActions.changeButtonState({
-            location: btnLocation,
-            state: "STOP",
-          })
-        );
-      }, res.buffer!.duration * 1000);
+      // //남은 한 사이클 재생후 정지
+      // setTimeout(() => {
+      //   dispatch(
+      //     soundButtonsActions.changeButtonState({
+      //       location: btnLocation,
+      //       state: "STOP",
+      //     })
+      //   );
+      // }, res.buffer!.duration * 1000);
+      // res.stop(context.currentTime + res.buffer!.duration);
 
-      res.stop(context.currentTime + res.buffer!.duration); //남은 한 사이클 재생후 정지
-      // res.stop(); //일단 바로정지하는 기능만 올려두고 나중에 바꾸기
+      //바로정지
+      dispatch(
+        soundButtonsActions.changeButtonState({
+          location: btnLocation,
+          state: "STOP",
+        })
+      );
+      res.stop();
+
       const newPlayedSoundSamples = alreadyPlayedSoundSamples;
       newPlayedSoundSamples.delete(btnLocation);
       setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
