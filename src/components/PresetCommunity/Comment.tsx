@@ -1,11 +1,12 @@
 import Avatar from "@mui/material/Avatar";
-import testImage from "../../assets/testImage.png";
 import { makeStyles } from "@mui/styles";
 import { Divider, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import { useState } from "react";
+import { CommentData } from "../../utils/CommonInterface";
+import { memo } from "react";
 
 const commentStyles = makeStyles({
   root: {
@@ -21,14 +22,28 @@ const commentStyles = makeStyles({
   },
 });
 
-export default function Comment() {
+const Comment = (props: {
+  commentData: CommentData;
+  deleteFn: Function;
+  updateFn: Function;
+}) => {
+  const { commentData } = props;
+
   const classes = commentStyles();
+
+  const loginUserId = "IYfxLxA9t3BwCjCodzvwTa";
+
+  const commentAuthorUserId = commentData.userId;
+
+  const presetAutorUserId = "IYfxLxA9t3BwCjCodzvwTa";
+
+  const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
+  const updateBtn = loginUserId === commentAuthorUserId;
 
   const [toggleHover, setToggleHover] = useState(false);
 
   const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
     setToggleHover(!toggleHover);
-    console.log(toggleHover);
   };
 
   return (
@@ -37,39 +52,56 @@ export default function Comment() {
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
     >
-      <Avatar alt="user-image" src={testImage} sx={{ width: 24, height: 24 }} />
-      <span className={classes.userName}>eundore</span>
+      <Avatar
+        alt="user-image"
+        src={commentData.userImageURL}
+        sx={{ width: 24, height: 24 }}
+      />
+      <span className={classes.userName}>{commentData.userName}</span>
       <Divider orientation="vertical" flexItem />
-      <span>Good!</span>
-      <IconButton
-        aria-label="delete"
-        size="small"
-        sx={{
-          position: "absolute",
-          right: "0px",
-          "&.disabled": {
-            display: "none",
-          },
-        }}
-        className={!toggleHover ? "disabled" : ""}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <span>{commentData.comment}</span>
 
-      <IconButton
-        aria-label="edit"
-        size="small"
-        sx={{
-          position: "absolute",
-          right: "30px",
-          "&.disabled": {
-            display: "none",
-          },
-        }}
-        className={!toggleHover ? "disabled" : ""}
-      >
-        <EditIcon />
-      </IconButton>
+      {deleteBtn ? (
+        <IconButton
+          aria-label="delete"
+          size="small"
+          sx={{
+            position: "absolute",
+            right: "0px",
+            "&.disabled": {
+              display: "none",
+            },
+          }}
+          className={!toggleHover ? "disabled" : ""}
+          onClick={props.deleteFn(commentData.commentId)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      ) : (
+        ""
+      )}
+      {updateBtn ? (
+        <IconButton
+          aria-label="edit"
+          size="small"
+          sx={{
+            position: "absolute",
+            right: "30px",
+            "&.disabled": {
+              display: "none",
+            },
+          }}
+          className={!toggleHover ? "disabled" : ""}
+          onClick={props.updateFn(commentData.commentId)}
+        >
+          {" "}
+          <EditIcon />
+        </IconButton>
+      ) : (
+        ""
+      )}
     </div>
   );
-}
+};
+
+export default memo(Comment);
