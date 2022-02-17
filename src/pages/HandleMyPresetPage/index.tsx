@@ -13,7 +13,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
-import { Params, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { getPreset } from "../../api/getPreset";
 
@@ -33,7 +33,7 @@ import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 
-export const CreatePresetsPageStyles = makeStyles({
+export const HandleMyPresetPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
@@ -155,23 +155,30 @@ export const CreatePresetsPageStyles = makeStyles({
   },
 });
 
-interface urlParams {
+interface UrlParams {
   mode: "create" | "update";
   presetId: string;
 }
 
-export function CreatePresetsPage() {
-  const classes = CreatePresetsPageStyles();
+export function HandleMyPresetPage() {
+  const classes = HandleMyPresetPageStyles();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const urlParams = useParams();
-  console.log(urlParams);
+  const urlParams =
+    useParams<{ mode: "create" | "update"; presetId: string }>();
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(urlParams));
+
+    const nowPresetData: Preset = await getPreset(
+      setPresetId({
+        mode: urlParams.mode,
+        presetId: urlParams.presetId,
+      })
+    );
+    console.log(nowPresetData);
     // setDefaultPresetData(newPresetData);
 
     setPresetData({
@@ -204,4 +211,4 @@ export function CreatePresetsPage() {
   );
 }
 
-export default CreatePresetsPage;
+export default HandleMyPresetPage;

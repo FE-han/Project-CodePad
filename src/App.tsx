@@ -13,6 +13,7 @@ import LikePresetsPage from "./pages/LikePresets";
 
 import CreatePresetsPage from "./pages/CreatePresetsPage";
 import ModifyPresetsPage from "./pages/UpdatePresetsPage";
+import HandleMyPresetPage from "./pages/HandleMyPresetPage";
 
 const AppStyles = makeStyles({
   root: {
@@ -42,8 +43,10 @@ function App() {
           <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
-          <Route path={"/mypresets/create"} element={<CreatePresetsPage />} />
-          <Route path={"/mypresets/update"} element={<ModifyPresetsPage />} />
+          <Route
+            path={"/mypresets/:mode/:userid"}
+            element={<HandleMyPresetPage />}
+          />
         </Routes>
       </div>
     </>
