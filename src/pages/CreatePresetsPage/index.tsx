@@ -188,7 +188,7 @@ export function CreatePresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
+          {/* <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} /> */}
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">

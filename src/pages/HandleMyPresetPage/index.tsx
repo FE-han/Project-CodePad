@@ -158,18 +158,18 @@ export const HandleMyPresetPageStyles = makeStyles({
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
 
-  const [myPresetData, setMyPresetData] = useState<Preset>(
+  const [initialPresetData, setinitialPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+  const urlParams = useParams<{ presetId: string }>();
 
-  const getInitialData = async () => {
+  const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    console.log("asdf", presetId);
+    console.log("asdf", urlParams.presetId);
 
     const config: PresetParams = {
       userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
-      presetId: setPresetId(presetId),
+      presetId: setPresetId(urlParams),
     };
 
     const nowPresetData: Preset = await getPreset(config);
@@ -178,21 +178,25 @@ export function HandleMyPresetPage() {
 
     setPresetData({
       nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
+      defaultPresetData: initialPresetData,
+      setDefaultPresetData: setinitialPresetData,
     });
   };
 
   useEffect(() => {
-    getInitialData();
+    if (urlParams.presetId === undefined) {
+      console.log("create page");
+      return;
+    }
+    console.log("update page");
+    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
   }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
-          {"생성,수정용페이지"}
+          <LaunchPadEdit presetData={initialPresetData} />
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">

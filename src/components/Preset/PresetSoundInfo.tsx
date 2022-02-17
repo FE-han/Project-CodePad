@@ -18,6 +18,9 @@ import { CreatePresetsPageStyles } from "../../pages/CreatePresetsPage/index";
 import { useState } from "react";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
+import { useAppSelector } from "../../modules/hooks";
+import { LoopButton } from "../LaunchPadEdit/LoopButton";
+import { SelectedPresetButton } from "./SelectedPresetButton";
 
 interface SoundSampleValue {
   name: string;
@@ -26,6 +29,10 @@ interface SoundSampleValue {
 
 export default function PresetSoundInfo() {
   const classes = CreatePresetsPageStyles();
+
+  const selectedButtonState = useAppSelector(
+    (state) => state.selectedButtonSlice
+  );
 
   const [soundSampleValue, setSoundSampleValue] = useState<SoundSampleValue>({
     name: "",
@@ -59,8 +66,15 @@ export default function PresetSoundInfo() {
       <div
         style={{
           height: "40%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      ></div>
+      >
+        <div style={{ height: "150px", width: "150px" }}>
+          <SelectedPresetButton />
+        </div>
+      </div>
       <Divider />
       <div className={classes.setSoundInfo}>
         <span>Sound Sample</span>
