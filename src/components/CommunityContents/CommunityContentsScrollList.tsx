@@ -61,21 +61,21 @@ const CommunityContentsScrollList = (props: {
     if (res.success) {
       if (res.data.length > 0) {
         setItemLists((arr) => arr.concat(res.data));
+        return true;
       } else {
-        setIsDone(true);
-        console.log("Done!");
+        return false;
       }
     }
-    if (!res.success) {
-      setIsError(true);
-      alert(res.errorMessage);
-    }
+    return false;
   };
 
   useEffect(() => {
     if (!isLoaded) return;
 
-    getMoreItem();
+    const res = getMoreItem();
+    if (!res) {
+      setIsError(true);
+    }
     const newPageNum = config.pageNum + 1;
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
@@ -88,22 +88,25 @@ const CommunityContentsScrollList = (props: {
     observer: IntersectionObserver
   ) => {
     if (entry.isIntersecting) {
-      observer.unobserve(entry.target);
+      //observer.unobserve(entry.target);
       setIsLoaded(true);
-      observer.observe(entry.target);
+      //observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target && !isDone && !isError) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0,
-      });
+    if (isDone || isError) {
+      return () => observer && observer.disconnect();
+    } else {
+      if (target && !isDone && !isError) {
+        observer = new IntersectionObserver(onIntersect, {
+          threshold: 0,
+        });
 
-      observer.observe(target);
+        observer.observe(target);
+      }
     }
-    return () => observer && observer.disconnect();
   }, [target, isDone, isError]);
 
   const ContentList = () => {
