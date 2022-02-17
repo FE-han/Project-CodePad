@@ -78,10 +78,12 @@ export default function ProfileModal(props: ProfileModalProps) {
     useState<ProfileModalType>("CLOSE");
   const [userNameInput, setUserNameInput] = useState<string>("");
   //이미지 관련 state
-  const [userProfileImageSrc, setUserProfileImageSrc] =
-    useState<string | undefined>("");
-  const [userProfileImageFile, setUserProfileImageFile] =
-    useState<Blob | string>("");
+  const [userProfileImageSrc, setUserProfileImageSrc] = useState<
+    string | undefined
+  >("");
+  const [userProfileImageFile, setUserProfileImageFile] = useState<
+    Blob | string
+  >("");
 
   const classes = ProfileModalStyles();
 
@@ -116,7 +118,6 @@ export default function ProfileModal(props: ProfileModalProps) {
   const onClickForEditProfile = () => {
     const userNameLengthIsZeroMessage = "유저 이름은 1글자 이상이어야 합니다.";
     const beEdittedMessage = "수정되었습니다";
-    const cookieToken = getCookie(cookieName);
 
     if (userNameInput.length === 0) {
       alert(userNameLengthIsZeroMessage);
@@ -124,8 +125,10 @@ export default function ProfileModal(props: ProfileModalProps) {
     }
     const userFormData = new FormData();
     userFormData.append("name", userNameInput);
-    if (userProfileImageFile) userFormData.append("img", userProfileImageFile);
-    editProfileInfo(cookieToken, userFormData);
+    if (userProfileImageFile) {
+      userFormData.append("img", userProfileImageFile);
+    }
+    editProfileInfo(userFormData);
     alert(beEdittedMessage);
     handleClose();
   };
@@ -136,9 +139,9 @@ export default function ProfileModal(props: ProfileModalProps) {
     const cookieToken = getCookie(cookieName);
     getProfileInfo(cookieToken).then((res) => {
       if (res.name) setUserNameInput(res.name);
-      if (res.thumbnail)
+      if (res.thumbnailURL)
         setUserProfileImageSrc(
-          `https://elice-kdt-sw-1st-team7.elicecoding.com${res.thumbnail}`
+          `https://elice-kdt-sw-1st-team7.elicecoding.com/${res.thumbnailURL}`
         );
     });
   };

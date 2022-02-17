@@ -1,14 +1,15 @@
-import axios from "axios";
-
+import { AxiosRequestConfig } from "axios";
+import { axiosInstance } from "./axiosInstance";
 //${process.env.REACT_APP_SERVER_BASE_URL}
-export default async function editProfileInfo(
-  accessToken: string,
-  userFormData: FormData
-) {
-  await axios.put(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/userProfile`, {
+export default async function editProfileInfo(userFormData: FormData) {
+  const config: AxiosRequestConfig = {
     headers: {
-      "Contents-Type": "multipart/form-data",
+      "Content-Type": "multipart/form-data",
     },
-    body: userFormData,
-  });
+  };
+  const response = await axiosInstance(config).put(
+    `/auth/userProfile`,
+    userFormData
+  );
+  return response.data;
 }
