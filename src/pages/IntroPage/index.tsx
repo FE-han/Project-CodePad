@@ -15,13 +15,13 @@ export default function IntroPage() {
   return (
     <div className={classes.root}>
       <div className={classes.top50}>
-        <button
+        {/* <button
           onClick={() => {
             navigate(`/userpresets/${asdf.a}/${asdf.b}`);
           }}
         >
           임시이동
-        </button>
+        </button> */}
         <CommunityContentsScrollList
           title="CHART : TOP 50"
           listName="top50List"
