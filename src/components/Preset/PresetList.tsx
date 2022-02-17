@@ -9,8 +9,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
 import { useState } from "react";
-import usePagination from '../../components/Preset/usePagination';
-
+import usePagination from "../../components/Preset/usePagination";
+import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
 
 const PresetsListStyles = makeStyles({
   listBox: {},
@@ -44,33 +44,35 @@ const PresetsListStyles = makeStyles({
     textAlign: "center",
   },
 });
-export default function PresetList(props: { createBtn: Boolean, userInfo:any}) {
+export default function PresetList(props: {
+  createBtn: Boolean;
+  presetList: Array<PresetListElement>;
+}) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const presetId = useParams();
 
-  console.log(presetId)
-  const [ page, setPage ] = React.useState(1);
-  const PER_PAGE = 5;
-  console.log(props.userInfo)
-  const count = Math.ceil(props.userInfo.length/PER_PAGE);
-  const _DATA = usePagination(props.userInfo, PER_PAGE);
+  //presetList 값을 가져올수 있게 되었음!
 
-  const handleChange = (e:any,p:any) => {
-    setPage(p);
-    _DATA.jump(p);
-  }
-  
+  // console.log(presetId)
+  // const [ page, setPage ] = React.useState(1);
+  // const PER_PAGE = 5;
+  // console.log(props.userInfo)
+  // const count = Math.ceil(props.userInfo.length/PER_PAGE);
+  // const _DATA = usePagination(props.userInfo, PER_PAGE);
 
+  // const handleChange = (e:any,p:any) => {
+  //   setPage(p);
+  //   _DATA.jump(p);
+  // }
 
-
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
-  ) => {
-    setSelectedIndex(index);
-  };
+  // const handleListItemClick = (
+  //   event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  //   index: number
+  // ) => {
+  //   setSelectedIndex(index);
+  // };
 
   return (
     <div className={classes.listBox}>
@@ -89,7 +91,7 @@ export default function PresetList(props: { createBtn: Boolean, userInfo:any}) {
           ""
         )}
 
-        {_DATA.currentData().map((value:any) => (
+        {_DATA.currentData().map((value: any) => (
           <ListItemButton
             selected={selectedIndex === value}
             onClick={(event) => handleListItemClick(event, value)}

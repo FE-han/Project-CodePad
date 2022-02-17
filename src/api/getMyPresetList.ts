@@ -1,19 +1,19 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
-export interface PresetListparams {
-  Listname: string; //
-  pageNum: number;
-  limitNum: number;
+export interface GetMyPresetParams {
+  userId: string;
 }
 
-export async function getPresetList(params: PresetListparams) {
+export async function getMyPresetList(params: GetMyPresetParams) {
   const config: AxiosRequestConfig = {
     //token input
+    baseURL: "http://localhost:3001",
   };
-
+  console.log(params);
   const response = await axiosInstance(config).get(
-    `/${params.Listname}?page=${params.pageNum}&limit=${params.limitNum}`
+    `/userInfo/userId=${params.userId}`
   );
+
   return response.data;
 }

@@ -3,7 +3,7 @@ import getPresetSlice from "./actions/getPresetSlice";
 import presetListSlice from "./actions/CommunityContents/presetListSlice";
 import loopSoundGroupSlice from "./actions/loopSoundGroupSlice";
 import soundButtonsStateSlice from "./actions/soundButtonsSlice";
-import getPresetListInfoSlice from "./actions/getPresetListInfoSlice";
+import getMyPresetListSlice from "./actions/getMyPresetListSlice";
 
 export const reducers = {
   //2. 작성한 슬라이스를 여기에 추가한다.
@@ -11,5 +11,5 @@ export const reducers = {
   presetListSlice,
   loopSoundGroupSlice,
   soundButtonsStateSlice,
-  getPresetListInfoSlice,
+  getMyPresetListSlice,
 };

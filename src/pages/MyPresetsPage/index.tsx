@@ -17,35 +17,17 @@ import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
-import { PresetListInfoType } from "./utils/types";
+import { PresetListElement } from "./utils/types";
 
-import {
-  ConnectingAirportsOutlined,
-  ConstructionRounded,
-  HdrEnhancedSelectOutlined,
-  Translate,
-} from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
 
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import ListItemText from "@mui/material/ListItemText";
-import { grey } from "@mui/material/colors";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { style } from "@mui/system";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
-import { getPresetListInfo } from "../../api/getPresetListInfo";
-import { actions as getPresetListInfoDataActions } from '../../modules/actions/getPresetListInfoSlice'
+import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
 import { useAppSelector } from "../../modules/hooks";
-
-
-
+import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
+import { PresetListState } from "../../modules/actions/CommunityContents/presetListSlice";
+import { PresetData } from "../../utils/CommonInterface";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -155,29 +137,41 @@ export function MyPresetsPage() {
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const presetId = useParams();
+  // const userId = useParams();
 
+  const { presetList, isLoading } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
 
-  const state = useAppSelector((state) => state.getPresetListInfoSlice)
-  
-  
   // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
   // console.log(state)
-  
 
   const getPresetListInfoData = async () => {
-      try{
-        const nowPresetListInfo: PresetListInfoType = await getPresetListInfo(presetId);
-        console.log(nowPresetListInfo);
-        dispatch(getPresetListInfoDataActions.getPresetDataFulfilled(nowPresetListInfo));
-        console.log('state:',state)
-    }catch{
-        dispatch(getPresetListInfoDataActions.getPresetDataRejected());
-        alert('에러')
+    // const userId = await getUserId()  이런식으로 토큰을 서버에 보내고, 내 userId를 가져오는 api를 수행해서 값을 받아옴
+
+    const param: GetMyPresetParams = {
+      userId: "itsMe!!",
+    };
+
+    try {
+      dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
+        param
+      );
+      console.log(nowMyPresetList);
+      dispatch(
+        getMyPresetListActions.getPresetDataFulfilled({
+          presetList: nowMyPresetList,
+        })
+      );
+      console.log("state:", presetList);
+    } catch {
+      dispatch(getMyPresetListActions.getPresetDataRejected());
+      alert("에러");
     }
-  }
-  
-  
-  const getInitialData = async () => {
+  };
+
+  const getInitialLaunchPadPresetData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
@@ -190,9 +184,8 @@ export function MyPresetsPage() {
 
   useEffect(() => {
     getPresetListInfoData();
-    getInitialData();
+    getInitialLaunchPadPresetData();
   }, []);
-
 
   return (
     <div className={classes.root}>
@@ -212,7 +205,7 @@ export function MyPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={true} userInfo={state}/>
+            <PresetList createBtn={true} presetList={presetList} />
             <PaginationContainer />
           </div>
         </div>

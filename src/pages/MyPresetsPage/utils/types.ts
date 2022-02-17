@@ -1,4 +1,4 @@
-export type PresetListInfoType = {
-    presetTitle: string,
-    presetId: string,
-}
+export type PresetListElement = {
+  presetTitle: string;
+  presetId: string;
+};
