@@ -15,24 +15,45 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LoopIcon from "@mui/icons-material/Loop";
 
 import { CreatePresetsPageStyles } from "../../pages/CreatePresetsPage/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import { useAppSelector } from "../../modules/hooks";
 import { LoopButton } from "../LaunchPadEdit/LoopButton";
 import { SelectedPresetButton } from "./SelectedPresetButton";
+import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
+import { SelectedButtonState } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
+import { LoopSoundType, OneShotSoundType } from "../LaunchPad/utils/types";
 
 interface SoundSampleValue {
   name: string;
   file: File | undefined;
 }
 
-export default function PresetSoundInfo() {
+interface PresetSoundInfoProps {
+  initialPresetData: NowPresetValueState;
+  setInitialPresetData: React.Dispatch<
+    React.SetStateAction<NowPresetValueState>
+  >;
+}
+
+export default function PresetSoundInfo({
+  initialPresetData,
+  setInitialPresetData,
+}: PresetSoundInfoProps) {
   const classes = CreatePresetsPageStyles();
 
   const selectedButtonState = useAppSelector(
     (state) => state.selectedButtonSlice
   );
+
+  const [selectedButtonValue, setSelectedButtonValue] =
+    useState<SelectedButtonState>(selectedButtonState);
+
+  useEffect(() => {
+    setSelectedButtonValue(selectedButtonState);
+    console.log(selectedButtonState);
+  }, [selectedButtonState]);
 
   const [soundSampleValue, setSoundSampleValue] = useState<SoundSampleValue>({
     name: "",
@@ -53,12 +74,71 @@ export default function PresetSoundInfo() {
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as BtnType;
+
     setBtnType(value);
   };
 
   const [soundType, setSoundType] = useState("");
   const handleSoundTypeChange = (event: SelectChangeEvent) => {
+    const selectedNumValue = Number(event.target.value);
     setSoundType(event.target.value);
+    console.log(event.target.value);
+    console.log(typeof event.target.value);
+
+    const returnSoundType = (
+      selectedNumValue: number
+    ): OneShotSoundType | LoopSoundType | undefined => {
+      switch (selectedNumValue) {
+        case 0:
+          return "FX";
+        case 1:
+          return "DRUM";
+        case 2:
+          return "PERC";
+        case 3:
+          return "VOCAL";
+        case 4:
+          return "SYNTH";
+        case 5:
+          return "DRUMS";
+        case 6:
+          return "MELODIC";
+        case 7:
+          return "CHORD";
+
+        default:
+          return undefined;
+      }
+    };
+
+    setSelectedButtonValue({
+      ...selectedButtonValue,
+      soundType: returnSoundType(selectedNumValue),
+    });
+    console.log(
+      initialPresetData.soundSamples.map((soundSample) => {
+        if (soundSample.location === selectedButtonValue.location) {
+          return {
+            ...soundSample,
+            soundType: returnSoundType(selectedNumValue),
+          };
+        }
+        return soundSample;
+      })
+    );
+    setInitialPresetData({
+      ...initialPresetData,
+      soundSamples: initialPresetData.soundSamples.map((soundSample) => {
+        if (soundSample.location === selectedButtonValue.location) {
+          return {
+            ...soundSample,
+            soundType: returnSoundType(selectedNumValue),
+          };
+        }
+        return soundSample;
+      }),
+    });
+    console.log(initialPresetData);
   };
 
   return (
@@ -72,7 +152,7 @@ export default function PresetSoundInfo() {
         }}
       >
         <div style={{ height: "150px", width: "150px" }}>
-          <SelectedPresetButton />
+          <SelectedPresetButton selectedButtonValue={selectedButtonValue} />
         </div>
       </div>
       <Divider />

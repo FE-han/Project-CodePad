@@ -6,7 +6,10 @@ import { useDispatch } from "react-redux";
 import { actions as loopSoundGroupActions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
-import { actions } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
+import {
+  actions,
+  SelectedButtonState,
+} from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
 import { LaunchPadButtonColor } from "../LaunchPadEdit/utils/launchPadStyles";
 
 const LoopButtonStyles = makeStyles({
@@ -72,7 +75,13 @@ const LoopButtonStyles = makeStyles({
   },
 });
 
-export function SelectedPresetButton() {
+interface SelectedPresetButtonProps {
+  selectedButtonValue: SelectedButtonState;
+}
+
+export function SelectedPresetButton({
+  selectedButtonValue,
+}: SelectedPresetButtonProps) {
   const classes = LoopButtonStyles();
   //   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
@@ -107,7 +116,9 @@ export function SelectedPresetButton() {
         // );
       }}
     >
-      <div className={classes.buttonText}>{"FX" || ""}</div>
+      <div className={classes.buttonText}>
+        {selectedButtonValue.soundType || ""}
+      </div>
       <div className={classes.buttonIcon}>
         <AutorenewIcon />
       </div>

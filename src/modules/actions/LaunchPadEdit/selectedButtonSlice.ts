@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SoundSample } from "../../../components/LaunchPad/utils/types";
 
-interface SelectedButtonState extends SoundSample {
+export interface SelectedButtonState extends SoundSample {
   soundFile?: File;
 }
 

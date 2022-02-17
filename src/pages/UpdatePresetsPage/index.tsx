@@ -218,7 +218,7 @@ export function UpdatePresetsPage() {
             <PresetInfo />
           </div>
         </div>
-        <PresetSoundInfo />
+        {/* <PresetSoundInfo /> */}
         <div className={classes.tags}></div>
       </div>
     </div>

@@ -6,16 +6,16 @@ import {
 } from "../../components/LaunchPad/utils/types";
 import { PrivacyType } from "../../utils/CommonValue";
 
-interface SoundSampleWithFile extends SoundSample {
-  soundFile: File | undefined;
+export interface SoundSampleWithFile extends SoundSample {
+  soundFile?: File;
 }
 
 interface PresetThumbnail {
   thumbnailImgURL: string;
-  thumbnailImgFile: File | undefined;
+  thumbnailImgFile?: File;
 }
 
-interface NowPresetValueState {
+export interface NowPresetValueState {
   userId: string;
   presetTitle: string; //Preset
   presetId: string; //Preset
