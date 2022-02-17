@@ -1,4 +1,10 @@
 export type PresetListElement = {
-  presetTitle: string;
+  title: string;
   presetId: string;
+  reactions:{
+    viewCount: number
+    likeCount: number
+    commentCount: number
+  }
+  
 };

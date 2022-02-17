@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 function usePagination(data:any, itemsPerPage:any){
     const [currPage, setCurrPage] = useState(1);
     const MaxPage = Math.ceil(data.length / itemsPerPage);
-    console.log(data)
+    
 
     function currentData(){
         const begin = (currPage - 1) * itemsPerPage;
         const end = begin + itemsPerPage;
+        console.log(data)
         return data.slice(begin,end)
     }
 

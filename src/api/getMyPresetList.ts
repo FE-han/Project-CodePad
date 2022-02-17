@@ -1,3 +1,4 @@
+import { ViewSidebar } from "@mui/icons-material";
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -12,8 +13,8 @@ export async function getMyPresetList(params: GetMyPresetParams) {
   };
   console.log(params);
   const response = await axiosInstance(config).get(
-    `/userInfo/userId=${params.userId}`
+    `/userId=${params.userId}`
   );
-
+    console.log(response)
   return response.data;
 }

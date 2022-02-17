@@ -19,6 +19,7 @@ import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
+import { useAppSelector } from "../../modules/hooks";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -89,6 +90,9 @@ export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
 
   const { userId } = useParams<UserPresetsPageParams>();
+  const { presetList, isLoading } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
@@ -127,8 +131,8 @@ export function UserPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={false} userInfo/>
-            <PaginationContainer />
+            <PresetList createBtn={false} presetList={presetList}/>
+            <PaginationContainer presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}>

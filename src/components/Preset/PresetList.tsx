@@ -11,10 +11,11 @@ import { PresetListBtnColors } from "../../utils/CommonStyle";
 import { useState } from "react";
 import usePagination from "../../components/Preset/usePagination";
 import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
+import Pagination from "@mui/material/Pagination";
+
 
 const PresetsListStyles = makeStyles({
   listBox: {},
-
   presetList: {
     "& > div": {
       border: `1px solid ${PresetListBtnColors.COLOR}`,
@@ -53,26 +54,25 @@ export default function PresetList(props: {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const presetId = useParams();
 
-  //presetList 값을 가져올수 있게 되었음!
+  const [ page, setPage ] = React.useState(1);
+  const PER_PAGE = 5;
+  const count = Math.ceil(props.presetList.length/PER_PAGE);
+  const _DATA = usePagination(props.presetList, PER_PAGE);
 
-  // console.log(presetId)
-  // const [ page, setPage ] = React.useState(1);
-  // const PER_PAGE = 5;
-  // console.log(props.userInfo)
-  // const count = Math.ceil(props.userInfo.length/PER_PAGE);
-  // const _DATA = usePagination(props.userInfo, PER_PAGE);
+  console.log(props)
 
-  // const handleChange = (e:any,p:any) => {
-  //   setPage(p);
-  //   _DATA.jump(p);
-  // }
+  const handleChange = (e:any,p:any) => {
+    setPage(p);
+    _DATA.jump(p);
+  }
 
-  // const handleListItemClick = (
-  //   event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  //   index: number
-  // ) => {
-  //   setSelectedIndex(index);
-  // };
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+    console.log(index);
+  };
 
   return (
     <div className={classes.listBox}>
@@ -96,7 +96,7 @@ export default function PresetList(props: {
             selected={selectedIndex === value}
             onClick={(event) => handleListItemClick(event, value)}
           >
-            <ListItemText primary={value.presetTitle} />
+            <ListItemText primary={value.title} />
             <Reactions></Reactions>
           </ListItemButton>
         ))}

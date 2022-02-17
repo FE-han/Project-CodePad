@@ -1,14 +1,81 @@
 {
-    "userInfo": [{
-            "id": 1,
-            "presetTitle": "preset1",
-            "presetId": 1
+    "userId=1": [{
+            "title": "preset1",
+            "presetId": 111,
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
         },
         {
-            "id": 2,
-            "presetTitle": "preset2",
-            "presetId": 2
+            "title": "preset2",
+            "presetId": 222,
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset3",
+            "presetId": 333,
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset4",
+            "presetId": 444,
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset5",
+            "presetId": 555
+        },
+        {
+            "title": "preset6",
+            "presetId": 666
+        },
+        {
+            "title": "preset7",
+            "presetId": 777
+        },
+        {
+            "title": "preset8",
+            "presetId": 888
+        }
+    ],
+    "userId=2": [{
+            "title": "preset4",
+            "presetId": 444
+        },
+        {
+            "title": "preset5",
+            "presetId": 555
+        },
+        {
+            "title": "preset6",
+            "presetId": 666
+        }
+    ],
+    "userId=3": [{
+            "title": "preset7",
+            "presetId": 777
+        },
+        {
+            "title": "preset8",
+            "presetId": 888
+        },
+        {
+            "title": "preset9",
+            "presetId": 999
         }
     ]
-
 }

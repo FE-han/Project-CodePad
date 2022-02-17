@@ -113,6 +113,10 @@ export function DefaultPresetsPage() {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
 
+  const { presetList, isLoading } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     // setDefaultPresetData(newPresetData);
@@ -175,7 +179,7 @@ export function DefaultPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={false} userInfo/>
+            <PresetList createBtn={false} presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}></div>

@@ -142,6 +142,8 @@ export function MyPresetsPage() {
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
+  console.log(presetList)
+  
 
   // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
   // console.log(state)
@@ -150,7 +152,7 @@ export function MyPresetsPage() {
     // const userId = await getUserId()  이런식으로 토큰을 서버에 보내고, 내 userId를 가져오는 api를 수행해서 값을 받아옴
 
     const param: GetMyPresetParams = {
-      userId: "itsMe!!",
+      userId: "1",
     };
 
     try {
@@ -206,7 +208,7 @@ export function MyPresetsPage() {
           <div className="presetListContainer">
             <PresetImage />
             <PresetList createBtn={true} presetList={presetList} />
-            <PaginationContainer />
+            <PaginationContainer presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}>
