@@ -4,13 +4,17 @@ import { makeStyles } from "@mui/styles";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { Fonts, ButtonColors, CommentColors } from "../../utils/CommonStyle";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { memo } from "react";
-import { getCommentListAPI } from "../../api/commentListAPI";
+import {
+  getCommentListAPI,
+  postCommentListAPI,
+} from "../../api/commentListAPI";
 import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
 import { ScrollValues } from "../../utils/CommonValue";
 import Loader from "../CommunityContents/Loader";
+import { setConstantValue } from "typescript";
 
 const commentsContainerStyles = makeStyles({
   root: {
@@ -60,13 +64,13 @@ const CommentsContainer = () => {
     ScrollValues.defaultPageNum
   );
 
-  const highFunction = () => {};
+  const [text, setText] = useState<string>("");
 
   const getMoreItem = async () => {
     setIsLoaded(true);
 
     const configdata = {
-      presetId: "tmpPrestId",
+      presetId: "4i85YMVBPsydQGMgGwAF9",
       pageNum: curPageNum + 1,
       limitNum: ScrollValues.limitNum,
     };
@@ -78,6 +82,7 @@ const CommentsContainer = () => {
       setCurPageNum(curPageNum + 1);
       setIsError(false);
     } catch (error) {
+      setIsError(true);
       throw new Error();
     }
 
@@ -112,12 +117,45 @@ const CommentsContainer = () => {
     return () => observer && observer.disconnect();
   }, [target]);
 
+  const handleCreate = async () => {
+    const configdata = {
+      presetId: "4i85YMVBPsydQGMgGwAF9",
+      text,
+    };
+
+    try {
+      const newCommentList = await postCommentListAPI(configdata);
+      setCommentList(newCommentList);
+    } catch (error) {
+      alert("send Error");
+    }
+  };
+  const handleSendBtn = (evt: React.ChangeEvent<HTMLButtonElement>) => {};
+  const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = evt.target as HTMLInputElement;
+    const value = target.value;
+    console.log(value);
+    if (value.length > 0) {
+    }
+    if (evt.key === "Enter") {
+      handleCreate();
+      setText("");
+    }
+  };
+  const handleDelete = () => {};
+  const handleUpdate = () => {};
+
   return (
     <div className={classes.root}>
       <div className={classes.commentList}>
         <Stack spacing={1.5}>
           {commentList.map((dt) => (
-            <Comment commentData={dt} actionFn={highFunction} />
+            <Comment
+              key={dt.commentId}
+              commentData={dt}
+              deleteFn={handleDelete}
+              updateFn={handleUpdate}
+            />
           ))}
         </Stack>
         <div ref={setTarget} className={classes.Loader}>
@@ -133,8 +171,11 @@ const CommentsContainer = () => {
               borderBottom: `2px solid rgba(225, 178, 149, 1)`,
             },
           }}
+          value={text}
+          onChange={(evt) => setText(evt.target.value)}
+          onKeyDown={handleEnterKey}
         />
-        <Button variant="outlined" size="small" disabled>
+        <Button variant="outlined" size="small" disabled onClick={handleCreate}>
           send
         </Button>
       </div>

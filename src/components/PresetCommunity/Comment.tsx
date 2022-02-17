@@ -22,29 +22,28 @@ const commentStyles = makeStyles({
   },
 });
 
-const Comment = (props: { commentData: CommentData; actionFn: Function }) => {
+const Comment = (props: {
+  commentData: CommentData;
+  deleteFn: Function;
+  updateFn: Function;
+}) => {
   const { commentData } = props;
 
   const classes = commentStyles();
 
-  const loginUserId = "IYfxLxA9t3BwCjCodzvwT";
+  const loginUserId = "IYfxLxA9t3BwCjCodzvwTa";
 
   const commentAuthorUserId = commentData.userId;
 
-  const presetAutorUserId = "IYfxLxA9t3BwCjCodzvwT";
+  const presetAutorUserId = "IYfxLxA9t3BwCjCodzvwTa";
 
-  const deleteBtn = loginUserId === (commentAuthorUserId || presetAutorUserId);
+  const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
   const updateBtn = loginUserId === commentAuthorUserId;
 
   const [toggleHover, setToggleHover] = useState(false);
 
   const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
     setToggleHover(!toggleHover);
-    console.log(toggleHover);
-  };
-
-  const handleDelete = () => {
-    props.actionFn();
   };
 
   return (
@@ -74,7 +73,7 @@ const Comment = (props: { commentData: CommentData; actionFn: Function }) => {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
-          onClick={handleDelete}
+          onClick={props.deleteFn(commentData.commentId)}
         >
           <DeleteIcon />
         </IconButton>
@@ -93,6 +92,7 @@ const Comment = (props: { commentData: CommentData; actionFn: Function }) => {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
+          onClick={props.updateFn(commentData.commentId)}
         >
           {" "}
           <EditIcon />
