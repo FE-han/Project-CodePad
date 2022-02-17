@@ -23,7 +23,11 @@ import { LoopButton } from "../LaunchPadEdit/LoopButton";
 import { SelectedPresetButton } from "./SelectedPresetButton";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
 import { SelectedButtonState } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
-import { LoopSoundType, OneShotSoundType } from "../LaunchPad/utils/types";
+import {
+  LoopSoundType,
+  OneShotSoundType,
+  SoundSample,
+} from "../LaunchPad/utils/types";
 
 interface SoundSampleValue {
   name: string;
@@ -70,20 +74,30 @@ export default function PresetSoundInfo({
     });
   };
 
-  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
+  const [btnType, setBtnType] = useState<BtnType>("ONESHOT");
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as BtnType;
 
     setBtnType(value);
+    setInitialPresetData({
+      ...initialPresetData,
+      soundSamples: initialPresetData.soundSamples.map((soundSample) => {
+        if (soundSample.location === selectedButtonValue.location) {
+          return {
+            ...soundSample,
+            buttonType: value,
+          };
+        }
+        return soundSample;
+      }),
+    });
   };
 
   const [soundType, setSoundType] = useState("");
   const handleSoundTypeChange = (event: SelectChangeEvent) => {
     const selectedNumValue = Number(event.target.value);
     setSoundType(event.target.value);
-    console.log(event.target.value);
-    console.log(typeof event.target.value);
 
     const returnSoundType = (
       selectedNumValue: number
@@ -115,17 +129,6 @@ export default function PresetSoundInfo({
       ...selectedButtonValue,
       soundType: returnSoundType(selectedNumValue),
     });
-    console.log(
-      initialPresetData.soundSamples.map((soundSample) => {
-        if (soundSample.location === selectedButtonValue.location) {
-          return {
-            ...soundSample,
-            soundType: returnSoundType(selectedNumValue),
-          };
-        }
-        return soundSample;
-      })
-    );
     setInitialPresetData({
       ...initialPresetData,
       soundSamples: initialPresetData.soundSamples.map((soundSample) => {
@@ -138,7 +141,6 @@ export default function PresetSoundInfo({
         return soundSample;
       }),
     });
-    console.log(initialPresetData);
   };
 
   return (
@@ -219,7 +221,7 @@ export default function PresetSoundInfo({
             }}
           >
             <FormControlLabel
-              value="EFFECT"
+              value="ONESHOT"
               control={<Radio color="default" />}
               label={<ArrowForwardIcon />}
               sx={{

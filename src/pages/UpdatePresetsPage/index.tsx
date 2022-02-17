@@ -192,7 +192,7 @@ export function UpdatePresetsPage() {
     }
   };
 
-  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
+  const [btnType, setBtnType] = useState<BtnType>("ONESHOT");
 
   const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
