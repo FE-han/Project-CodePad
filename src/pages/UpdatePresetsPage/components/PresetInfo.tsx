@@ -11,6 +11,7 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
+import { useNavigate } from "react-router";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -55,16 +56,30 @@ const PresetInfoStyles = makeStyles({
     },
   },
 });
-export default function PresetInfo() {
+
+type PresetInfoProps = {
+  title: string;
+  PrivacyOption: PrivacyType;
+  handleTitleChange: any;
+  handlePrivacyChange: any;
+  handleSaveClick: any;
+}
+
+export default function PresetInfo({
+  title,
+  PrivacyOption,
+  handleTitleChange,
+  handlePrivacyChange,
+  handleSaveClick
+}:PresetInfoProps) {
   const classes = PresetInfoStyles();
-  const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
+  const navigate = useNavigate();
+  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if(window.confirm("변경을 취소하시겠습니까?")){
+      navigate(-1);
+    } 
+  }
 
-  const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    const value = target.value as PrivacyType;
-
-    setPrivacy(value);
-  };
   return (
     <div className={classes.root}>
       <TextField
@@ -72,13 +87,15 @@ export default function PresetInfo() {
         label="Title"
         variant="outlined"
         className={classes.title}
+        value={title}
+        onChange={handleTitleChange}
       />
       <FormControl>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={privacy}
+          value={PrivacyOption}
           onChange={handlePrivacyChange}
           className={classes.radioContainer}
           sx={{
@@ -99,10 +116,10 @@ export default function PresetInfo() {
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button variant="outlined" startIcon={<ClearIcon />}>
+        <Button variant="outlined" startIcon={<ClearIcon />} onClick={handleCancelClick}>
           CANCLE
         </Button>
-        <Button variant="outlined" startIcon={<SaveIcon />}>
+        <Button variant="outlined" startIcon={<SaveIcon />} onClick={handleSaveClick}>
           SAVE
         </Button>
       </Stack>

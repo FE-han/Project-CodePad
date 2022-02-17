@@ -30,6 +30,8 @@ import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import { useAppSelector } from "../../modules/hooks";
+import { PrivacyType } from "../../utils/CommonValue";
+import { updatePreset } from "../../api/updatePreset";
 
 const UpdatePresetsPageStyles = makeStyles({
   root: {
@@ -153,6 +155,14 @@ const UpdatePresetsPageStyles = makeStyles({
   },
 });
 
+export type formDataTypes = {
+  presetId: string,
+  presetTitle: string,
+  PrivacyOption: PrivacyType,
+  thumbnailImg: any,
+  tags: any,
+  soundSample: any,
+}
 export function UpdatePresetsPage() {
   const classes = UpdatePresetsPageStyles();
 
@@ -165,8 +175,28 @@ export function UpdatePresetsPage() {
     (state) => state.setNowPresetValueSlice
   );
 
+  const [formData, setFormData] = useState<formDataTypes>({
+    presetId: "",
+    presetTitle: "",
+    PrivacyOption: "PUBLIC",
+    thumbnailImg: {},
+    tags: [],
+    soundSample: [],
+  })
+
+  const initFormData = () => {
+    setFormData({
+      ...formData,
+      presetId: currentPresetState.presetId,
+      presetTitle: currentPresetState.presetTitle,
+      PrivacyOption: currentPresetState.PrivacyOption,
+      thumbnailImg: currentPresetState.thumbnailImg,
+    });
+  }
+
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    try{
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
 
@@ -175,12 +205,22 @@ export function UpdatePresetsPage() {
       defaultPresetData: myPresetData,
       setDefaultPresetData: setMyPresetData,
     });
+  } catch(e) {
+    
+  }
   };
 
   useEffect(() => {
     getInitialData();
     console.log(currentPresetState);
+    
+    initFormData();
   }, []);
+
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
+
 
   const [sample, setSample] = useState<string>("");
 
@@ -206,6 +246,34 @@ export function UpdatePresetsPage() {
     setSoundType(event.target.value);
   };
 
+  const handleThumbnailImageChange = (file:File) => {
+    setFormData({
+      ...formData,
+      thumbnailImg: {
+        thumbnailImgFile: file
+      }
+    });
+  }
+
+  const handleTitleChange = (event: any) => {
+    setFormData({
+      ...formData,
+      presetTitle: event.target.value
+    });
+
+  }
+  
+  const handlePrivacyChange = (event: any) => {
+    setFormData({
+      ...formData,
+      PrivacyOption: event.target.value
+    })
+  }
+
+  const handleSaveClick = async (event: any) => {
+    await updatePreset(formData)
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -214,8 +282,17 @@ export function UpdatePresetsPage() {
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo />
+            <PresetThumbnailUpload 
+              thumbnailImg={formData.thumbnailImg}
+              handleThumbnailImageChange={handleThumbnailImageChange}
+            />
+            <PresetInfo
+              title={formData.presetTitle}
+              PrivacyOption={formData.PrivacyOption}
+              handleTitleChange={handleTitleChange}
+              handlePrivacyChange={handlePrivacyChange}
+              handleSaveClick={handleSaveClick}
+            />
           </div>
         </div>
         <div className={classes.soundInfo}>
