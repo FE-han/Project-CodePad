@@ -127,7 +127,7 @@ export function UserPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={false} />
+            <PresetList createBtn={false} userInfo/>
             <PaginationContainer />
           </div>
         </div>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
@@ -8,6 +8,9 @@ import ListItemText from "@mui/material/ListItemText";
 
 import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
+import { useState } from "react";
+import usePagination from '../../components/Preset/usePagination';
+
 
 const PresetsListStyles = makeStyles({
   listBox: {},
@@ -41,10 +44,26 @@ const PresetsListStyles = makeStyles({
     textAlign: "center",
   },
 });
-export default function PresetList(props: { createBtn: Boolean }) {
+export default function PresetList(props: { createBtn: Boolean, userInfo:any}) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const presetId = useParams();
+
+  console.log(presetId)
+  const [ page, setPage ] = React.useState(1);
+  const PER_PAGE = 5;
+  console.log(props.userInfo)
+  const count = Math.ceil(props.userInfo.length/PER_PAGE);
+  const _DATA = usePagination(props.userInfo, PER_PAGE);
+
+  const handleChange = (e:any,p:any) => {
+    setPage(p);
+    _DATA.jump(p);
+  }
+  
+
+
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -70,12 +89,12 @@ export default function PresetList(props: { createBtn: Boolean }) {
           ""
         )}
 
-        {[1, 2, 3, 4, 5].map((value) => (
+        {_DATA.currentData().map((value:any) => (
           <ListItemButton
             selected={selectedIndex === value}
             onClick={(event) => handleListItemClick(event, value)}
           >
-            <ListItemText primary="presetTitle" />
+            <ListItemText primary={value.presetTitle} />
             <Reactions></Reactions>
           </ListItemButton>
         ))}

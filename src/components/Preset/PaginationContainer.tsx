@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 import testImage from "../../assets/testImage.png";
 import { PresetImageColors } from "../../utils/CommonStyle";
 import Pagination from "@mui/material/Pagination";
+import { useState } from "react";
 
 const PaginationStyles = makeStyles({
   root: {

@@ -17,13 +17,15 @@ import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import { PresetListInfoType } from "./utils/types";
 
 import {
+  ConnectingAirportsOutlined,
   ConstructionRounded,
   HdrEnhancedSelectOutlined,
   Translate,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Params, useParams } from "react-router-dom";
 
 import List from "@mui/material/List";
@@ -38,6 +40,12 @@ import { style } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
+import { getPresetListInfo } from "../../api/getPresetListInfo";
+import { actions as getPresetListInfoDataActions } from '../../modules/actions/getPresetListInfoSlice'
+import { useAppSelector } from "../../modules/hooks";
+
+
+
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -141,17 +149,38 @@ const MyPresetsPageStyles = makeStyles({
 
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
+  const dispatch = useDispatch();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const presetId = useParams();
 
+
+  const state = useAppSelector((state) => state.getPresetListInfoSlice)
+  
+  
+  // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
+  // console.log(state)
+  
+
+  const getPresetListInfoData = async () => {
+      try{
+        const nowPresetListInfo: PresetListInfoType = await getPresetListInfo(presetId);
+        console.log(nowPresetListInfo);
+        dispatch(getPresetListInfoDataActions.getPresetDataFulfilled(nowPresetListInfo));
+        console.log('state:',state)
+    }catch{
+        dispatch(getPresetListInfoDataActions.getPresetDataRejected());
+        alert('에러')
+    }
+  }
+  
+  
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
-
     setPresetData({
       nowPresetData,
       defaultPresetData: myPresetData,
@@ -160,8 +189,10 @@ export function MyPresetsPage() {
   };
 
   useEffect(() => {
+    getPresetListInfoData();
     getInitialData();
   }, []);
+
 
   return (
     <div className={classes.root}>
@@ -181,7 +212,7 @@ export function MyPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={true} />
+            <PresetList createBtn={true} userInfo={state}/>
             <PaginationContainer />
           </div>
         </div>

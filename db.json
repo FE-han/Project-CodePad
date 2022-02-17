@@ -1,11 +1,13 @@
 {
-    "presets": [{
+    "userInfo": [{
             "id": 1,
-            "title": "preset1"
+            "presetTitle": "preset1",
+            "presetId": 1
         },
         {
             "id": 2,
-            "title": "preset2"
+            "presetTitle": "preset2",
+            "presetId": 2
         }
     ]
 

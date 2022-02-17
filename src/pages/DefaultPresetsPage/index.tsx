@@ -175,7 +175,7 @@ export function DefaultPresetsPage() {
         <div className={classes.presetList}>
           <div className="presetListContainer">
             <PresetImage />
-            <PresetList createBtn={false} />
+            <PresetList createBtn={false} userInfo/>
           </div>
         </div>
         <div className={classes.community}></div>
