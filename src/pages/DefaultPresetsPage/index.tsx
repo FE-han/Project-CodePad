@@ -112,15 +112,18 @@ export function DefaultPresetsPage() {
   const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
+  const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialData = async () => {
+  const getInitialPresetData = async () => {
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     // setDefaultPresetData(newPresetData);
-
     try {
-      const nowPresetData: Preset = await getPreset(
-        setPresetId(defaultPresetId)
-      );
+      const nowPresetData: Preset = await getPreset(config);
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -149,7 +152,7 @@ export function DefaultPresetsPage() {
   };
 
   useEffect(() => {
-    getInitialData();
+    getInitialPresetData();
   }, []);
 
   return (
@@ -159,6 +162,7 @@ export function DefaultPresetsPage() {
           <LaunchpadHeaderContainer
             title={defaultPresetData.presetTitle}
             onlyFork={true}
+            presetId={defaultPresetData.presetId || "unknownId"}
           />
           {state.isLoading ? (
             "로딩중"
