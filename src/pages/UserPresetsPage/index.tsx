@@ -77,7 +77,7 @@ const UserPresetsPageStyles = makeStyles({
     gridArea: "community",
     display: "grid",
     padding: "18px",
-    // alignItems: "center",
+    alignItems: "center",
   },
 });
 

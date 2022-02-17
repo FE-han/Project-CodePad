@@ -11,6 +11,7 @@ import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
 import { CommunityContentType } from "../../utils/CommonValue";
 import { memo } from "react";
+import { PresetListparams } from "../../api/CommunityContents/getPresetList";
 
 const CommunityContentsScrollList = (props: {
   title: string;
@@ -45,58 +46,57 @@ const CommunityContentsScrollList = (props: {
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   const [itemLists, setItemLists] = useState<Array<PresetData>>([]);
-  const [curPageNum, setCurPageNum] = useState<number>(
-    ScrollValues.defaultPageNum
-  );
+  const [config, setConfig] = useState<PresetListparams>({
+    Listname: props.listName,
+    pageNum: ScrollValues.defaultPageNum,
+    limitNum: ScrollValues.limitNum,
+  });
 
   const getMoreItem = async () => {
-    setIsLoaded(true);
-
-    const configdata = {
-      Listname: props.listName,
-      pageNum: curPageNum + 1,
-      limitNum: ScrollValues.limitNum,
-    };
-
-    const res: any = await makePresetScrollList(configdata);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const res = await makePresetScrollList(config);
 
     if (res.success) {
-      setItemLists((itemLists) => itemLists.concat(res.data));
-      setCurPageNum(curPageNum + 1);
-      setIsError(false);
+      if (res.data.length > 0) {
+        setItemLists((arr) => arr.concat(res.data));
+      } else {
+        setIsDone(true);
+        console.log("Done!");
+      }
     }
-
     if (!res.success) {
       setIsError(true);
-      console.log("error");
-      throw new Error(res.errorMessage);
+      alert(res.errorMessage);
     }
-
-    setIsLoaded(false);
   };
 
-  const onIntersect = async (
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    getMoreItem();
+    const newPageNum = config.pageNum + 1;
+    setConfig((prev) => {
+      return { ...prev, pageNum: newPageNum };
+    });
+    setIsLoaded(false);
+  }, [isLoaded]);
+
+  const onIntersect = (
     [entry]: Array<IntersectionObserverEntry>,
     observer: IntersectionObserver
   ) => {
-    if (entry.isIntersecting && !isLoaded && !isError) {
+    if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      try {
-        await getMoreItem();
-      } catch (error) {
-        observer.disconnect();
-        return;
-      }
+      setIsLoaded(true);
       observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target) {
+    if (target && !isDone && !isError) {
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0,
       });
@@ -104,7 +104,7 @@ const CommunityContentsScrollList = (props: {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, isDone, isError]);
 
   const ContentList = () => {
     const type = props.type;

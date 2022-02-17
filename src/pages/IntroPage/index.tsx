@@ -24,7 +24,7 @@ export default function IntroPage() {
         </button>
         <CommunityContentsScrollList
           title="CHART : TOP 50"
-          listName="top50"
+          listName="top50List"
           type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
@@ -32,7 +32,7 @@ export default function IntroPage() {
       <div className={classes.used}>
         <CommunityContentsScrollList
           title="Recently Used"
-          listName="used"
+          listName="recentlyUsed"
           type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
@@ -40,7 +40,7 @@ export default function IntroPage() {
       <div className={classes.artist}>
         <CommunityContentsScrollList
           title="Artist Profile"
-          listName="artist"
+          listName="artists"
           type="PROFILE"
           scrollSize={ScrollListContainerSize.introPage}
         />
