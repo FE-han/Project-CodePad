@@ -17,6 +17,7 @@ import { HeaderColors } from "../../utils/CommonStyle";
 import LoginModal from "../Modal/LoginModal";
 import ProfileModal from "../Modal/ProfileModal";
 import logout from "../../api/logout";
+import { getCookie } from "../../utils/cookie";
 
 export default function Header() {
   const classes = HeaderStyles();
@@ -29,12 +30,13 @@ export default function Header() {
   const [loginOpen, setLoginOpen] = React.useState<boolean>(false);
   const [profileOpen, setProfileOpen] = React.useState<boolean>(false);
 
+  const [isLogin, setIsLogin] = React.useState<boolean>(true);
+
   const handleLogout = () => {
     handleMenuClose();
     logout();
   };
   const handleLoginOpen = () => {
-    handleMenuClose();
     setLoginOpen(true);
   };
 
@@ -94,8 +96,6 @@ export default function Header() {
         Likes
       </MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      {/* 임시 로그인 버튼*/}
-      <MenuItem onClick={handleLoginOpen}>Login</MenuItem>
       <LoginModal open={loginOpen} onClose={handleLoginClose} />
       <ProfileModal open={profileOpen} onClose={handleProfileClose} />
     </Menu>
@@ -141,17 +141,28 @@ export default function Header() {
               Preset
             </IconButton>
             <div className={classes.borderLine}></div>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {!isLogin && (
+              <IconButton
+                size="small"
+                color="inherit"
+                onClick={handleLoginOpen}
+              >
+                Login
+              </IconButton>
+            )}
+            {isLogin && (
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
