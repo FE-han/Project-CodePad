@@ -52,7 +52,7 @@ const commentsContainerStyles = makeStyles({
     },
   },
   Loader: {
-    marginBottom: "50px",
+    //marginBottom: "50px",
   },
 });
 
