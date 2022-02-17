@@ -31,6 +31,7 @@ import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
+import PresetSoundInfo from "./components/PresetSoundInfo";
 
 export const CreatePresetsPageStyles = makeStyles({
   root: {
@@ -178,30 +179,6 @@ export function CreatePresetsPage() {
     getInitialData();
   }, []);
 
-  const [sample, setSample] = useState<string>("");
-
-  const handleSampleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setSample(files[0].name);
-      console.log(files[0].name);
-    }
-  };
-
-  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
-
-  const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    const value = target.value as BtnType;
-    setBtnType(value);
-  };
-
-  const [soundType, setSoundType] = useState("");
-
-  const handleSoundTypeChange = (event: SelectChangeEvent) => {
-    setSoundType(event.target.value);
-  };
-
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -214,116 +191,7 @@ export function CreatePresetsPage() {
             <PresetInfo />
           </div>
         </div>
-        <div className={classes.soundInfo}>
-          <div
-            style={{
-              height: "40%",
-            }}
-          ></div>
-          <Divider />
-          <div className={classes.setSoundInfo}>
-            <span>Sound Sample</span>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <TextField
-                id="outlined-read-only-input"
-                value={sample}
-                size="small"
-                sx={{ width: "165px", marginRight: "10px" }}
-                InputProps={{
-                  readOnly: true,
-                }}
-                className={classes.title}
-              />
-              <label>
-                <input
-                  className={classes.uploadInput}
-                  accept="image/*"
-                  type="file"
-                  onChange={handleSampleUpload}
-                />
-                <Button
-                  variant="outlined"
-                  size="small"
-                  component="span"
-                  startIcon={<CloudUploadIcon />}
-                  sx={{
-                    color: ButtonColors.COLOR,
-                    border: `1px solid ${ButtonColors.COLOR}`,
-                    borderRadius: "12px",
-                    boxShadow: ButtonColors.SHADOW,
-                    margin: "0px 3px",
-
-                    "&:hover": {
-                      border: `1px solid white`,
-                    },
-                  }}
-                >
-                  Upload
-                </Button>
-              </label>
-            </div>
-            <span>Button Type</span>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={btnType}
-                onChange={handleBtnTypeChange}
-                className={classes.radioContainer}
-                sx={{
-                  alignItems: "center",
-                  justifyContent: "space-evenly",
-                  color: ButtonColors.COLOR,
-                }}
-              >
-                <FormControlLabel
-                  value="EFFECT"
-                  control={<Radio color="default" />}
-                  label={<ArrowForwardIcon />}
-                  sx={{
-                    "& > span": {
-                      lineHeight: "0px",
-                    },
-                  }}
-                />
-                <FormControlLabel
-                  value="LOOP"
-                  control={<Radio color="default" />}
-                  label={<LoopIcon />}
-                  sx={{
-                    "& > span": {
-                      lineHeight: "0px",
-                    },
-                  }}
-                />
-              </RadioGroup>
-            </FormControl>
-            <span>Sound Type</span>
-            <FormControl
-              sx={{ m: 1, minWidth: 120 }}
-              size="small"
-              className={classes.title}
-            >
-              <Select
-                value={soundType}
-                onChange={handleSoundTypeChange}
-                displayEmpty
-              >
-                <MenuItem value={0}>FX</MenuItem>
-                <MenuItem value={1}>DRUM</MenuItem>
-                <MenuItem value={2}>VOICE</MenuItem>
-                <MenuItem value={3}>PERC</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-        </div>
+        <PresetSoundInfo />
         <div className={classes.tags}></div>
       </div>
     </div>

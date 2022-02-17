@@ -7,18 +7,56 @@ import {
   Radio,
   RadioGroup,
   Select,
+  SelectChangeEvent,
   TextField,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import LoopIcon from "@mui/icons-material/Loop";
 
 import { CreatePresetsPageStyles } from "../index";
+import { useState } from "react";
+import { ButtonColors } from "../../../utils/CommonStyle";
+import { BtnType } from "../../../utils/CommonValue";
+
+interface SoundSampleValue {
+  name: string;
+  file: File | undefined;
+}
 
 export default function PresetSoundInfo() {
   const classes = CreatePresetsPageStyles();
+
+  const [soundSampleValue, setSoundSampleValue] = useState<SoundSampleValue>({
+    name: "",
+    file: undefined,
+  });
+  const handleSoundSampleUpload = (
+    evt: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!evt.target.files) return;
+    const singleSoundFile = evt.target.files[0];
+    setSoundSampleValue({
+      name: singleSoundFile.name,
+      file: singleSoundFile,
+    });
+  };
+
+  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
+  const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const target = event.target as HTMLInputElement;
+    const value = target.value as BtnType;
+    setBtnType(value);
+  };
+
+  const [soundType, setSoundType] = useState("");
+  const handleSoundTypeChange = (event: SelectChangeEvent) => {
+    setSoundType(event.target.value);
+  };
+
   return (
     <div className={classes.soundInfo}>
-      {/* <div
+      <div
         style={{
           height: "40%",
         }}
@@ -35,7 +73,7 @@ export default function PresetSoundInfo() {
         >
           <TextField
             id="outlined-read-only-input"
-            value={sample}
+            value={soundSampleValue.name}
             size="small"
             sx={{ width: "165px", marginRight: "10px" }}
             InputProps={{
@@ -48,7 +86,7 @@ export default function PresetSoundInfo() {
               className={classes.uploadInput}
               accept="image/*"
               type="file"
-              onChange={handleSampleUpload}
+              onChange={handleSoundSampleUpload}
             />
             <Button
               variant="outlined"
@@ -87,7 +125,7 @@ export default function PresetSoundInfo() {
             }}
           >
             <FormControlLabel
-              value={BtnType.effect}
+              value={btnType}
               control={<Radio color="default" />}
               label={<ArrowForwardIcon />}
               sx={{
@@ -97,7 +135,7 @@ export default function PresetSoundInfo() {
               }}
             />
             <FormControlLabel
-              value={BtnType.loop}
+              value={btnType}
               control={<Radio color="default" />}
               label={<LoopIcon />}
               sx={{
@@ -119,13 +157,14 @@ export default function PresetSoundInfo() {
             onChange={handleSoundTypeChange}
             displayEmpty
           >
+            {/* value: magicNumber 수정필요*/}
             <MenuItem value={0}>FX</MenuItem>
             <MenuItem value={1}>DRUM</MenuItem>
             <MenuItem value={2}>VOICE</MenuItem>
             <MenuItem value={3}>PERC</MenuItem>
           </Select>
         </FormControl>
-      </div> */}
+      </div>
     </div>
   );
 }
