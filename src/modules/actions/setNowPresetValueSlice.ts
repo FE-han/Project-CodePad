@@ -10,22 +10,32 @@ interface SoundSampleWithFile extends SoundSample {
   soundFile: File | undefined;
 }
 
+interface PresetThumbnail {
+  thumbnailImgURL: string;
+  thumbnailImgFile: File | undefined;
+}
+
 interface NowPresetValueState {
+  userId: string;
   presetTitle: string; //Preset
   presetId: string; //Preset
   areaSize: LaunchPadScale; //Preset
   soundSamples: Array<SoundSampleWithFile>; //Preset
-  thumbnailImgURL: string;
+  thumbnailImg: PresetThumbnail;
   PrivacyOption: PrivacyType;
   tags: Array<string>;
 }
 
 const initialState: NowPresetValueState = {
+  userId: "",
   presetTitle: "",
   presetId: "",
   areaSize: 64,
   soundSamples: [],
-  thumbnailImgURL: "",
+  thumbnailImg: {
+    thumbnailImgURL: "",
+    thumbnailImgFile: undefined,
+  },
   PrivacyOption: "PUBLIC",
   tags: [],
 };
@@ -50,9 +60,12 @@ export const setNowPresetValueSlice = createSlice({
     },
     setValueFromImage: (
       state,
-      action: PayloadAction<Pick<NowPresetValueState, "thumbnailImgURL">>
+      action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
     ) => {
-      state.thumbnailImgURL = action.payload.thumbnailImgURL;
+      state.thumbnailImg = {
+        thumbnailImgURL: action.payload.thumbnailImg.thumbnailImgURL,
+        thumbnailImgFile: action.payload.thumbnailImg.thumbnailImgFile,
+      };
     },
     setValueFromPrivacyOption: (
       state,
@@ -65,6 +78,12 @@ export const setNowPresetValueSlice = createSlice({
       action: PayloadAction<Pick<NowPresetValueState, "tags">>
     ) => {
       state.tags = action.payload.tags;
+    },
+    setValueFromUserId: (
+      state,
+      action: PayloadAction<Pick<NowPresetValueState, "userId">>
+    ) => {
+      state.userId = action.payload.userId;
     },
   },
 });
