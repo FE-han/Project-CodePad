@@ -162,25 +162,24 @@ export function UpdatePresetsPage() {
   );
   const presetId = useParams();
 
-  const currentPresetState = useAppSelector(
-    (state) => state.setNowPresetValueSlice
-  );
+  // const currentPresetState = useAppSelector(
+  //   (state) => state.setNowPresetValueSlice
+  // );
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: myPresetData,
+    //   setDefaultPresetData: setMyPresetData,
+    // });
   };
 
   useEffect(() => {
     getInitialData();
-    console.log(currentPresetState);
+    // console.log(currentPresetState);
   }, []);
 
   const [sample, setSample] = useState<string>("");

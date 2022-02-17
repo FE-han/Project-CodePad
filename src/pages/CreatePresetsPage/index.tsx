@@ -171,14 +171,13 @@ export function CreatePresetsPage() {
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(urlParams));
+    // const nowPresetData: Preset = await getPreset(setPresetId(urlParams));
     // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: myPresetData,
+    //   setDefaultPresetData: setMyPresetData,
+    // });
   };
 
   useEffect(() => {

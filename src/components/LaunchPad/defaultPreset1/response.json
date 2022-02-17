@@ -241,6 +241,13 @@
         "soundSampleURL": "http://localhost:4100/choppedSamples/94 Neon DreamschoppedSamples3_bip.mp3",
         "buttonType": "LOOP",
         "soundType": "CP_SP"
+      },
+      {
+        "location": "7X6",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://elice-kdt-sw-1st-team7.elicecoding.com/api/uploads/sound/sound-qwer.mp3",
+        "buttonType": "LOOP",
+        "soundType": "CP_SP"
       }
     ]
   }

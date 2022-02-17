@@ -20,6 +20,7 @@ import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import { useAppSelector } from "../../modules/hooks";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -138,7 +139,7 @@ export function MyPresetsPage() {
       userId: urlParams.userId,
       presetId: urlParams.presetId,
     };
-    console.log(config);
+
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
@@ -162,6 +163,7 @@ export function MyPresetsPage() {
           <LaunchpadHeaderContainer
             title={myPresetData.presetTitle}
             onlyFork={false}
+            presetId={myPresetData.presetId || "unknownId"}
           />
 
           <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />

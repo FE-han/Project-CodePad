@@ -90,7 +90,7 @@ export function UserPresetsPage() {
 
   const { userId } = useParams<UserPresetsPageParams>();
 
-  const [myPresetData, setMyPresetData] = useState<Preset>(
+  const [userPresetData, setUserPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const urlParams = useParams<{ userId: string; presetId: string }>();
@@ -110,8 +110,8 @@ export function UserPresetsPage() {
 
     setPresetData({
       nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
+      defaultPresetData: userPresetData,
+      setDefaultPresetData: setUserPresetData,
     });
   };
 
@@ -124,10 +124,11 @@ export function UserPresetsPage() {
       <div className={classes.container}>
         <div className={classes.launchPad}>
           <LaunchpadHeaderContainer
-            title={myPresetData.presetTitle}
+            title={userPresetData.presetTitle}
             onlyFork={true}
+            presetId={userPresetData.presetId || "unknownId"}
           />
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          <LaunchPad presetData={userPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={userId} />

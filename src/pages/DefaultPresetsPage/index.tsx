@@ -162,6 +162,7 @@ export function DefaultPresetsPage() {
           <LaunchpadHeaderContainer
             title={defaultPresetData.presetTitle}
             onlyFork={true}
+            presetId={defaultPresetData.presetId || "unknownId"}
           />
           {state.isLoading ? (
             "로딩중"
