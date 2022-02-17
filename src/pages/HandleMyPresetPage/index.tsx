@@ -155,29 +155,18 @@ export const HandleMyPresetPageStyles = makeStyles({
   },
 });
 
-interface UrlParams {
-  mode: "create" | "update";
-  presetId: string;
-}
-
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const urlParams =
-    useParams<{ mode: "create" | "update"; presetId: string }>();
+  const presetId = useParams();
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
 
-    const nowPresetData: Preset = await getPreset(
-      setPresetId({
-        mode: urlParams.mode,
-        presetId: urlParams.presetId,
-      })
-    );
+    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
     console.log(nowPresetData);
     // setDefaultPresetData(newPresetData);
 
@@ -197,6 +186,7 @@ export function HandleMyPresetPage() {
       <div className={classes.container}>
         <div className={classes.launchPad}>
           <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
+          {"생성,수정용페이지"}
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">

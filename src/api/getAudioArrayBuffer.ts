@@ -10,5 +10,6 @@ export async function getAudioArrayBuffer(url: string) {
     responseType: "arraybuffer",
   });
 
+  console.log(response.data);
   return response.data;
 }

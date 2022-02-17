@@ -39,14 +39,20 @@ function App() {
             path={"/defaultpresets/:presetId"}
             element={<DefaultPresetsPage />}
           />
-          <Route path={"/userpresets/:userId"} element={<UserPresetsPage />} />
-          <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
-          <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
           <Route
-            path={"/mypresets/:mode/:userid"}
+            path={"/userpresets/:userId/:presetId"}
+            element={<UserPresetsPage />}
+          />
+
+          <Route path={"/mypresets/:presetId"} element={<MyPresetsPage />} />
+          <Route path={"/mypresets/create"} element={<HandleMyPresetPage />} />
+          <Route
+            path={"/mypresets/update/:presetId"}
             element={<HandleMyPresetPage />}
           />
+
+          <Route path={"/likepresets"} element={<LikePresetsPage />} />
         </Routes>
       </div>
     </>

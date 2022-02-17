@@ -14,7 +14,7 @@ import LaunchPad from "../../components/LaunchPad";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
-import { getPreset } from "../../api/getPreset";
+import { getPreset, PresetParams } from "../../api/getPreset";
 
 import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
@@ -127,14 +127,21 @@ export function MyPresetsPage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+  const urlParams = useParams<{ userId: string; presetId: string }>();
   const dispatch = useDispatch();
 
-  const getPresetData = async () => {
+  const getInitialPresetData = async () => {
+    if (!urlParams.userId) {
+      throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
+    }
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
-
     setPresetData({
       nowPresetData,
       defaultPresetData: myPresetData,
@@ -145,7 +152,7 @@ export function MyPresetsPage() {
   };
 
   useEffect(() => {
-    getPresetData();
+    getInitialPresetData();
   }, []);
 
   return (

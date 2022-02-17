@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getPreset } from "../../api/getPreset";
+import { getPreset, PresetParams } from "../../api/getPreset";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetList from "../../components/Preset/PresetList";
@@ -93,11 +93,19 @@ export function UserPresetsPage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+  const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialData = async () => {
+  const getInitialPresetData = async () => {
+    if (!urlParams.userId) {
+      throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
+    }
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
 
     setPresetData({
@@ -108,7 +116,7 @@ export function UserPresetsPage() {
   };
 
   useEffect(() => {
-    getInitialData();
+    getInitialPresetData();
   }, []);
 
   return (

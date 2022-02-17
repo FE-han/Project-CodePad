@@ -1,30 +1,16 @@
 import { Params } from "react-router";
 import { PresetParams } from "../api/getPreset";
 
-export const setPresetId = (
-  defaultPresetId: Readonly<
-    Partial<{
-      mode: "create" | "update";
-      presetId: string;
-    }>
-  >
-) => {
-  const params: PresetParams = {
-    presetId: "",
-    userId: "",
-  };
-  switch (defaultPresetId.presetId) {
+export const setPresetId = ({ presetId }: Readonly<Params<string>>) => {
+  switch (presetId) {
     case "enter":
-      params.presetId = "defaultPreset1";
-      return params;
+      return "Preset1";
 
     case undefined:
-      params.presetId = "defaultPreset1";
-      return params;
+      return "Preset1";
 
     default:
-      params.presetId = defaultPresetId.presetId;
-      return params;
+      return "Preset1";
   }
 };
 
