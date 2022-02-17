@@ -8,9 +8,10 @@ import React, { useEffect } from "react";
 import { memo } from "react";
 import {
   getCommentListAPI,
+  getCommentListParams,
   postCommentListAPI,
 } from "../../api/Comment/commentListAPI";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { CommentData } from "../../utils/CommonInterface";
 import { ScrollValues } from "../../utils/CommonValue";
 import Loader from "../CommunityContents/Loader";
@@ -64,46 +65,49 @@ const CommentsContainer = () => {
   const [isDone, setIsDone] = useState<boolean>(false);
 
   const [commentList, setCommentList] = useState<Array<CommentData>>([]);
-  const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
-
+  //const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
+  const [config, setConfig] = useState<getCommentListParams>({
+    presetId: "-S9Y43q1F_lt5pjBM_2E6",
+    pageNum: ScrollValues.defaultPageNum,
+    limitNum: ScrollValues.limitNum,
+  });
   const [text, setText] = useState<string>("");
 
   const getMoreItem = async () => {
-    setIsLoaded(true);
-
-    const configdata = {
-      presetId: "-S9Y43q1F_lt5pjBM_2E6",
-      pageNum,
-      limitNum: 1,
-    };
-
-    const res = await makeCommentScrollList(configdata);
+    const res = await makeCommentScrollList(config);
 
     if (res.success) {
       if (res.data.length > 0) {
-        setCommentList((commentList) => commentList.concat(res.data));
-        setPageNum(pageNum + 1);
+        setCommentList((arr) => arr.concat(res.data));
       } else {
         setIsDone(true);
         console.log("Done!");
       }
     }
-
     if (!res.success) {
       setIsError(true);
       alert(res.errorMessage);
     }
-
-    setIsLoaded(false);
   };
 
-  const onIntersect = async (
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    getMoreItem();
+    const newPageNum = config.pageNum + 1;
+    setConfig((prev) => {
+      return { ...prev, pageNum: newPageNum };
+    });
+    setIsLoaded(false);
+  }, [isLoaded]);
+
+  const onIntersect = (
     [entry]: Array<IntersectionObserverEntry>,
     observer: IntersectionObserver
   ) => {
-    if (entry.isIntersecting && !isLoaded) {
+    if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      await getMoreItem();
+      setIsLoaded(true);
       observer.observe(entry.target);
     }
   };
