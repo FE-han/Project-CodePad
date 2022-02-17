@@ -2,11 +2,12 @@ import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
 export interface PresetParams {
-  userId: string;
+  userId?: string;
   presetId?: string;
 }
 
 export async function getPreset(params: PresetParams) {
+  console.log(params);
   const config: AxiosRequestConfig = {
     //token input
   };

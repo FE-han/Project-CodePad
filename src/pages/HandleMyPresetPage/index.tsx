@@ -15,7 +15,7 @@ import { Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getPreset } from "../../api/getPreset";
+import { getPreset, PresetParams } from "../../api/getPreset";
 
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -26,13 +26,14 @@ import PresetInfo from "./components/PresetInfo";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+
 import { ButtonColors } from "../../utils/CommonStyle";
-import { BtnType } from "../../utils/CommonValue";
+import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
-import { useAppSelector } from "../../modules/hooks";
+import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 
-const UpdatePresetsPageStyles = makeStyles({
+export const HandleMyPresetPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
@@ -154,63 +155,44 @@ const UpdatePresetsPageStyles = makeStyles({
   },
 });
 
-export function UpdatePresetsPage() {
-  const classes = UpdatePresetsPageStyles();
+export function HandleMyPresetPage() {
+  const classes = HandleMyPresetPageStyles();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const presetId = useParams();
 
-  // const currentPresetState = useAppSelector(
-  //   (state) => state.setNowPresetValueSlice
-  // );
-
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    // const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    console.log("asdf", presetId);
+
+    const config: PresetParams = {
+      userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
+      presetId: setPresetId(presetId),
+    };
+
+    const nowPresetData: Preset = await getPreset(config);
+    console.log(nowPresetData);
     // setDefaultPresetData(newPresetData);
-    // setPresetData({
-    //   nowPresetData,
-    //   defaultPresetData: myPresetData,
-    //   setDefaultPresetData: setMyPresetData,
-    // });
+
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
   };
 
   useEffect(() => {
     getInitialData();
-    // console.log(currentPresetState);
   }, []);
-
-  const [sample, setSample] = useState<string>("");
-
-  const handleSampleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setSample(files[0].name);
-      console.log(files[0].name);
-    }
-  };
-
-  const [btnType, setBtnType] = useState<BtnType>("EFFECT");
-
-  const handleBtnTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    const value = target.value as BtnType;
-    setBtnType(value);
-  };
-
-  const [soundType, setSoundType] = useState("");
-
-  const handleSoundTypeChange = (event: SelectChangeEvent) => {
-    setSoundType(event.target.value);
-  };
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
+          {"생성,수정용페이지"}
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
@@ -225,4 +207,4 @@ export function UpdatePresetsPage() {
   );
 }
 
-export default UpdatePresetsPage;
+export default HandleMyPresetPage;
