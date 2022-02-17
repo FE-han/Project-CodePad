@@ -31,7 +31,7 @@ import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
-import PresetSoundInfo from "./components/PresetSoundInfo";
+import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 
 export const CreatePresetsPageStyles = makeStyles({
   root: {

@@ -14,10 +14,10 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LoopIcon from "@mui/icons-material/Loop";
 
-import { CreatePresetsPageStyles } from "../index";
+import { CreatePresetsPageStyles } from "../../pages/CreatePresetsPage/index";
 import { useState } from "react";
-import { ButtonColors } from "../../../utils/CommonStyle";
-import { BtnType } from "../../../utils/CommonValue";
+import { ButtonColors } from "../../utils/CommonStyle";
+import { BtnType } from "../../utils/CommonValue";
 
 interface SoundSampleValue {
   name: string;
@@ -84,7 +84,7 @@ export default function PresetSoundInfo() {
           <label>
             <input
               className={classes.uploadInput}
-              accept="image/*"
+              accept="Audio/*"
               type="file"
               onChange={handleSoundSampleUpload}
             />
@@ -125,7 +125,7 @@ export default function PresetSoundInfo() {
             }}
           >
             <FormControlLabel
-              value={btnType}
+              value="EFFECT"
               control={<Radio color="default" />}
               label={<ArrowForwardIcon />}
               sx={{
@@ -135,7 +135,7 @@ export default function PresetSoundInfo() {
               }}
             />
             <FormControlLabel
-              value={btnType}
+              value="LOOP"
               control={<Radio color="default" />}
               label={<LoopIcon />}
               sx={{
