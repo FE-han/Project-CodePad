@@ -43,17 +43,14 @@ export interface putCommentParams {
 }
 
 export async function putCommnetListAPI(params: putCommentParams) {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Cookie: `token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpWa1gzUlJhRkNIVlNrT3ptcXMteCIsIm5hbWUiOiLquYDtlZjripgiLCJpYXQiOjE2NDQ4NjA1ODV9.dBnj213d_ojFAnybjxeRUlaEm3d7xdRfl9mHT3eVS9M`,
-    },
-    data: {
-      commentId: params.commentId,
-      text: params.text,
-    },
+  const config: AxiosRequestConfig = {};
+  const data = {
+    commentId: params.commentId,
+    text: params.text,
   };
   const response = await axiosInstance(config).put(
-    `/presets/${params.presetId}/comments`
+    `/presets/${params.presetId}/comments`,
+    data
   );
 
   return response.data;
@@ -65,16 +62,17 @@ export interface deleteCommentParams {
 }
 
 export async function deleteCommnetListAPI(params: deleteCommentParams) {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Cookie: `token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpWa1gzUlJhRkNIVlNrT3ptcXMteCIsIm5hbWUiOiLquYDtlZjripgiLCJpYXQiOjE2NDQ4NjA1ODV9.dBnj213d_ojFAnybjxeRUlaEm3d7xdRfl9mHT3eVS9M`,
-    },
+  const config: AxiosRequestConfig = {};
+
+  const data = {
     data: {
       commentId: params.commentId,
     },
   };
+
   const response = await axiosInstance(config).delete(
-    `/presets/${params.presetId}/comments`
+    `/presets/${params.presetId}/comments`,
+    data
   );
 
   return response.data;

@@ -7,9 +7,11 @@ import { Fonts, ButtonColors, CommentColors } from "../../utils/CommonStyle";
 import React, { useEffect } from "react";
 import { memo } from "react";
 import {
+  deleteCommnetListAPI,
   getCommentListAPI,
   getCommentListParams,
   postCommentListAPI,
+  putCommnetListAPI,
 } from "../../api/Comment/commentListAPI";
 import { useState, useCallback } from "react";
 import { CommentData } from "../../utils/CommonInterface";
@@ -60,17 +62,18 @@ const commentsContainerStyles = makeStyles({
 const CommentsContainer = () => {
   const classes = commentsContainerStyles();
 
-  //  const { userId , presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
+  const { presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
 
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
-
+  const [IsUpdate, setIsUpdate] = useState<boolean>(false);
+  const [commentIdForUpdate, setCommentIdForUpdate] = useState<string>("");
   const [commentList, setCommentList] = useState<Array<CommentData>>([]);
   //const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
   const [config, setConfig] = useState<getCommentListParams>({
-    presetId: "-S9Y43q1F_lt5pjBM_2E6",
+    presetId,
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
   });
@@ -129,7 +132,7 @@ const CommentsContainer = () => {
 
   const handleCreate = async () => {
     const configdata = {
-      presetId: "-S9Y43q1F_lt5pjBM_2E6",
+      presetId,
       text,
     };
 
@@ -141,18 +144,66 @@ const CommentsContainer = () => {
     }
   };
   const handleSendBtn = (evt: React.ChangeEvent<HTMLButtonElement>) => {};
+
   const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     const target = evt.target as HTMLInputElement;
-    const value = target.value;
+    const value = target.value.trim();
+
+    if (value.length > 20) {
+      setText(value.substr(0, 20));
+    }
+
+    if (value.length > 0) {
+      setIsUpdate(false);
+    }
+
     if (evt.key === "Enter") {
       if (value.length > 0) {
-        handleCreate();
-        setText("");
+        if (IsUpdate) {
+          updateComment(commentIdForUpdate);
+          setIsUpdate(false);
+        } else {
+          handleCreate();
+        }
       }
+      setText("");
     }
   };
-  const handleDelete = () => {};
-  const handleUpdate = () => {};
+
+  const handleUpdate = (commentId: string, comment: string) => {
+    setIsUpdate(true);
+    setText(comment);
+    setCommentIdForUpdate(commentId);
+  };
+  const updateComment = async (commentId: string) => {
+    const configdata = {
+      presetId,
+      commentId,
+      text,
+    };
+
+    try {
+      const newCommentList = await putCommnetListAPI(configdata);
+      console.log(newCommentList);
+      setCommentList(newCommentList);
+    } catch (error) {
+      alert("update Error");
+    }
+  };
+  const handleDelete = async (commentId: string) => {
+    const configdata = {
+      presetId: "-S9Y43q1F_lt5pjBM_2E6",
+      commentId,
+    };
+
+    try {
+      const newCommentList = await deleteCommnetListAPI(configdata);
+      console.log(newCommentList);
+      setCommentList(newCommentList);
+    } catch (error) {
+      alert("delete Error");
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -182,7 +233,7 @@ const CommentsContainer = () => {
           }}
           value={text}
           onChange={(evt) => setText(evt.target.value)}
-          onKeyDown={handleEnterKey}
+          onKeyPress={handleEnterKey}
         />
         <Button variant="outlined" size="small" disabled onClick={handleCreate}>
           send
