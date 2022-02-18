@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import React, { memo } from "react";
 import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
+import { useAppSelector } from "../../modules/hooks";
 
 const commentStyles = makeStyles({
   root: {
@@ -26,16 +27,22 @@ const Comment = (props: {
   deleteFn: Function;
   updateFn: Function;
 }) => {
-  const { commentData } = props;
-
   const classes = commentStyles();
 
-  const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
+  const { commentData } = props;
+
+  const { userId } = useAppSelector((state) => state.setNowPresetValueSlice);
+
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
+
+  //const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const commentAuthorUserId = commentData.userId;
   console.log();
 
-  const presetAutorUserId = "TuWdQ6QcXQHhG-LPsD7mY";
+  const presetAutorUserId = userId;
 
   const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
   const updateBtn = loginUserId === commentAuthorUserId;

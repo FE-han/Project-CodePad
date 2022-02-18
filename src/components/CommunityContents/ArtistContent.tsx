@@ -12,7 +12,6 @@ const Artist = (props: { presetData: PresetData }) => {
 
   const { presetData } = props;
   const imgSrc = presetData.thumbnailURL;
-
   return (
     <div
       className={`${classes.albumCoverContainer}`}
