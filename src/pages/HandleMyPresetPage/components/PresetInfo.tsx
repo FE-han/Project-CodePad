@@ -12,6 +12,14 @@ import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
+import { postBasePresetData } from "../../../api/CreatePreset/postBasePresetData";
+import axios, { AxiosRequestConfig } from "axios";
+import { axiosInstance } from "../../../api/axiosInstance";
+import {
+  setBasePresetFormData,
+  setPresetSoundFormDataArray,
+} from "../../../utils/setPresetFormData";
+import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -63,6 +71,7 @@ interface PresetInfoProps {
     React.SetStateAction<NowPresetValueState>
   >;
 }
+
 export default function PresetInfo({
   nowHandlePresetData,
   setInitialPresetData,
@@ -92,29 +101,61 @@ export default function PresetInfo({
     });
   };
 
-  const postPresetDataWithOutSoundFile = async (
+  const postPresetSoundFiles = async (
     nowHandlePresetData: NowPresetValueState
   ) => {
     const formData = new FormData();
-    formData.append("userId", nowHandlePresetData.userId);
-    formData.append("presetId", nowHandlePresetData.presetId);
-    formData.append("presetTitle", nowHandlePresetData.presetTitle);
-    formData.append("areaSize", JSON.stringify(nowHandlePresetData.areaSize));
+    if (nowHandlePresetData.soundSamples === undefined) return;
     formData.append(
-      "thumbnailImg",
-      nowHandlePresetData.thumbnailImg.thumbnailImgFile || ""
+      "sound",
+      nowHandlePresetData.soundSamples[0].soundFile || ""
     );
-    formData.append("PrivacyOption", nowHandlePresetData.PrivacyOption);
-    formData.append("tags", JSON.stringify(nowHandlePresetData.tags));
+    formData.append("presetId", "s9faOIF-XKdeaA0tYdbzV");
+    formData.append("location", nowHandlePresetData.soundSamples[0].location);
+    formData.append(
+      "buttonType",
+      nowHandlePresetData.soundSamples[0].buttonType || ""
+    );
+    formData.append(
+      "soundType",
+      nowHandlePresetData.soundSamples[0].soundType || ""
+    );
 
-    //console.log
-    const testkeys = Array.from(formData.keys());
-    const testvalues = Array.from(formData.values());
-    console.log(
-      testkeys.map((ele, idx) => {
-        return [ele, testvalues[idx]];
-      })
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const response = await axiosInstance(config).post(
+      "/presets/soundUpload",
+      formData
     );
+
+    console.log(response.data);
+  };
+
+  const postPresetDataWithOutSoundFile = async (
+    nowHandlePresetData: NowPresetValueState
+  ) => {
+    const firstFormData = setBasePresetFormData(nowHandlePresetData);
+    const { presetId } = await postBasePresetData(firstFormData);
+    console.log("targetPresetId: ", presetId);
+
+    const presetSoundFormDataArray = setPresetSoundFormDataArray({
+      nowHandlePresetData,
+      targetPresetId: presetId,
+    });
+
+    // const sendList = presetSoundFormDataArray.filter((presetSoundFormData) => {
+    //   console.log(Array.from(presetSoundFormData));
+    //   // Array.from(presetSoundFormData)[1] !== undefined;
+    // });
+    // Promise.all()
+
+    // postPresetSoundSampleData
+
+    console.log("presetSoundFormDataArray", presetSoundFormDataArray);
   };
 
   return (
@@ -165,6 +206,15 @@ export default function PresetInfo({
         >
           SAVE
         </Button>
+        {/* <Button
+          variant="outlined"
+          startIcon={<SaveIcon />}
+          onClick={() => {
+            postPresetSoundFile(nowHandlePresetData);
+          }}
+        >
+          soundSave
+        </Button> */}
       </Stack>
     </div>
   );
