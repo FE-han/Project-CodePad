@@ -9,8 +9,8 @@ import EmptyButton from "./EmptyButton";
 import Metronome from "./Metronome";
 import { useAppSelector } from "../../modules/hooks";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
-import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
-import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
+import { actions as loopSoundGroupActions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
 
 export const LaunchPadStyles = makeStyles({
   //색깔, 폰트크기들 프로젝트 컬러로 변경해야함

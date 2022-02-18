@@ -13,7 +13,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Params, useParams } from "react-router-dom";
 
 import { getPreset } from "../../api/getPreset";
 
@@ -31,7 +31,7 @@ import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
-import PresetSoundInfo from "./components/PresetSoundInfo";
+import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 
 export const CreatePresetsPageStyles = makeStyles({
   root: {
@@ -155,24 +155,29 @@ export const CreatePresetsPageStyles = makeStyles({
   },
 });
 
+interface urlParams {
+  mode: "create" | "update";
+  presetId: string;
+}
+
 export function CreatePresetsPage() {
   const classes = CreatePresetsPageStyles();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+  const urlParams = useParams();
+  console.log(urlParams);
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // const nowPresetData: Preset = await getPreset(setPresetId(urlParams));
     // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: myPresetData,
+    //   setDefaultPresetData: setMyPresetData,
+    // });
   };
 
   useEffect(() => {
@@ -183,7 +188,7 @@ export function CreatePresetsPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
+          {/* <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} /> */}
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
@@ -191,7 +196,7 @@ export function CreatePresetsPage() {
             <PresetInfo />
           </div>
         </div>
-        <PresetSoundInfo />
+        {/* <PresetSoundInfo /> */}
         <div className={classes.tags}></div>
       </div>
     </div>

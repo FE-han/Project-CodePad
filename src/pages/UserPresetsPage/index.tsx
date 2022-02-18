@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getPreset } from "../../api/getPreset";
+import { getPreset, PresetParams } from "../../api/getPreset";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetList from "../../components/Preset/PresetList";
@@ -77,7 +77,7 @@ const UserPresetsPageStyles = makeStyles({
     gridArea: "community",
     display: "grid",
     padding: "18px",
-    // alignItems: "center",
+    alignItems: "center",
   },
 });
 
@@ -90,25 +90,33 @@ export function UserPresetsPage() {
 
   const { userId } = useParams<UserPresetsPageParams>();
 
-  const [myPresetData, setMyPresetData] = useState<Preset>(
+  const [userPresetData, setUserPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+  const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialData = async () => {
+  const getInitialPresetData = async () => {
+    if (!urlParams.userId) {
+      throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
+    }
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
 
     setPresetData({
       nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
+      defaultPresetData: userPresetData,
+      setDefaultPresetData: setUserPresetData,
     });
   };
 
   useEffect(() => {
-    getInitialData();
+    getInitialPresetData();
   }, []);
 
   return (
@@ -116,10 +124,11 @@ export function UserPresetsPage() {
       <div className={classes.container}>
         <div className={classes.launchPad}>
           <LaunchpadHeaderContainer
-            title={myPresetData.presetTitle}
+            title={userPresetData.presetTitle}
             onlyFork={true}
+            presetId={userPresetData.presetId || "unknownId"}
           />
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          <LaunchPad presetData={userPresetData} sampleSoundMap={new Map()} />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={userId} />
