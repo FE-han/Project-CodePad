@@ -30,6 +30,8 @@ import { PresetData } from "../../utils/CommonInterface";
 
 import { useAppSelector } from "../../modules/hooks";
 import { getPresetInfo } from "../../api/getPresetInfo";
+import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -183,26 +185,32 @@ export function MyPresetsPage() {
       userId: urlParams.userId,
       presetId: urlParams.presetId,
     };
-
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(config);
-    // setDefaultPresetData(newPresetData);
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
-
-    const currentSampleSoundMap = sampleSoundMap;
-    nowPresetData.soundSamples.map((soundSample) => {
-      currentSampleSoundMap.set(
-        soundSample.location,
-        soundSample.soundSampleURL
+    try {
+      const nowPresetData: Preset = await getPreset(config);
+      dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
+      setPresetData({
+        nowPresetData,
+        defaultPresetData: myPresetData,
+        setDefaultPresetData: setMyPresetData,
+      });
+      dispatch(
+        soundButtonsActions.setButtonState({
+          soundSamples: nowPresetData.soundSamples,
+        })
       );
-    });
-    setSampleSoundMap(currentSampleSoundMap);
-
-    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+      const currentSampleSoundMap = sampleSoundMap;
+      nowPresetData.soundSamples.map((soundSample) => {
+        currentSampleSoundMap.set(
+          soundSample.location,
+          soundSample.soundSampleURL
+        );
+      });
+      setSampleSoundMap(currentSampleSoundMap);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    } catch (err) {
+      console.log("프리셋 Api에러", err);
+      dispatch(getPresetActions.getPresetDataRejected());
+    }
 
     const newPresetInfo = await getPresetInfo(urlParams.presetId);
     dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));

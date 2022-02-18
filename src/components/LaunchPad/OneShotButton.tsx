@@ -72,7 +72,9 @@ export function OneShotButton({
       //URL없을경우 에러컨트롤
       setSound(undefined);
     } else {
-      setSound(new Audio(soundSampleURL));
+      setSound(
+        new Audio(`${process.env.REACT_APP_SERVER_BASE_URL}/${soundSampleURL}`)
+      );
     }
   }, [setSound]);
 
