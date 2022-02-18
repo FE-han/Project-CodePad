@@ -32,6 +32,9 @@ import testImage from "../../assets/testImage.png";
 import { useAppSelector } from "../../modules/hooks";
 import { PrivacyType } from "../../utils/CommonValue";
 import { updatePreset } from "../../api/updatePreset";
+import { useDispatch } from "react-redux";
+import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
+import { getPresetInfo } from "../../api/getPresetInfo";
 
 const UpdatePresetsPageStyles = makeStyles({
   root: {
@@ -165,6 +168,7 @@ export type formDataTypes = {
 }
 export function UpdatePresetsPage() {
   const classes = UpdatePresetsPageStyles();
+  const dispatch = useDispatch();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
@@ -184,6 +188,33 @@ export function UpdatePresetsPage() {
     soundSample: [],
   })
 
+ 
+  useEffect(() => {
+    getInitialData();
+    initFormData();
+  }, []);
+
+  useEffect(() => {
+    initFormData();
+  }, [currentPresetState])
+
+  const getInitialData = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    const nowPresetData: Preset = await getPreset({presetId: 'defaultPreset1', userId: ''});
+    // setDefaultPresetData(newPresetData);
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
+
+    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    const newPresetInfo = await getPresetInfo(setPresetId(presetId));
+    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo))
+  };
+
   const initFormData = () => {
     setFormData({
       ...formData,
@@ -194,32 +225,6 @@ export function UpdatePresetsPage() {
     });
   }
 
-  const getInitialData = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    try{
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
-    // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
-  } catch(e) {
-    
-  }
-  };
-
-  useEffect(() => {
-    getInitialData();
-    console.log(currentPresetState);
-    
-    initFormData();
-  }, []);
-
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
 
 
   const [sample, setSample] = useState<string>("");
@@ -270,8 +275,11 @@ export function UpdatePresetsPage() {
     })
   }
 
-  const handleSaveClick = async (event: any) => {
-    await updatePreset(formData)
+  const handleSaveClick = (event: any) => {
+    //samplesound upload api 추가
+    Promise.all([updatePreset(formData)])
+      .then((res) => alert("성공"))
+      .catch((err) => alert(err))
   }
 
   return (

@@ -46,13 +46,11 @@ export default function PresetThumbnailUpload({
 }:PresetThumbnailUploadProps) {
   const classes = PresetThumbnailUploadStyles();
 
-  const [currImg, setCurrImg] = useState<string>("");
+  const [currImg, setCurrImg] = useState<string>(thumbnailImg.thumbnailImgURL);
 
   useEffect(() => {
     setCurrImg(thumbnailImg.thumbnailImgURL);
-    console.log(currImg);
-  },[])
-
+  }, [thumbnailImg])
   //파일 변환
   const encodeFileToBase64 = (file: File) => {
     const reader = new FileReader();

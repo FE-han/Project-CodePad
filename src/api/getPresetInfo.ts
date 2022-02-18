@@ -6,10 +6,10 @@ export interface PresetParams {
   presetId?: string;
 }
 
-export async function getPresetInfo(params: PresetParams) {
+export async function getPresetInfo(params: any) {
   const config: AxiosRequestConfig = {
     //token input
-    baseURL: "http://localhost:4000"
+    baseURL: "http://localhost:4200"
   };
   // const response = await axiosInstance(config).get(
   //   `/launchPad?userId=${params.userId}&PresetId=${params.presetId}`

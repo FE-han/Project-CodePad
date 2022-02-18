@@ -133,24 +133,18 @@ export function MyPresetsPage() {
 
   const getPresetData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    try{
-      const nowPresetData: Preset = await getPreset(setPresetId(presetId));
-      // setDefaultPresetData(newPresetData);
-      setPresetData({
-        nowPresetData,
-        defaultPresetData: myPresetData,
-        setDefaultPresetData: setMyPresetData,
-      });
-  
-      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
-      
+    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    // setDefaultPresetData(newPresetData);
+    setPresetData({
+      nowPresetData,
+      defaultPresetData: myPresetData,
+      setDefaultPresetData: setMyPresetData,
+    });
 
-    }catch(e){
-      console.log(e);
-    }
+    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    
+
     const newPresetInfo = await getPresetInfo(setPresetId(presetId));
-    console.log(newPresetInfo)
-    dispatch(setNowPresetValueActions.setValueFromPresetTitle(newPresetInfo)); //redux에 저장
     dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
     dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
     dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo))
@@ -159,6 +153,8 @@ export function MyPresetsPage() {
   useEffect(() => {
     getPresetData();
   }, []);
+
+  
 
   return (
     <div className={classes.root}>
