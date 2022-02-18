@@ -16,7 +16,7 @@ interface PresetThumbnail {
 }
 
 export interface NowPresetValueState {
-  userId: string;
+  userId: string; // myPresetPage에서는 undefined, userPresetPage에서는 "작성자의"userId를 가지고있게함
   presetTitle: string; //Preset
   presetId: string; //Preset
   areaSize: LaunchPadScale; //Preset

@@ -8,7 +8,6 @@ import { getPreset, PresetParams } from "../../api/getPreset";
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import { initialEditPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
-import LaunchPad from "../../components/LaunchPad";
 import PresetInfo from "./components/PresetInfo";
 
 import { PageColors } from "../../utils/CommonStyle";
@@ -16,7 +15,6 @@ import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import { ButtonColors } from "../../utils/CommonStyle";
-import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
@@ -178,6 +176,7 @@ export function HandleMyPresetPage() {
       console.log("create page");
       return;
     }
+
     console.log("update page");
     getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
   }, []);
