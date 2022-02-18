@@ -11,6 +11,7 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
+import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -55,7 +56,11 @@ const PresetInfoStyles = makeStyles({
     },
   },
 });
-export default function PresetInfo() {
+
+interface PresetInfoProps {
+  nowHandlePresetData: NowPresetValueState;
+}
+export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
   const classes = PresetInfoStyles();
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
 
@@ -102,7 +107,13 @@ export default function PresetInfo() {
         <Button variant="outlined" startIcon={<ClearIcon />}>
           CANCLE
         </Button>
-        <Button variant="outlined" startIcon={<SaveIcon />}>
+        <Button
+          variant="outlined"
+          startIcon={<SaveIcon />}
+          onClick={() => {
+            console.log(nowHandlePresetData);
+          }}
+        >
           SAVE
         </Button>
       </Stack>

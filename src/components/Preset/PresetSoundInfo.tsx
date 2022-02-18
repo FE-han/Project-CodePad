@@ -27,6 +27,7 @@ import {
   OneShotSoundType,
   SoundSample,
 } from "../LaunchPad/utils/types";
+import { useDispatch } from "react-redux";
 
 interface SoundSampleValue {
   name: string;
@@ -46,6 +47,7 @@ export default function PresetSoundInfo({
 }: PresetSoundInfoProps) {
   const classes = CreatePresetsPageStyles();
 
+  const dispatch = useDispatch();
   const selectedButtonState = useAppSelector(
     (state) => state.selectedButtonSlice
   );
@@ -54,16 +56,44 @@ export default function PresetSoundInfo({
     useState<SelectedButtonState>(selectedButtonState);
 
   useEffect(() => {
-    setSelectedButtonValue(selectedButtonState);
-    setSoundSampleValue({
-      name: "",
-      file: undefined,
+    initialPresetData.soundSamples.map((soundSample) => {
+      if (soundSample.location === selectedButtonState.location) {
+        if (soundSample.soundFile === undefined) {
+          setSoundSampleValue({
+            name: "",
+            file: undefined,
+          });
+        } else {
+          setSoundSampleValue({
+            name: soundSample.soundFile.name,
+            file: soundSample.soundFile,
+          });
+        }
+        setBtnType(soundSample.buttonType || "ONESHOT");
+        setSoundType(soundSample.soundType || "FX");
+      }
     });
-    setBtnType("ONESHOT");
-    setSoundType("");
 
-    console.log(selectedButtonState);
-  }, [selectedButtonState]);
+    setSelectedButtonValue(selectedButtonState);
+    console.log("지금선택한 버튼값", selectedButtonState);
+    console.log("현재 수정중인 프리셋 전체 데이터", initialPresetData);
+
+    // if (selectedButtonState.soundFile === undefined) {
+    //   setSoundSampleValue({
+    //     name: "",
+    //     file: undefined,
+    //   });
+    // } else {
+    //   setSoundSampleValue({
+    //     name: selectedButtonState.soundFile.name,
+    //     file: selectedButtonState!.soundFile,
+    //   });
+    // }
+    // setBtnType(selectedButtonState.buttonType || "ONESHOT");
+    // setSoundType(selectedButtonState.soundType || "FX");
+
+    // console.log(selectedButtonState);
+  }, [selectedButtonState.location]);
 
   const [soundSampleValue, setSoundSampleValue] = useState<SoundSampleValue>({
     name: "",
@@ -77,6 +107,18 @@ export default function PresetSoundInfo({
     setSoundSampleValue({
       name: singleSoundFile.name,
       file: singleSoundFile,
+    });
+    setInitialPresetData({
+      ...initialPresetData,
+      soundSamples: initialPresetData.soundSamples.map((soundSample) => {
+        if (soundSample.location === selectedButtonValue.location) {
+          return {
+            ...soundSample,
+            soundFile: singleSoundFile,
+          };
+        }
+        return soundSample;
+      }),
     });
   };
 
