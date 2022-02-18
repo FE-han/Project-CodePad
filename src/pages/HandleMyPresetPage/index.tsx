@@ -190,7 +190,7 @@ export function HandleMyPresetPage() {
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
             <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo />
+            <PresetInfo nowHandlePresetData={nowHandlePresetData} />
           </div>
         </div>
         <PresetSoundInfo
