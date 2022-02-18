@@ -1,17 +1,13 @@
 import { makeStyles } from "@mui/styles";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
-import {
-  CommunityContentType,
-  ScrollListContainerSize,
-  ScrollValues,
-} from "../../utils/CommonValue";
+import { ScrollValues } from "../../utils/CommonValue";
 
-import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 import { useEffect, useState } from "react";
 import { PresetData } from "../../utils/CommonInterface";
 import { makePresetScrollList } from "../../components/CommunityContents/makePresetScrollList";
 import PresetContent from "../../components/CommunityContents/PresetContent";
 import Loader from "../../components/CommunityContents/Loader";
+import { PresetListparams } from "../../api/CommunityContents/getPresetList";
 
 export default function LikePresetsPage() {
   const classes = likePresetsPageStyles();
@@ -19,59 +15,58 @@ export default function LikePresetsPage() {
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   const [itemLists, setItemLists] = useState<Array<PresetData>>([]);
-  const [curPageNum, setCurPageNum] = useState<number>(
-    ScrollValues.defaultPageNum
-  );
+
+  const [config, setConfig] = useState<PresetListparams>({
+    Listname: "likes",
+    pageNum: ScrollValues.defaultPageNum,
+    limitNum: ScrollValues.limitNum,
+    presetIds: "",
+  });
 
   const getMoreItem = async () => {
-    setIsLoaded(true);
-
-    const configdata = {
-      Listname: `top50`,
-      pageNum: curPageNum + 1,
-      limitNum: ScrollValues.limitNum,
-      presetIds: "",
-    };
-
-    const res: any = await makePresetScrollList(configdata);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const res = await makePresetScrollList(config);
 
     if (res.success) {
-      setItemLists((itemLists) => itemLists.concat(res.data));
-      setCurPageNum(curPageNum + 1);
-      setIsError(false);
-    }
-
-    if (!res.success) {
+      if (res.data.length > 0) {
+        setItemLists((arr) => arr.concat(res.data));
+      } else {
+        setIsDone(true);
+      }
+    } else {
       setIsError(true);
-      console.log("error");
-      throw new Error(res.errorMessage);
     }
-
     setIsLoaded(false);
   };
 
-  const onIntersect = async (
+  useEffect(() => {
+    if (!isLoaded || isError || isDone) return;
+
+    getMoreItem();
+
+    const newPageNum = config.pageNum + 1;
+    setConfig((prev) => {
+      return { ...prev, pageNum: newPageNum };
+    });
+  }, [isLoaded]);
+
+  const onIntersect = (
     [entry]: Array<IntersectionObserverEntry>,
     observer: IntersectionObserver
   ) => {
-    if (entry.isIntersecting && !isLoaded && !isError) {
+    if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      try {
-        await getMoreItem();
-      } catch (error) {
-        observer.disconnect();
-        return;
-      }
+      setIsLoaded(true);
       observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target) {
+
+    if (target && !isDone && !isError) {
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0,
       });
@@ -79,7 +74,7 @@ export default function LikePresetsPage() {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, isDone, isError]);
 
   return (
     <div className={classes.root}>

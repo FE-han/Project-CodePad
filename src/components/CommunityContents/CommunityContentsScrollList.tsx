@@ -73,26 +73,24 @@ const CommunityContentsScrollList = (props: {
     if (res.success) {
       if (res.data.length > 0) {
         setItemLists((arr) => arr.concat(res.data));
-        return true;
       } else {
-        return false;
+        setIsDone(true);
       }
+    } else {
+      setIsError(true);
     }
-    return false;
+    setIsLoaded(false);
   };
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || isError || isDone) return;
 
-    const res = getMoreItem();
-    if (!res) {
-      setIsError(true);
-    }
+    getMoreItem();
+
     const newPageNum = config.pageNum + 1;
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
     });
-    setIsLoaded(false);
   }, [isLoaded]);
 
   const onIntersect = (
@@ -100,25 +98,23 @@ const CommunityContentsScrollList = (props: {
     observer: IntersectionObserver
   ) => {
     if (entry.isIntersecting) {
-      //observer.unobserve(entry.target);
+      observer.unobserve(entry.target);
       setIsLoaded(true);
-      //observer.observe(entry.target);
+      observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (isDone || isError) {
-      return () => observer && observer.disconnect();
-    } else {
-      if (target && !isDone && !isError) {
-        observer = new IntersectionObserver(onIntersect, {
-          threshold: 0,
-        });
 
-        observer.observe(target);
-      }
+    if (target && !isDone && !isError) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0,
+      });
+
+      observer.observe(target);
     }
+    return () => observer && observer.disconnect();
   }, [target, isDone, isError]);
 
   const ContentList = () => {
@@ -133,7 +129,7 @@ const CommunityContentsScrollList = (props: {
 
     if (type === "PROFILE") {
       itemLists.map((preset, idx) =>
-        li.push(<ArtistContent key={preset.presetId} presetData={preset} />)
+        li.push(<ArtistContent key={preset.userId} presetData={preset} />)
       );
     }
 
