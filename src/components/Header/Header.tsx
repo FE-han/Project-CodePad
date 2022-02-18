@@ -61,13 +61,14 @@ export default function Header() {
         });
       })
       .catch((err) => {
-        alert("API요청 실패");
+        // alert("API요청 실패");
         setIsLogin(false);
       });
   };
+
   if (getCookie(cookieName) && !isLogin) {
     setIsLogin(true);
-    updateUserInfo();
+    // updateUserInfo();
     setUserCookie(getCookie(cookieName));
   }
   const handleLogout = () => {
