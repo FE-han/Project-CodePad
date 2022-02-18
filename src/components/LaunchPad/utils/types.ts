@@ -15,6 +15,7 @@ export interface SoundSample {
 }
 export interface Preset {
   presetTitle?: string;
+  userId?: string;
   presetId?: string;
   areaSize?: LaunchPadScale;
   soundSamples: Array<SoundSample>;

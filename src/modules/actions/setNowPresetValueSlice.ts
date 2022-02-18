@@ -16,7 +16,7 @@ interface PresetThumbnail {
 }
 
 export interface NowPresetValueState {
-  userId: string; // myPresetPage에서는 undefined, userPresetPage에서는 "작성자의"userId를 가지고있게함
+  userId: string; // Preset myPresetPage에서는 undefined, userPresetPage에서는 "작성자의"userId를 가지고있게함
   presetTitle: string; //Preset
   presetId: string; //Preset
   areaSize: LaunchPadScale; //Preset
@@ -46,6 +46,7 @@ export const setNowPresetValueSlice = createSlice({
   reducers: {
     setValueFromPreset: (state, action: PayloadAction<Preset>) => {
       state.presetTitle = action.payload!.presetTitle || "untitled";
+      state.userId = action.payload!.userId || "ErrorUserId";
       state.presetId = action.payload.presetId || "unsaved";
       state.areaSize = action.payload.areaSize || LaunchPadScale.DEFAULT;
 

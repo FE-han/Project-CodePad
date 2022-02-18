@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import { useAppSelector } from "../../modules/hooks";
-import { LoopButton } from "../LaunchPadEdit/LoopButton";
 import { SelectedPresetButton } from "./SelectedPresetButton";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
 import { SelectedButtonState } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
@@ -56,6 +55,13 @@ export default function PresetSoundInfo({
 
   useEffect(() => {
     setSelectedButtonValue(selectedButtonState);
+    setSoundSampleValue({
+      name: "",
+      file: undefined,
+    });
+    setBtnType("ONESHOT");
+    setSoundType("");
+
     console.log(selectedButtonState);
   }, [selectedButtonState]);
 
@@ -256,8 +262,12 @@ export default function PresetSoundInfo({
             {/* value: magicNumber 수정필요*/}
             <MenuItem value={0}>FX</MenuItem>
             <MenuItem value={1}>DRUM</MenuItem>
-            <MenuItem value={2}>VOICE</MenuItem>
-            <MenuItem value={3}>PERC</MenuItem>
+            <MenuItem value={2}>PERC</MenuItem>
+            <MenuItem value={3}>VOCAL</MenuItem>
+            <MenuItem value={4}>SYNTH</MenuItem>
+            <MenuItem value={5}>DRUMS</MenuItem>
+            <MenuItem value={6}>MELODIC</MenuItem>
+            <MenuItem value={7}>CHORD</MenuItem>
           </Select>
         </FormControl>
       </div>
