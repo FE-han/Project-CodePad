@@ -65,7 +65,7 @@ const ProfileModalStyles = makeStyles({
     margin: "0px auto",
     borderWidth: "0px 0px 1px 0px",
     textAlign: "center",
-    fontSize: "20px",
+    fontSize: "16px",
     "&:focus": {
       outline: "none",
     },
