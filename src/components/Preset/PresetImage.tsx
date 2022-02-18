@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Props, useEffect, useState } from 'react'
 import { makeStyles } from "@mui/styles";
 import testImage from "../../assets/testImage.png";
 import { PresetImageColors } from "../../utils/CommonStyle";
@@ -6,6 +6,9 @@ import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
 import { useParams } from 'react-router';
 import { getMyPresetList } from '../../api/getMyPresetList';
 import { imageListClasses } from '@mui/material';
+import { PresetData } from '../../utils/CommonInterface';
+import { getMyPresetListSlice } from '../../modules/actions/getMyPresetListSlice';
+
 
 
 const PrestImageStyles = makeStyles({
@@ -19,32 +22,29 @@ const PrestImageStyles = makeStyles({
     },
   },
 });
-const PresetImage = (props:{image:Array<PresetListElement>;}) => {
+interface PresetImageProps{
+  presetList: Array<PresetListElement>;
+  selectedPresetId: any
+}
+
+const PresetImage = ({presetList, selectedPresetId} : PresetImageProps) => {
   const classes = PrestImageStyles();
-  const [url, setURL] = React.useState(0);
-  const data: any = useParams();
-  console.log(data.presetId);
-  console.log(data)
-  
-  console.log(props.image)
+
+  const [imgURL, setImgURL] = useState('');
   
 
   useEffect(()=>{
-    setURL(data.presetId)
-  }, [data.presetId])
-
-  // props.image.filter(element => {
-  //   const short = element.thumbnailImageURL
-  //   console.log(element.thumbnailImageURL)
-  // })
-  console.log(props.image)
-  
-  // console.log(props.image[1].thumbnailImageURL)
-  
+   presetList.map((value)=>{
+      if(value.presetId === selectedPresetId.presetId){
+        setImgURL(value.thumbnailImageURL);
+      }
+    })
+  },[presetList, selectedPresetId])
+//감지할 대상 ex) nowselectedElement
 
   return (
     <div className={classes.presetImage}>
-        <img src={testImage} alt="error" />        
+      <img src={imgURL} alt=""/>
     </div>
   );
 };

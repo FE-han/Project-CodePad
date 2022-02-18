@@ -105,6 +105,7 @@ const DefaultPresetsPageStyles = makeStyles({
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
+  const presetId= useParams();
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
@@ -183,7 +184,7 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage image={presetList}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
             <PresetList createBtn={false} presetList={presetList}/>
           </div>
         </div>

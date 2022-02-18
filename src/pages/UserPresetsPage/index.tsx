@@ -88,6 +88,7 @@ type UserPresetsPageParams = {
 
 export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
+  const presetId= useParams();
 
   const { userId } = useParams<UserPresetsPageParams>();
   const { presetList, isLoading } = useAppSelector(
@@ -139,7 +140,7 @@ export function UserPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage image={presetList}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
             <PresetList createBtn={false} presetList={presetList}/>
             <PaginationContainer presetList={presetList}/>
           </div>

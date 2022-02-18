@@ -1,8 +1,8 @@
 {
     "userId=1": [{
             "title": "preset1",
-            "presetId": 111,
-            "thumbnailImageURL": "test",
+            "presetId": "1",
+            "thumbnailImageURL": "https://cdn.pixabay.com/photo/2021/09/02/16/48/cat-6593947_960_720.jpg",
             "reactions": {
                 "viewCount": 22,
                 "likeCount": 33,
@@ -11,8 +11,8 @@
         },
         {
             "title": "preset2",
-            "presetId": 222,
-            "thumbnailImageURL": "test",
+            "presetId": "2",
+            "thumbnailImageURL": "https://picsum.photos/200",
             "reactions": {
                 "viewCount": 22,
                 "likeCount": 33,
@@ -21,8 +21,8 @@
         },
         {
             "title": "preset3",
-            "presetId": 333,
-            "thumbnailImageURL": "test",
+            "presetId": "3",
+            "thumbnailImageURL": "https://picsum.photos/199",
             "reactions": {
                 "viewCount": 22,
                 "likeCount": 33,

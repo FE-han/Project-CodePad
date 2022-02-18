@@ -12,6 +12,7 @@ import { useState } from "react";
 import usePagination from "../../components/Preset/usePagination";
 import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
 import Pagination from "@mui/material/Pagination";
+import { Link } from "react-router-dom";
 
 
 const PresetsListStyles = makeStyles({
@@ -65,11 +66,13 @@ export default function PresetList(props: {
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    index: any
   ) => {
     setSelectedIndex(index);
     console.log(index);
     //link태그
+    window.location.href = `${index.presetId}`
+    
   };
 
   return (

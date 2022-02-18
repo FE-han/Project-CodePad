@@ -140,9 +140,8 @@ export function MyPresetsPage() {
 
   const presetId= useParams();
   // const userId = useParams();
-  console.log(presetId)
 
-  const { presetList, isLoading } = useAppSelector(
+  const { presetList, isLoading  } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
   
@@ -171,7 +170,6 @@ export function MyPresetsPage() {
           presetList: nowMyPresetList,
         })
       );
-      console.log("state:", presetList);
     } catch {
       dispatch(getMyPresetListActions.getPresetDataRejected());
       alert("에러");
@@ -203,8 +201,6 @@ export function MyPresetsPage() {
   };
 
 
-console.log(myPresetData)
-
   useEffect(() => {
     getPresetListInfoData();
     getInitialPresetData();
@@ -228,13 +224,13 @@ console.log(myPresetData)
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage image={presetList}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
             <PresetList createBtn={true} presetList={presetList} />
             <PaginationContainer presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}>
-          {/* <PresetCommunity /> */}
+          <PresetCommunity />
         </div>
       </div>
     </div>
