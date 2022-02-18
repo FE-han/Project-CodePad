@@ -35,6 +35,7 @@ export const setPresetData = ({
     presetId: nowPresetData.presetId,
     areaSize: nowPresetData.areaSize,
     soundSamples: newSoundSamples,
+    thumbnailURL: nowPresetData.thumbnailURL,
   });
 };
 

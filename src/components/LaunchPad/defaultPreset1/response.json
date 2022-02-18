@@ -4,6 +4,7 @@
     "userId": "awesomeHuman",
     "presetId": "12-34-56-12",
     "areaSize": 64,
+    "thumbnailURL": "asdfas",
     "soundSamples": [
       {
         "location": "0X1",
