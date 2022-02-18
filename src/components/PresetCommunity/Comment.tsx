@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { Divider, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
 import { useAppSelector } from "../../modules/hooks";
@@ -52,6 +52,10 @@ const Comment = (props: {
   const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
     setToggleHover(!toggleHover);
   };
+
+  useEffect(() => {
+    console.log("리덕스 userId값", userId);
+  }, []);
 
   return (
     <div
