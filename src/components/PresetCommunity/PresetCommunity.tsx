@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 import Tags from "./Tags";
 import Reactions from "./Reactions";
 import CommentsContainer from "./CommentsContainer";
+import { useAppSelector } from "../../modules/hooks";
 
 const PresetCommunityStyles = makeStyles({
   root: {
@@ -29,10 +30,14 @@ const PresetCommunityStyles = makeStyles({
 export default function PresetCommunity() {
   const classes = PresetCommunityStyles();
 
+  const {data, isLoading} = useAppSelector(
+    (state) => state.getTagsSlice
+)
+
   return (
     <div className={classes.root}>
       <div className={classes.tags}>
-        <Tags />
+        <Tags data={data}/>
       </div>
       <div className={classes.reactions}>
         <Reactions />

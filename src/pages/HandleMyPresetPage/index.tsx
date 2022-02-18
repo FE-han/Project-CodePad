@@ -19,6 +19,7 @@ import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
+import PresetTags from "../../components/PresetCommunity/PresetTags"
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -139,6 +140,9 @@ export const HandleMyPresetPageStyles = makeStyles({
   },
   tags: {
     gridArea: "tags",
+    padding: "18px",
+    display:"grid",
+    alignItems: "column",
   },
 });
 
@@ -197,7 +201,9 @@ export function HandleMyPresetPage() {
           setInitialPresetData={setNowHandlePresetData}
           initialPresetData={nowHandlePresetData}
         />
-        <div className={classes.tags}></div>
+        <div className={classes.tags}>
+          <PresetTags />
+        </div>
       </div>
     </div>
   );
