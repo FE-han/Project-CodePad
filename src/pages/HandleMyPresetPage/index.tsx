@@ -189,8 +189,15 @@ export function HandleMyPresetPage() {
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo nowHandlePresetData={nowHandlePresetData} />
+            <PresetThumbnailUpload
+              imgURL={testImage}
+              setInitialPresetData={setNowHandlePresetData}
+              initialPresetData={nowHandlePresetData}
+            />
+            <PresetInfo
+              nowHandlePresetData={nowHandlePresetData}
+              setInitialPresetData={setNowHandlePresetData}
+            />
           </div>
         </div>
         <PresetSoundInfo

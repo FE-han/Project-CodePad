@@ -3,6 +3,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { ButtonColors, PresetImageColors } from "../../../utils/CommonStyle";
+import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
 
 const PresetThumbnailUploadStyles = makeStyles({
   root: {
@@ -36,10 +37,16 @@ const PresetThumbnailUploadStyles = makeStyles({
 
 type PresetThumbnailUploadProps = {
   imgURL: string;
+  initialPresetData: NowPresetValueState;
+  setInitialPresetData: React.Dispatch<
+    React.SetStateAction<NowPresetValueState>
+  >;
 };
 
 export default function PresetThumbnailUpload({
   imgURL,
+  initialPresetData,
+  setInitialPresetData,
 }: PresetThumbnailUploadProps) {
   const classes = PresetThumbnailUploadStyles();
 
@@ -62,6 +69,16 @@ export default function PresetThumbnailUpload({
     if (files) {
       encodeFileToBase64(files[0]);
     }
+
+    if (files === null) return;
+
+    setInitialPresetData({
+      ...initialPresetData,
+      thumbnailImg: {
+        ...initialPresetData.thumbnailImg,
+        thumbnailImgFile: files[0],
+      },
+    });
   };
 
   return (
