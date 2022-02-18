@@ -31,7 +31,6 @@ import { PresetData } from "../../utils/CommonInterface";
 import { useAppSelector } from "../../modules/hooks";
 import { getPresetInfo } from "../../api/getPresetInfo";
 
-
 const MyPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
@@ -138,17 +137,14 @@ export function MyPresetsPage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
 
-  const presetId= useParams();
+  const presetId = useParams();
   // const userId = useParams();
 
-  const { presetList, isLoading  } = useAppSelector(
+  const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-  
-  
-  
-  
 
   // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
   // console.log(state)
@@ -188,7 +184,6 @@ export function MyPresetsPage() {
       presetId: urlParams.presetId,
     };
 
-
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
@@ -198,6 +193,15 @@ export function MyPresetsPage() {
       setDefaultPresetData: setMyPresetData,
     });
 
+    const currentSampleSoundMap = sampleSoundMap;
+    nowPresetData.soundSamples.map((soundSample) => {
+      currentSampleSoundMap.set(
+        soundSample.location,
+        soundSample.soundSampleURL
+      );
+    });
+    setSampleSoundMap(currentSampleSoundMap);
+
     dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
 
     const newPresetInfo = await getPresetInfo(urlParams.presetId);
@@ -206,11 +210,12 @@ export function MyPresetsPage() {
     dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
-
   useEffect(() => {
     getPresetListInfoData();
     getInitialPresetData();
   }, []);
+
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   return (
     <div className={classes.root}>
@@ -222,7 +227,14 @@ export function MyPresetsPage() {
             presetId={myPresetData.presetId || "unknownId"}
           />
 
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          {state.isLoading ? (
+            "로딩중"
+          ) : (
+            <LaunchPad
+              presetData={myPresetData}
+              sampleSoundMap={sampleSoundMap}
+            />
+          )}
         </div>
         <div className={classes.togglePresetBtn}>
           <PresetToggleButton type={ToggleType.myPreset} />
@@ -230,9 +242,9 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId} />
             <PresetList createBtn={true} presetList={presetList} />
-            <PaginationContainer presetList={presetList}/>
+            <PaginationContainer presetList={presetList} />
           </div>
         </div>
         <div className={classes.community}>

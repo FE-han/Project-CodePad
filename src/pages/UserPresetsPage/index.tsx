@@ -106,11 +106,13 @@ export function UserPresetsPage() {
   const [userPresetData, setUserPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
   const urlParams = useParams<{ userId: string; presetId: string }>();
   const dispatch = useDispatch();
   const userPresetPageState = useAppSelector(
     (state) => state.setNowPresetValueSlice
   );
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
@@ -131,6 +133,14 @@ export function UserPresetsPage() {
       defaultPresetData: userPresetData,
       setDefaultPresetData: setUserPresetData,
     });
+    const currentSampleSoundMap = sampleSoundMap;
+    nowPresetData.soundSamples.map((soundSample) => {
+      currentSampleSoundMap.set(
+        soundSample.location,
+        soundSample.soundSampleURL
+      );
+    });
+    setSampleSoundMap(currentSampleSoundMap);
     dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
   };
 
@@ -147,7 +157,10 @@ export function UserPresetsPage() {
             onlyFork={true}
             presetId={userPresetData.presetId || "unknownPresetId"}
           />
-          <LaunchPad presetData={userPresetData} sampleSoundMap={new Map()} />
+          <LaunchPad
+            presetData={userPresetData}
+            sampleSoundMap={sampleSoundMap}
+          />
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={urlParams.userId || "잘못된UserId"} />
