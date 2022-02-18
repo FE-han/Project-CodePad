@@ -300,7 +300,7 @@ const HeaderStyles = makeStyles({
   },
 
   borderLine: {
-    marginLeft: "10px",
+    margin: "0 10px",
     height: "20px",
     borderRight: `2px solid`,
   },

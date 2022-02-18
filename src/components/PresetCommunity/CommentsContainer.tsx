@@ -62,7 +62,7 @@ const commentsContainerStyles = makeStyles({
 const CommentsContainer = () => {
   const classes = commentsContainerStyles();
 
-  //  const { userId , presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
+  const { presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
 
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -73,7 +73,7 @@ const CommentsContainer = () => {
   const [commentList, setCommentList] = useState<Array<CommentData>>([]);
   //const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
   const [config, setConfig] = useState<getCommentListParams>({
-    presetId: "-S9Y43q1F_lt5pjBM_2E6",
+    presetId,
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
   });
@@ -132,11 +132,10 @@ const CommentsContainer = () => {
 
   const handleCreate = async () => {
     const configdata = {
-      presetId: "-S9Y43q1F_lt5pjBM_2E6",
+      presetId,
       text,
     };
 
-    console.log(text + "-----------create");
     try {
       const newCommentList = await postCommentListAPI(configdata);
       setCommentList(newCommentList);
@@ -148,7 +147,7 @@ const CommentsContainer = () => {
 
   const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     const target = evt.target as HTMLInputElement;
-    const value = target.value;
+    const value = target.value.trim();
 
     if (value.length > 20) {
       setText(value.substr(0, 20));
@@ -178,7 +177,7 @@ const CommentsContainer = () => {
   };
   const updateComment = async (commentId: string) => {
     const configdata = {
-      presetId: "-S9Y43q1F_lt5pjBM_2E6",
+      presetId,
       commentId,
       text,
     };
