@@ -1,8 +1,5 @@
-import { makeStyles } from "@mui/styles";
-
 import { useEffect, useState } from "react";
-
-import { getPreset } from "../../api/getPreset";
+import { makeStyles } from "@mui/styles";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
@@ -12,6 +9,9 @@ import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
+
+import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
+import { getPreset, PresetParams } from "../../api/getPreset";
 
 import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
@@ -24,10 +24,12 @@ import { Link, Params, useParams } from "react-router-dom";
 
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
-import { useAppSelector } from "../../modules/hooks";
 import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
 import { PresetListState } from "../../modules/actions/CommunityContents/presetListSlice";
 import { PresetData } from "../../utils/CommonInterface";
+
+import { useAppSelector } from "../../modules/hooks";
+
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -116,7 +118,6 @@ const MyPresetsPageStyles = makeStyles({
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
       gap: "8px",
       width: "93%",
     },
@@ -125,7 +126,7 @@ const MyPresetsPageStyles = makeStyles({
     gridArea: "community",
     padding: "18px",
     display: "grid",
-    // alignItems: "center",
+    alignItems: "center",
   },
 });
 
@@ -136,14 +137,16 @@ export function MyPresetsPage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
-  const presetId = useParams();
+
+  const presetId= useParams();
   // const userId = useParams();
   console.log(presetId)
 
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-  console.log("presetList:",presetList)
+  
+  
   
   
 
@@ -175,22 +178,36 @@ export function MyPresetsPage() {
     }
   };
 
-  const getInitialLaunchPadPresetData = async () => {
+  const urlParams = useParams<{ userId: string; presetId: string }>();
+
+  const getInitialPresetData = async () => {
+    if (!urlParams.userId) {
+      throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
+    }
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+
+
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(setPresetId(presetId));
+    const nowPresetData: Preset = await getPreset(config);
     // setDefaultPresetData(newPresetData);
     setPresetData({
       nowPresetData,
       defaultPresetData: myPresetData,
       setDefaultPresetData: setMyPresetData,
     });
+
+    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
   };
 
 
+console.log(myPresetData)
 
   useEffect(() => {
     getPresetListInfoData();
-    getInitialLaunchPadPresetData();
+    getInitialPresetData();
   }, []);
 
   return (
@@ -200,6 +217,7 @@ export function MyPresetsPage() {
           <LaunchpadHeaderContainer
             title={myPresetData.presetTitle}
             onlyFork={false}
+            presetId={myPresetData.presetId || "unknownId"}
           />
 
           <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
@@ -216,7 +234,7 @@ export function MyPresetsPage() {
           </div>
         </div>
         <div className={classes.community}>
-          <PresetCommunity />
+          {/* <PresetCommunity /> */}
         </div>
       </div>
     </div>

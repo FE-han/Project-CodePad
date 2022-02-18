@@ -3,15 +3,28 @@ import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { ScrollListContainerSize } from "../../utils/CommonValue";
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
+import { useNavigate } from "react-router";
 
 export default function IntroPage() {
   const classes = introPageStyles();
+  const navigate = useNavigate();
+  const asdf = {
+    a: "a",
+    b: "b",
+  };
   return (
     <div className={classes.root}>
       <div className={classes.top50}>
+        {/* <button
+          onClick={() => {
+            navigate(`/userpresets/${asdf.a}/${asdf.b}`);
+          }}
+        >
+          임시이동
+        </button> */}
         <CommunityContentsScrollList
           title="CHART : TOP 50"
-          listName="top50"
+          listName="top50List"
           type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
@@ -19,7 +32,7 @@ export default function IntroPage() {
       <div className={classes.used}>
         <CommunityContentsScrollList
           title="Recently Used"
-          listName="used"
+          listName="recentlyUsed"
           type="PRESET"
           scrollSize={ScrollListContainerSize.introPage}
         />
@@ -27,7 +40,7 @@ export default function IntroPage() {
       <div className={classes.artist}>
         <CommunityContentsScrollList
           title="Artist Profile"
-          listName="artist"
+          listName="artists"
           type="PROFILE"
           scrollSize={ScrollListContainerSize.introPage}
         />

@@ -46,6 +46,7 @@ const LaunchpadHeaderContainerStyles = makeStyles({
 export default function LaunchpadHeaderContainer(props: {
   title: String | undefined;
   onlyFork: Boolean;
+  presetId: string;
 }) {
   const classes = LaunchpadHeaderContainerStyles();
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function LaunchpadHeaderContainer(props: {
           <>
             <Button
               onClick={() => {
-                navigate("/mypresets/update");
+                navigate(`/mypresets/update/${props.presetId}`);
               }}
               variant="outlined"
               size="small"

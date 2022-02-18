@@ -4,13 +4,21 @@ import { makeStyles } from "@mui/styles";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { Fonts, ButtonColors, CommentColors } from "../../utils/CommonStyle";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { memo } from "react";
-import { getCommentListAPI } from "../../api/commentListAPI";
-import { useState } from "react";
+import {
+  getCommentListAPI,
+  getCommentListParams,
+  postCommentListAPI,
+} from "../../api/Comment/commentListAPI";
+import { useState, useCallback } from "react";
 import { CommentData } from "../../utils/CommonInterface";
 import { ScrollValues } from "../../utils/CommonValue";
 import Loader from "../CommunityContents/Loader";
+import { setConstantValue } from "typescript";
+import { makeCommentScrollList } from "./makeCommentScroll";
+import { useRef } from "react";
+import { AlternateEmailTwoTone } from "@mui/icons-material";
 
 const commentsContainerStyles = makeStyles({
   root: {
@@ -44,7 +52,7 @@ const commentsContainerStyles = makeStyles({
     },
   },
   Loader: {
-    marginBottom: "50px",
+    //marginBottom: "50px",
   },
 });
 
@@ -54,55 +62,59 @@ const CommentsContainer = () => {
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   const [commentList, setCommentList] = useState<Array<CommentData>>([]);
-  const [curPageNum, setCurPageNum] = useState<number>(
-    ScrollValues.defaultPageNum
-  );
-
-  const highFunction = () => {};
+  //const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
+  const [config, setConfig] = useState<getCommentListParams>({
+    presetId: "-S9Y43q1F_lt5pjBM_2E6",
+    pageNum: ScrollValues.defaultPageNum,
+    limitNum: ScrollValues.limitNum,
+  });
+  const [text, setText] = useState<string>("");
 
   const getMoreItem = async () => {
-    setIsLoaded(true);
+    const res = await makeCommentScrollList(config);
 
-    const configdata = {
-      presetId: "tmpPrestId",
-      pageNum: curPageNum + 1,
-      limitNum: ScrollValues.limitNum,
-    };
-
-    try {
-      const data = await getCommentListAPI(configdata);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setCommentList((commentList) => commentList.concat(data));
-      setCurPageNum(curPageNum + 1);
-      setIsError(false);
-    } catch (error) {
-      throw new Error();
+    if (res.success) {
+      if (res.data.length > 0) {
+        setCommentList((arr) => arr.concat(res.data));
+      } else {
+        setIsDone(true);
+        console.log("Done!");
+      }
     }
-
-    setIsLoaded(false);
+    if (!res.success) {
+      setIsError(true);
+      alert(res.errorMessage);
+    }
   };
 
-  const onIntersect = async (
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    getMoreItem();
+    const newPageNum = config.pageNum + 1;
+    setConfig((prev) => {
+      return { ...prev, pageNum: newPageNum };
+    });
+    setIsLoaded(false);
+  }, [isLoaded]);
+
+  const onIntersect = (
     [entry]: Array<IntersectionObserverEntry>,
     observer: IntersectionObserver
   ) => {
-    if (entry.isIntersecting && !isLoaded && !isError) {
+    if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      try {
-        await getMoreItem();
-      } catch (error) {
-        observer.disconnect();
-        return;
-      }
+      setIsLoaded(true);
       observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target) {
+    if (target && !isDone && !isError) {
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0,
       });
@@ -110,14 +122,46 @@ const CommentsContainer = () => {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, isDone, isError]);
+
+  const handleCreate = async () => {
+    const configdata = {
+      presetId: "4i85YMVBPsydQGMgGwAF9",
+      text,
+    };
+
+    try {
+      const newCommentList = await postCommentListAPI(configdata);
+      setCommentList(newCommentList);
+    } catch (error) {
+      alert("send Error");
+    }
+  };
+  const handleSendBtn = (evt: React.ChangeEvent<HTMLButtonElement>) => {};
+  const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = evt.target as HTMLInputElement;
+    const value = target.value;
+    if (evt.key === "Enter") {
+      if (value.length > 0) {
+        handleCreate();
+        setText("");
+      }
+    }
+  };
+  const handleDelete = () => {};
+  const handleUpdate = () => {};
 
   return (
     <div className={classes.root}>
       <div className={classes.commentList}>
         <Stack spacing={1.5}>
           {commentList.map((dt) => (
-            <Comment commentData={dt} actionFn={highFunction} />
+            <Comment
+              key={dt.commentId}
+              commentData={dt}
+              deleteFn={handleDelete}
+              updateFn={handleUpdate}
+            />
           ))}
         </Stack>
         <div ref={setTarget} className={classes.Loader}>
@@ -133,8 +177,11 @@ const CommentsContainer = () => {
               borderBottom: `2px solid rgba(225, 178, 149, 1)`,
             },
           }}
+          value={text}
+          onChange={(evt) => setText(evt.target.value)}
+          onKeyDown={handleEnterKey}
         />
-        <Button variant="outlined" size="small" disabled>
+        <Button variant="outlined" size="small" disabled onClick={handleCreate}>
           send
         </Button>
       </div>

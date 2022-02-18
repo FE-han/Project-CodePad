@@ -10,7 +10,7 @@ import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { Preset, LaunchPadScale } from "../../components/LaunchPad/utils/types";
-import { actions as getPresetActions } from "../../modules/actions/getPresetSlice";
+import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
 import { useAppSelector } from "../../modules/hooks";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
@@ -19,7 +19,7 @@ import PresetList from "../../components/Preset/PresetList";
 import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
 import PresetImage from "../../components/Preset/PresetImage";
-import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -112,19 +112,23 @@ export function DefaultPresetsPage() {
   const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
+  const urlParams = useParams<{ userId: string; presetId: string }>();
+
 
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
 
-  const getInitialData = async () => {
+  const getInitialPresetData = async () => {
+    const config: PresetParams = {
+      userId: urlParams.userId,
+      presetId: urlParams.presetId,
+    };
+    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     // setDefaultPresetData(newPresetData);
-
     try {
-      const nowPresetData: Preset = await getPreset(
-        setPresetId(defaultPresetId)
-      );
+      const nowPresetData: Preset = await getPreset(config);
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -153,7 +157,7 @@ export function DefaultPresetsPage() {
   };
 
   useEffect(() => {
-    getInitialData();
+    getInitialPresetData();
   }, []);
 
   return (
@@ -163,6 +167,7 @@ export function DefaultPresetsPage() {
           <LaunchpadHeaderContainer
             title={defaultPresetData.presetTitle}
             onlyFork={true}
+            presetId={defaultPresetData.presetId || "unknownId"}
           />
           {state.isLoading ? (
             "로딩중"

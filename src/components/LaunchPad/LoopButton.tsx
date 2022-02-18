@@ -5,9 +5,9 @@ import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { useDispatch } from "react-redux";
-import { actions as loopSoundGroupActions } from "../../modules/actions/loopSoundGroupSlice";
+import { actions as loopSoundGroupActions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
-import { actions as soundButtonsActions } from "../../modules/actions/soundButtonsSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {

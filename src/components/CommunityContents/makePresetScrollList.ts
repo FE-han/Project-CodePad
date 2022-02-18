@@ -1,4 +1,7 @@
-import { getPresetList, PresetListparams } from "../../api/getPresetList";
+import {
+  getPresetList,
+  PresetListparams,
+} from "../../api/CommunityContents/getPresetList";
 
 export const makePresetScrollList = async (params: PresetListparams) => {
   try {

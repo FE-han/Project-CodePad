@@ -6,7 +6,6 @@ import CommentsContainer from "./CommentsContainer";
 const PresetCommunityStyles = makeStyles({
   root: {
     display: `grid`,
-
     rowGap: "15px",
     columnGap: "15px",
     maxHeight: "189px",
