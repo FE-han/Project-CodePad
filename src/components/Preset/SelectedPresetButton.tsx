@@ -1,14 +1,16 @@
 import { useEffect, useState, memo } from "react";
 import { makeStyles } from "@mui/styles";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import { SoundSample } from "./utils/types";
-import { LaunchPadButtonColor } from "./utils/launchPadStyles";
 import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 import { useDispatch } from "react-redux";
 import { actions as loopSoundGroupActions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
-import { actions } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
+import {
+  actions,
+  SelectedButtonState,
+} from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
+import { LaunchPadButtonColor } from "../LaunchPadEdit/utils/launchPadStyles";
 
 const LoopButtonStyles = makeStyles({
   loopEvenBtn: {
@@ -73,14 +75,15 @@ const LoopButtonStyles = makeStyles({
   },
 });
 
-export function LoopButton({
-  soundSampleURL,
-  buttonType,
-  soundType,
-  location,
-}: Omit<SoundSample, "soundSampleId">) {
+interface SelectedPresetButtonProps {
+  selectedButtonValue: SelectedButtonState;
+}
+
+export function SelectedPresetButton({
+  selectedButtonValue,
+}: SelectedPresetButtonProps) {
   const classes = LoopButtonStyles();
-  const isEven = Number(location.split("X")[1]) % 2 === 1;
+  //   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
   const [buttonState, setButtonState] = useState({
     location: "",
@@ -90,32 +93,32 @@ export function LoopButton({
   const dispatch = useDispatch();
 
   const getClassNameByBtnState = () => {
-    if (isEven) {
-      return classes.loopEvenBtn;
-    }
-
-    if (!isEven) {
-      return classes.loopOddBtn;
-    }
-
-    return classes.errorBtn;
+    // if (isEven) {
+    //   return classes.loopEvenBtn;
+    // }
+    // if (!isEven) {
+    //   return classes.loopOddBtn;
+    // }
+    // return classes.errorBtn;
   };
 
   return (
     <div
-      className={getClassNameByBtnState()}
+      className={classes.loopEvenBtn}
       onClick={() => {
-        dispatch(
-          actions.selectButton({
-            location,
-            soundSampleURL,
-            buttonType,
-            soundType,
-          })
-        );
+        // dispatch(
+        //   actions.selectButton({
+        // location,
+        // soundSampleURL,
+        // buttonType,
+        // soundType,
+        //   })
+        // );
       }}
     >
-      <div className={classes.buttonText}>{soundType || ""}</div>
+      <div className={classes.buttonText}>
+        {selectedButtonValue.soundType || ""}
+      </div>
       <div className={classes.buttonIcon}>
         <AutorenewIcon />
       </div>
@@ -123,4 +126,4 @@ export function LoopButton({
   );
 }
 
-export default memo(LoopButton);
+export default memo(SelectedPresetButton);

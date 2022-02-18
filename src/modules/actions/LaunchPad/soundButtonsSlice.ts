@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Preset } from "../../components/LaunchPad/utils/types";
+import { Preset } from "../../../components/LaunchPad/utils/types";
 
 interface SoundButtonElementState {
   location: string;

@@ -6,17 +6,17 @@ import {
 } from "../../components/LaunchPad/utils/types";
 import { PrivacyType } from "../../utils/CommonValue";
 
-interface SoundSampleWithFile extends SoundSample {
-  soundFile: File | undefined;
+export interface SoundSampleWithFile extends SoundSample {
+  soundFile?: File;
 }
 
 interface PresetThumbnail {
   thumbnailImgURL: string;
-  thumbnailImgFile: File | undefined;
+  thumbnailImgFile?: File;
 }
 
-interface NowPresetValueState {
-  userId: string;
+export interface NowPresetValueState {
+  userId: string; // myPresetPage에서는 undefined, userPresetPage에서는 "작성자의"userId를 가지고있게함
   presetTitle: string; //Preset
   presetId: string; //Preset
   areaSize: LaunchPadScale; //Preset

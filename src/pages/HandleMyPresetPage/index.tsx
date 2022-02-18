@@ -1,16 +1,4 @@
 import { makeStyles } from "@mui/styles";
-import TextField from "@mui/material/TextField";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import LoopIcon from "@mui/icons-material/Loop";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Button from "@mui/material/Button";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -18,9 +6,8 @@ import { useParams } from "react-router-dom";
 import { getPreset, PresetParams } from "../../api/getPreset";
 
 import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
-import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
+import { initialEditPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
-import LaunchPad from "../../components/LaunchPad";
 import PresetInfo from "./components/PresetInfo";
 
 import { PageColors } from "../../utils/CommonStyle";
@@ -28,10 +15,10 @@ import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import { ButtonColors } from "../../utils/CommonStyle";
-import { BtnType, PrivacyType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
+import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -158,41 +145,47 @@ export const HandleMyPresetPageStyles = makeStyles({
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
 
-  const [myPresetData, setMyPresetData] = useState<Preset>(
-    initialPresetGenerator(LaunchPadScale.DEFAULT)
-  );
-  const presetId = useParams();
+  const [initialPresetData, setInitialPresetData] =
+    useState<NowPresetValueState>(
+      initialEditPresetGenerator(LaunchPadScale.DEFAULT)
+    );
+  const urlParams = useParams<{ presetId: string }>();
 
-  const getInitialData = async () => {
+  const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    console.log("asdf", presetId);
+    console.log("asdf", urlParams.presetId);
 
     const config: PresetParams = {
       userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
-      presetId: setPresetId(presetId),
+      presetId: setPresetId(urlParams),
     };
 
     const nowPresetData: Preset = await getPreset(config);
     console.log(nowPresetData);
-    // setDefaultPresetData(newPresetData);
+    // setinitialPresetData(newPresetData);
 
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: initialPresetData,
+    //   setDefaultPresetData: setinitialPresetData,
+    // });
   };
 
   useEffect(() => {
-    getInitialData();
+    if (urlParams.presetId === undefined) {
+      console.log("create page");
+      return;
+    }
+
+    console.log("update page");
+    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
   }, []);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPadEdit presetData={myPresetData} sampleSoundMap={new Map()} />
-          {"생성,수정용페이지"}
+          <LaunchPadEdit presetData={initialPresetData} />
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
@@ -200,7 +193,10 @@ export function HandleMyPresetPage() {
             <PresetInfo />
           </div>
         </div>
-        <PresetSoundInfo />
+        <PresetSoundInfo
+          setInitialPresetData={setInitialPresetData}
+          initialPresetData={initialPresetData}
+        />
         <div className={classes.tags}></div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { actions } from "../../modules/actions/loopSoundGroupSlice";
+import { actions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
 import { useAppSelector } from "../../modules/hooks";
 
 export default function Metronome() {

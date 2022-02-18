@@ -17,4 +17,4 @@ export type CommunityContentType = "PRESET" | "PROFILE";
 
 export type PrivacyType = "PUBLIC" | "PRIVATE";
 
-export type BtnType = "EFFECT" | "LOOP";
+export type BtnType = "ONESHOT" | "LOOP";
