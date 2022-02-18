@@ -22,13 +22,13 @@ const PresetContent = (props: { presetData: PresetData }) => {
     const isNotExist = visitedPresetIdList.indexOf(presetData.presetId);
 
     console.log(isNotExist);
-    // if (isNotExist === -1) {
-    //   visitedPresetIdList.push(presetData.presetId);
-    //   localStorage.setItem(
-    //     "visitedPresetIdList",
-    //     JSON.stringify(visitedPresetIdList)
-    //   );
-    // }
+    if (isNotExist === -1) {
+      visitedPresetIdList.push(presetData.presetId);
+      localStorage.setItem(
+        "visitedPresetIdList",
+        JSON.stringify(visitedPresetIdList)
+      );
+    }
   };
 
   return (

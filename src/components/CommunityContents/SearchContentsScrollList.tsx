@@ -7,18 +7,14 @@ import { ScrollValues } from "../../utils/CommonValue";
 
 import { useEffect, useState, ReactElement } from "react";
 
-import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
 import {
   CommunityContentType,
   SearchRequsetType,
 } from "../../utils/CommonValue";
 import { memo } from "react";
-import { PresetListparams } from "../../api/CommunityContents/getPresetList";
-import {
-  getSearchList,
-  SearchParams,
-} from "../../api/CommunityContents/getSearchList";
+
+import { SearchParams } from "../../api/CommunityContents/getSearchList";
 import { useParams } from "react-router";
 import { makeSearchScrollList } from "./makeSearchScrollList";
 
@@ -71,22 +67,28 @@ const SearchContentsScrollList = (props: {
   });
 
   useEffect(() => {
-    const res = getNewItem();
-    if (!res) {
-      setItemLists((arr) => res);
-    }
+    const newKeyword = keyword !== undefined ? keyword : "";
+    setConfig((prev) => {
+      return {
+        ...prev,
+        pageNum: ScrollValues.defaultPageNum,
+        limitNum: ScrollValues.limitNum,
+        keyword: newKeyword,
+      };
+    });
   }, [keyword]);
+
+  useEffect(() => {
+    getNewItem();
+  }, [config]);
 
   const getNewItem = async () => {
     const res = await makeSearchScrollList(config);
     if (res.success) {
-      if (res.data.length > 0) {
-        return res.data;
-      } else {
-        return [];
-      }
+      const newData = res.data;
+      setItemLists((arr) => []);
+      setItemLists((arr) => [...newData]);
     }
-    return [];
   };
 
   const getMoreItem = async () => {
@@ -96,27 +98,24 @@ const SearchContentsScrollList = (props: {
     if (res.success) {
       if (res.data.length > 0) {
         setItemLists((arr) => arr.concat(res.data));
-
-        return true;
       } else {
-        return false;
+        setIsDone(true);
       }
+    } else {
+      setIsError(true);
     }
-    return false;
+    setIsLoaded(false);
   };
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || isError || isDone) return;
 
-    const res = getMoreItem();
-    if (!res) {
-      setIsError(true);
-    }
+    getMoreItem();
+
     const newPageNum = config.pageNum + 1;
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
     });
-    setIsLoaded(false);
   }, [isLoaded]);
 
   const onIntersect = (
@@ -124,15 +123,15 @@ const SearchContentsScrollList = (props: {
     observer: IntersectionObserver
   ) => {
     if (entry.isIntersecting) {
-      //observer.unobserve(entry.target);
+      observer.unobserve(entry.target);
       setIsLoaded(true);
-      //observer.observe(entry.target);
+      observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (isDone || isError) {
+    if (target && !isDone && !isError) {
       return () => observer && observer.disconnect();
     } else {
       if (target && !isDone && !isError) {
@@ -159,10 +158,6 @@ const SearchContentsScrollList = (props: {
       itemLists.map((preset, idx) =>
         li.push(<ArtistContent key={preset.presetId} presetData={preset} />)
       );
-    }
-
-    if (li.length === 0) {
-      li.push(<span>None</span>);
     }
 
     return <>{li}</>;
