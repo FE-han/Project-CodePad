@@ -13,7 +13,10 @@ export enum ToggleType {
   myPreset = 1,
 }
 
+export type SearchRequsetType = "title" | "tag" | "artist";
+
 export type IntroRequsetType = "top50List" | "recentlyUsed" | "artists";
+
 export type CommunityContentType = "PRESET" | "PROFILE";
 
 export type PrivacyType = "PUBLIC" | "PRIVATE";

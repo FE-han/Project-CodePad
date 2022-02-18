@@ -23,7 +23,7 @@ const Artist = (props: { presetData: PresetData }) => {
       <img
         className={classes.albumCoverImg}
         src={
-          imgSrc === (null || undefined)
+          imgSrc === null || imgSrc === undefined
             ? noImage
             : `${process.env.REACT_APP_SERVER_BASE_URL}/${imgSrc}`
         }
