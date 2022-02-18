@@ -109,7 +109,7 @@ export function DefaultPresetsPage() {
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
-  const defaultPresetId = useParams();
+  // const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
   const urlParams = useParams<{ userId: string; presetId: string }>();
@@ -124,6 +124,7 @@ export function DefaultPresetsPage() {
     // setDefaultPresetData(newPresetData);
     try {
       const nowPresetData: Preset = await getPreset(config);
+
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -145,6 +146,7 @@ export function DefaultPresetsPage() {
         );
       });
       setSampleSoundMap(currentSampleSoundMap);
+      console.log("launchpadPresetData", state);
     } catch (err) {
       console.log("프리셋 Api에러", err);
       dispatch(getPresetActions.getPresetDataRejected());
