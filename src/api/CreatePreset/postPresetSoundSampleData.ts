@@ -12,6 +12,6 @@ export async function postPresetSoundSampleData(params: FormData) {
     "/presets/soundUpload",
     params
   );
-  console.log(response);
-  return response.data;
+
+  return { data: response.data, status: response.status };
 }

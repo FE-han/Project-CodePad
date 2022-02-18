@@ -20,7 +20,6 @@ interface SetPresetSoundFormDataArrayParams {
   targetPresetId: string;
 }
 
-interface asd {}
 export const setPresetSoundFormDataArray = ({
   nowHandlePresetData,
   targetPresetId,

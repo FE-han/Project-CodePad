@@ -72,6 +72,8 @@ interface PresetInfoProps {
   >;
 }
 
+type PresetSoundFormDataArray = Map<string, FormData>;
+
 export default function PresetInfo({
   nowHandlePresetData,
   setInitialPresetData,
@@ -142,20 +144,24 @@ export default function PresetInfo({
     const { presetId } = await postBasePresetData(firstFormData);
     console.log("targetPresetId: ", presetId);
 
-    const presetSoundFormDataArray = setPresetSoundFormDataArray({
-      nowHandlePresetData,
-      targetPresetId: presetId,
-    });
+    const presetSoundFormDataArray: Array<PresetSoundFormDataArray> =
+      setPresetSoundFormDataArray({
+        nowHandlePresetData,
+        targetPresetId: presetId,
+      });
 
-    // const sendList = presetSoundFormDataArray.filter((presetSoundFormData) => {
-    //   console.log(Array.from(presetSoundFormData));
-    //   // Array.from(presetSoundFormData)[1] !== undefined;
-    // });
-    // Promise.all()
+    const responses = new Array();
 
-    // postPresetSoundSampleData
+    await Promise.all(
+      presetSoundFormDataArray.map(async (presetSoundFormData) => {
+        const [formDataKey] = presetSoundFormData.values();
+        const [formData] = presetSoundFormData.values();
+        const { data, status } = await postPresetSoundSampleData(formData);
+        responses.push([formDataKey, data, status]);
+      })
+    );
 
-    console.log("presetSoundFormDataArray", presetSoundFormDataArray);
+    console.log("sound저장결과", responses);
   };
 
   return (
@@ -206,15 +212,6 @@ export default function PresetInfo({
         >
           SAVE
         </Button>
-        {/* <Button
-          variant="outlined"
-          startIcon={<SaveIcon />}
-          onClick={() => {
-            postPresetSoundFile(nowHandlePresetData);
-          }}
-        >
-          soundSave
-        </Button> */}
       </Stack>
     </div>
   );
