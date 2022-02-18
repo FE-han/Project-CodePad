@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { Preset } from "./utils/types";
-import OneShotButton from "./OneShotButton";
-import LoopButton from "./LoopButton";
-import EmptyButton from "./EmptyButton";
 import { LaunchPadStyles } from "../LaunchPad";
 import LaunchpadHeaderContainer from "./LaunchPadHeaderContainer";
 import { LaunchPadEditButton } from "./LaunchPadEditButton";
