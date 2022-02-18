@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
-import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
+import { initialPresetGenerator } from "../../../components/LaunchPad/utils/initialPresetFormGenerator";
+import {
+  LaunchPadScale,
+  Preset,
+} from "../../../components/LaunchPad/utils/types";
 
 export interface PresetDataState extends Preset {
   userId: string;

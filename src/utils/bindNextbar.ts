@@ -1,4 +1,4 @@
-import { Bar } from "../modules/actions/loopSoundGroupSlice";
+import { Bar } from "../modules/actions/LaunchPad/loopSoundGroupSlice";
 
 export const bindNextbar = (nowBar: Bar) => {
   switch (nowBar) {
