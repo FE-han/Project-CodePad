@@ -22,13 +22,13 @@ const PresetContent = (props: { presetData: PresetData }) => {
     const isNotExist = visitedPresetIdList.indexOf(presetData.presetId);
 
     console.log(isNotExist);
-    // if (isNotExist === -1) {
-    //   visitedPresetIdList.push(presetData.presetId);
-    //   localStorage.setItem(
-    //     "visitedPresetIdList",
-    //     JSON.stringify(visitedPresetIdList)
-    //   );
-    // }
+    if (isNotExist === -1) {
+      visitedPresetIdList.push(presetData.presetId);
+      localStorage.setItem(
+        "visitedPresetIdList",
+        JSON.stringify(visitedPresetIdList)
+      );
+    }
   };
 
   return (
@@ -42,7 +42,7 @@ const PresetContent = (props: { presetData: PresetData }) => {
       <img
         className={classes.albumCoverImg}
         src={
-          imgSrc == null
+          imgSrc === null || imgSrc === undefined
             ? noImage
             : `${process.env.REACT_APP_SERVER_BASE_URL}/${imgSrc}`
         }

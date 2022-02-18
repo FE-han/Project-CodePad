@@ -12,7 +12,6 @@ const Artist = (props: { presetData: PresetData }) => {
 
   const { presetData } = props;
   const imgSrc = presetData.thumbnailURL;
-
   return (
     <div
       className={`${classes.albumCoverContainer}`}
@@ -23,7 +22,7 @@ const Artist = (props: { presetData: PresetData }) => {
       <img
         className={classes.albumCoverImg}
         src={
-          imgSrc === (null || undefined)
+          imgSrc === null || imgSrc === undefined
             ? noImage
             : `${process.env.REACT_APP_SERVER_BASE_URL}/${imgSrc}`
         }

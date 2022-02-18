@@ -161,7 +161,6 @@ export default function Header() {
     const value = target.value;
     if (evt.key === "Enter") {
       if (value.length > 0) {
-        console.log("enter");
         navigate(`/search/${value}`);
       }
     }
@@ -302,7 +301,7 @@ const HeaderStyles = makeStyles({
   },
 
   borderLine: {
-    marginLeft: "10px",
+    margin: "0 10px",
     height: "20px",
     borderRight: `2px solid`,
   },

@@ -7,18 +7,20 @@ import { ScrollValues } from "../../utils/CommonValue";
 
 import { useEffect, useState, ReactElement } from "react";
 
-import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
 import {
   CommunityContentType,
-  IntroRequsetType,
+  SearchRequsetType,
 } from "../../utils/CommonValue";
 import { memo } from "react";
-import { PresetListparams } from "../../api/CommunityContents/getPresetList";
 
-const CommunityContentsScrollList = (props: {
+import { SearchParams } from "../../api/CommunityContents/getSearchList";
+import { useParams } from "react-router";
+import { makeSearchScrollList } from "./makeSearchScrollList";
+
+const SearchContentsScrollList = (props: {
   title: string;
-  listName: IntroRequsetType;
+  listName: SearchRequsetType;
   type: CommunityContentType;
   scrollSize: number;
 }) => {
@@ -46,6 +48,10 @@ const CommunityContentsScrollList = (props: {
 
   const classes = ScrollListStyles();
 
+  const { keyword } = useParams();
+
+  let text = keyword !== undefined ? keyword : "";
+
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -53,22 +59,41 @@ const CommunityContentsScrollList = (props: {
 
   const [itemLists, setItemLists] = useState<Array<PresetData>>([]);
 
-  const visitedPresetIdList = localStorage.getItem("visitedPresetIdList");
-  let defaultPresetIds = "";
-
-  if (props.listName === "recentlyUsed" && visitedPresetIdList !== null) {
-    defaultPresetIds = visitedPresetIdList;
-  }
-
-  const [config, setConfig] = useState<PresetListparams>({
-    Listname: props.listName,
+  const [config, setConfig] = useState<SearchParams>({
+    listName: props.listName,
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
-    presetIds: defaultPresetIds,
+    keyword: text,
   });
 
+  useEffect(() => {
+    const newKeyword = keyword !== undefined ? keyword : "";
+    setConfig((prev) => {
+      return {
+        ...prev,
+        pageNum: ScrollValues.defaultPageNum,
+        limitNum: ScrollValues.limitNum,
+        keyword: newKeyword,
+      };
+    });
+  }, [keyword]);
+
+  useEffect(() => {
+    getNewItem();
+  }, [config]);
+
+  const getNewItem = async () => {
+    const res = await makeSearchScrollList(config);
+    if (res.success) {
+      const newData = res.data;
+      setItemLists((arr) => []);
+      setItemLists((arr) => [...newData]);
+    }
+  };
+
   const getMoreItem = async () => {
-    const res = await makePresetScrollList(config);
+    console.log(config);
+    const res = await makeSearchScrollList(config);
 
     if (res.success) {
       if (res.data.length > 0) {
@@ -106,15 +131,17 @@ const CommunityContentsScrollList = (props: {
 
   useEffect(() => {
     let observer: IntersectionObserver;
-
     if (target && !isDone && !isError) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0,
-      });
+      return () => observer && observer.disconnect();
+    } else {
+      if (target && !isDone && !isError) {
+        observer = new IntersectionObserver(onIntersect, {
+          threshold: 0,
+        });
 
-      observer.observe(target);
+        observer.observe(target);
+      }
     }
-    return () => observer && observer.disconnect();
   }, [target, isDone, isError]);
 
   const ContentList = () => {
@@ -129,7 +156,7 @@ const CommunityContentsScrollList = (props: {
 
     if (type === "PROFILE") {
       itemLists.map((preset, idx) =>
-        li.push(<ArtistContent key={preset.userId} presetData={preset} />)
+        li.push(<ArtistContent key={preset.presetId} presetData={preset} />)
       );
     }
 
@@ -149,4 +176,4 @@ const CommunityContentsScrollList = (props: {
   );
 };
 
-export default memo(CommunityContentsScrollList);
+export default memo(SearchContentsScrollList);
