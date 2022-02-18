@@ -19,6 +19,7 @@ import { setConstantValue } from "typescript";
 import { makeCommentScrollList } from "./makeCommentScroll";
 import { useRef } from "react";
 import { AlternateEmailTwoTone } from "@mui/icons-material";
+import { useAppSelector } from "../../modules/hooks";
 
 const commentsContainerStyles = makeStyles({
   root: {
@@ -58,6 +59,8 @@ const commentsContainerStyles = makeStyles({
 
 const CommentsContainer = () => {
   const classes = commentsContainerStyles();
+
+  //  const { userId , presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
 
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -126,7 +129,7 @@ const CommentsContainer = () => {
 
   const handleCreate = async () => {
     const configdata = {
-      presetId: "4i85YMVBPsydQGMgGwAF9",
+      presetId: "-S9Y43q1F_lt5pjBM_2E6",
       text,
     };
 
