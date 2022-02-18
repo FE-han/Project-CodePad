@@ -7,6 +7,7 @@ import {
 
 import CommunityContentsScrollList from "../../components/CommunityContents/CommunityContentsScrollList";
 import { useParams } from "react-router";
+import SearchContentsScrollList from "../../components/CommunityContents/SearchContentsScrollList";
 
 export default function SearchResultPage() {
   const classes = searchResultPageStyles();
@@ -20,25 +21,25 @@ export default function SearchResultPage() {
       </div>
       <div className={classes.searchResultContainer}>
         <div className={classes.preset}>
-          <CommunityContentsScrollList
+          <SearchContentsScrollList
             title="Preset"
-            listName="top50List"
+            listName="title"
             type="PRESET"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />
         </div>
         <div className={classes.tag}>
-          <CommunityContentsScrollList
+          <SearchContentsScrollList
             title="Tag"
-            listName="recentlyUsed"
+            listName="tag"
             type="PRESET"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />
         </div>
         <div className={classes.artist}>
-          <CommunityContentsScrollList
+          <SearchContentsScrollList
             title="Artist Profile"
-            listName="artists"
+            listName="artist"
             type="PROFILE"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />

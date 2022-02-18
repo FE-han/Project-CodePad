@@ -30,11 +30,12 @@ const Comment = (props: {
 
   const classes = commentStyles();
 
-  const loginUserId = "IYfxLxA9t3BwCjCodzvwTa";
+  const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const commentAuthorUserId = commentData.userId;
+  console.log();
 
-  const presetAutorUserId = "IYfxLxA9t3BwCjCodzvwTa";
+  const presetAutorUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
   const updateBtn = loginUserId === commentAuthorUserId;
@@ -72,7 +73,9 @@ const Comment = (props: {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
-          onClick={props.deleteFn(commentData.commentId)}
+          onClick={() => {
+            props.deleteFn(commentData.commentId);
+          }}
         >
           <DeleteIcon />
         </IconButton>
@@ -91,7 +94,9 @@ const Comment = (props: {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
-          onClick={props.updateFn(commentData.commentId)}
+          onClick={() => {
+            props.updateFn(commentData.commentId, commentData.comment);
+          }}
         >
           {" "}
           <EditIcon />
