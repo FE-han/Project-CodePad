@@ -30,6 +30,11 @@ import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import testImage from "../../assets/testImage.png";
 import { useAppSelector } from "../../modules/hooks";
+import { PrivacyType } from "../../utils/CommonValue";
+import { updatePreset } from "../../api/updatePreset";
+import { useDispatch } from "react-redux";
+import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
+import { getPresetInfo } from "../../api/getPresetInfo";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 
 const UpdatePresetsPageStyles = makeStyles({
@@ -154,8 +159,17 @@ const UpdatePresetsPageStyles = makeStyles({
   },
 });
 
+export type formDataTypes = {
+  presetId: string,
+  presetTitle: string,
+  PrivacyOption: PrivacyType,
+  thumbnailImg: any,
+  tags: any,
+  soundSample: any,
+}
 export function UpdatePresetsPage() {
   const classes = UpdatePresetsPageStyles();
+  const dispatch = useDispatch();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
@@ -165,6 +179,25 @@ export function UpdatePresetsPage() {
   // const currentPresetState = useAppSelector(
   //   (state) => state.setNowPresetValueSlice
   // );
+
+  const [formData, setFormData] = useState<formDataTypes>({
+    presetId: "",
+    presetTitle: "",
+    PrivacyOption: "PUBLIC",
+    thumbnailImg: {},
+    tags: [],
+    soundSample: [],
+  })
+
+ 
+  // useEffect(() => {
+  //   getInitialData();
+  //   initFormData();
+  // }, []);
+
+  // useEffect(() => {
+  //   initFormData();
+  // }, [currentPresetState])
 
   const getInitialData = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
@@ -206,6 +239,37 @@ export function UpdatePresetsPage() {
     setSoundType(event.target.value);
   };
 
+  const handleThumbnailImageChange = (file:File) => {
+    setFormData({
+      ...formData,
+      thumbnailImg: {
+        thumbnailImgFile: file
+      }
+    });
+  }
+
+  const handleTitleChange = (event: any) => {
+    setFormData({
+      ...formData,
+      presetTitle: event.target.value
+    });
+
+  }
+  
+  const handlePrivacyChange = (event: any) => {
+    setFormData({
+      ...formData,
+      PrivacyOption: event.target.value
+    })
+  }
+
+  const handleSaveClick = (event: any) => {
+    //samplesound upload api 추가
+    Promise.all([updatePreset(formData)])
+      .then((res) => alert("성공"))
+      .catch((err) => alert(err))
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -214,8 +278,17 @@ export function UpdatePresetsPage() {
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo />
+            <PresetThumbnailUpload 
+              thumbnailImg={formData.thumbnailImg}
+              handleThumbnailImageChange={handleThumbnailImageChange}
+            />
+            <PresetInfo
+              title={formData.presetTitle}
+              PrivacyOption={formData.PrivacyOption}
+              handleTitleChange={handleTitleChange}
+              handlePrivacyChange={handlePrivacyChange}
+              handleSaveClick={handleSaveClick}
+            />
           </div>
         </div>
         <PresetSoundInfo />

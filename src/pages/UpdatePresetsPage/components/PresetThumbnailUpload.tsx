@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ButtonColors, PresetImageColors } from "../../../utils/CommonStyle";
 
 const PresetThumbnailUploadStyles = makeStyles({
@@ -35,16 +35,22 @@ const PresetThumbnailUploadStyles = makeStyles({
 });
 
 type PresetThumbnailUploadProps = {
-  imgURL: string;
+  thumbnailImg: any;
+  handleThumbnailImageChange: any;
 };
 
+
 export default function PresetThumbnailUpload({
-  imgURL,
-}: PresetThumbnailUploadProps) {
+  thumbnailImg,
+  handleThumbnailImageChange,
+}:PresetThumbnailUploadProps) {
   const classes = PresetThumbnailUploadStyles();
 
-  const [currImg, setCurrImg] = useState(imgURL);
+  const [currImg, setCurrImg] = useState<string>(thumbnailImg.thumbnailImgURL);
 
+  useEffect(() => {
+    setCurrImg(thumbnailImg.thumbnailImgURL);
+  }, [thumbnailImg])
   //파일 변환
   const encodeFileToBase64 = (file: File) => {
     const reader = new FileReader();
@@ -61,6 +67,7 @@ export default function PresetThumbnailUpload({
     const files = event.target.files;
     if (files) {
       encodeFileToBase64(files[0]);
+      handleThumbnailImageChange(files[0]);
     }
   };
 
