@@ -178,7 +178,7 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage />
+            <PresetImage image={presetList}/>
             <PresetList createBtn={false} presetList={presetList}/>
           </div>
         </div>

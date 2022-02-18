@@ -138,11 +138,13 @@ export function MyPresetsPage() {
   );
   const presetId = useParams();
   // const userId = useParams();
+  console.log(presetId)
 
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-  console.log(presetList)
+  console.log("presetList:",presetList)
+  
   
 
   // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
@@ -184,6 +186,8 @@ export function MyPresetsPage() {
     });
   };
 
+
+
   useEffect(() => {
     getPresetListInfoData();
     getInitialLaunchPadPresetData();
@@ -206,7 +210,7 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage />
+            <PresetImage image={presetList}/>
             <PresetList createBtn={true} presetList={presetList} />
             <PaginationContainer presetList={presetList}/>
           </div>

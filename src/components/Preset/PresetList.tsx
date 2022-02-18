@@ -60,11 +60,8 @@ export default function PresetList(props: {
   const _DATA = usePagination(props.presetList, PER_PAGE);
 
   console.log(props)
-
-  const handleChange = (e:any,p:any) => {
-    setPage(p);
-    _DATA.jump(p);
-  }
+  console.log(_DATA)
+  console.log(selectedIndex);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -72,6 +69,7 @@ export default function PresetList(props: {
   ) => {
     setSelectedIndex(index);
     console.log(index);
+    //link태그
   };
 
   return (
@@ -100,6 +98,7 @@ export default function PresetList(props: {
             <Reactions></Reactions>
           </ListItemButton>
         ))}
+
       </List>
     </div>
   );
