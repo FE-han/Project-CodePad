@@ -59,6 +59,7 @@ export const setNowPresetValueSlice = createSlice({
 
       state.soundSamples = canSaveFileForm;
     },
+   
     setValueFromImage: (
       state,
       action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>

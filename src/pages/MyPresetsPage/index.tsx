@@ -21,6 +21,7 @@ import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 import { useAppSelector } from "../../modules/hooks";
+import { getPresetInfo } from "../../api/getPresetInfo";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -149,6 +150,11 @@ export function MyPresetsPage() {
     });
 
     dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+
+    const newPresetInfo = await getPresetInfo(urlParams.presetId);
+    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
   useEffect(() => {
