@@ -22,7 +22,7 @@ export default function SearchResultPage() {
         <div className={classes.preset}>
           <CommunityContentsScrollList
             title="Preset"
-            listName="top50"
+            listName="top50List"
             type="PRESET"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />
@@ -30,7 +30,7 @@ export default function SearchResultPage() {
         <div className={classes.tag}>
           <CommunityContentsScrollList
             title="Tag"
-            listName="used"
+            listName="recentlyUsed"
             type="PRESET"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />
@@ -38,7 +38,7 @@ export default function SearchResultPage() {
         <div className={classes.artist}>
           <CommunityContentsScrollList
             title="Artist Profile"
-            listName="artist"
+            listName="artists"
             type="PROFILE"
             scrollSize={ScrollListContainerSize.searchResultPage}
           />

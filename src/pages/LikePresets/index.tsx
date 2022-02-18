@@ -32,6 +32,7 @@ export default function LikePresetsPage() {
       Listname: `top50`,
       pageNum: curPageNum + 1,
       limitNum: ScrollValues.limitNum,
+      presetIds: "",
     };
 
     const res: any = await makePresetScrollList(configdata);

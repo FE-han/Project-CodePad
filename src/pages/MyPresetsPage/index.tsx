@@ -29,6 +29,7 @@ import { PresetListState } from "../../modules/actions/CommunityContents/presetL
 import { PresetData } from "../../utils/CommonInterface";
 
 import { useAppSelector } from "../../modules/hooks";
+import { getPresetInfo } from "../../api/getPresetInfo";
 
 
 const MyPresetsPageStyles = makeStyles({
@@ -198,6 +199,11 @@ export function MyPresetsPage() {
     });
 
     dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+
+    const newPresetInfo = await getPresetInfo(urlParams.presetId);
+    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
 

@@ -16,8 +16,7 @@ const LaunchPadEditButtonStyles = makeStyles({
     position: "relative",
     cursor: "pointer",
     borderRadius: "3px",
-
-    border: (props) => (props ? "2px solid red" : ""),
+    boxShadow: (props) => (props ? "0 0 0 2px red inset" : ""),
   },
   loopEvenBtn: {
     background: LaunchPadButtonColor.LOOP_EVEN,
@@ -26,7 +25,7 @@ const LaunchPadEditButtonStyles = makeStyles({
     position: "relative",
     cursor: "pointer",
     borderRadius: "3px",
-    border: (props) => (props ? "2px solid red" : ""),
+    boxShadow: (props) => (props ? "0 0 0 2px red inset" : ""),
   },
   loopOddBtn: {
     background: LaunchPadButtonColor.LOOP_ODD,
@@ -35,7 +34,7 @@ const LaunchPadEditButtonStyles = makeStyles({
     position: "relative",
     cursor: "pointer",
     borderRadius: "3px",
-    border: (props) => (props ? "2px solid red" : ""),
+    boxShadow: (props) => (props ? "0 0 0 2px red inset" : ""),
   },
   oneshotBtn: {
     background: LaunchPadButtonColor.ONESHOT,
@@ -44,7 +43,7 @@ const LaunchPadEditButtonStyles = makeStyles({
     position: "relative",
     cursor: "pointer",
     borderRadius: "3px",
-    border: (props) => (props ? "2px solid red" : ""),
+    boxShadow: (props) => (props ? "0 0 0 2px red inset" : ""),
   },
 
   buttonText: {
@@ -101,10 +100,10 @@ export function LaunchPadEditButton({ soundSample }: LaunchPadEditButtonProps) {
   const buttonIcon = () => {
     switch (soundSample.buttonType) {
       case "LOOP":
-        return <ArrowRightAltIcon />;
+        return <AutorenewIcon />;
 
       case "ONESHOT":
-        return <AutorenewIcon />;
+        return <ArrowRightAltIcon />;
 
       default:
         return;
