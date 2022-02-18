@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
 import { useAppSelector } from "../../modules/hooks";
-import { LoopButton } from "../LaunchPadEdit/LoopButton";
 import { SelectedPresetButton } from "./SelectedPresetButton";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
 import { SelectedButtonState } from "../../modules/actions/LaunchPadEdit/selectedButtonSlice";
@@ -28,6 +27,7 @@ import {
   OneShotSoundType,
   SoundSample,
 } from "../LaunchPad/utils/types";
+import { useDispatch } from "react-redux";
 
 interface SoundSampleValue {
   name: string;
@@ -47,6 +47,7 @@ export default function PresetSoundInfo({
 }: PresetSoundInfoProps) {
   const classes = CreatePresetsPageStyles();
 
+  const dispatch = useDispatch();
   const selectedButtonState = useAppSelector(
     (state) => state.selectedButtonSlice
   );
@@ -55,9 +56,26 @@ export default function PresetSoundInfo({
     useState<SelectedButtonState>(selectedButtonState);
 
   useEffect(() => {
+    initialPresetData.soundSamples.map((soundSample) => {
+      if (soundSample.location === selectedButtonState.location) {
+        if (soundSample.soundFile === undefined) {
+          setSoundSampleValue({
+            name: "",
+            file: undefined,
+          });
+        } else {
+          setSoundSampleValue({
+            name: soundSample.soundFile.name,
+            file: soundSample.soundFile,
+          });
+        }
+        setBtnType(soundSample.buttonType || "ONESHOT");
+        setSoundType(soundSample.soundType || "FX");
+      }
+    });
+
     setSelectedButtonValue(selectedButtonState);
-    console.log(selectedButtonState);
-  }, [selectedButtonState]);
+  }, [selectedButtonState.location]);
 
   const [soundSampleValue, setSoundSampleValue] = useState<SoundSampleValue>({
     name: "",
@@ -71,6 +89,18 @@ export default function PresetSoundInfo({
     setSoundSampleValue({
       name: singleSoundFile.name,
       file: singleSoundFile,
+    });
+    setInitialPresetData({
+      ...initialPresetData,
+      soundSamples: initialPresetData.soundSamples.map((soundSample) => {
+        if (soundSample.location === selectedButtonValue.location) {
+          return {
+            ...soundSample,
+            soundFile: singleSoundFile,
+          };
+        }
+        return soundSample;
+      }),
     });
   };
 
@@ -256,8 +286,12 @@ export default function PresetSoundInfo({
             {/* value: magicNumber 수정필요*/}
             <MenuItem value={0}>FX</MenuItem>
             <MenuItem value={1}>DRUM</MenuItem>
-            <MenuItem value={2}>VOICE</MenuItem>
-            <MenuItem value={3}>PERC</MenuItem>
+            <MenuItem value={2}>PERC</MenuItem>
+            <MenuItem value={3}>VOCAL</MenuItem>
+            <MenuItem value={4}>SYNTH</MenuItem>
+            <MenuItem value={5}>DRUMS</MenuItem>
+            <MenuItem value={6}>MELODIC</MenuItem>
+            <MenuItem value={7}>CHORD</MenuItem>
           </Select>
         </FormControl>
       </div>

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
@@ -11,7 +9,6 @@ import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
-import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
 import { getPreset, PresetParams } from "../../api/getPreset";
@@ -20,7 +17,20 @@ import { ToggleType } from "../../utils/CommonValue";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import { PresetListElement } from "./utils/types";
+
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Params, useParams } from "react-router-dom";
+
+import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
+import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
+import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
+import { PresetListState } from "../../modules/actions/CommunityContents/presetListSlice";
+import { PresetData } from "../../utils/CommonInterface";
+
 import { useAppSelector } from "../../modules/hooks";
+import { getPresetInfo } from "../../api/getPresetInfo";
+
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -123,12 +133,51 @@ const MyPresetsPageStyles = makeStyles({
 
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
+  const dispatch = useDispatch();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+
+  const presetId= useParams();
+  // const userId = useParams();
+
+  const { presetList, isLoading  } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
+  
+  
+  
+  
+
+  // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
+  // console.log(state)
+
+  const getPresetListInfoData = async () => {
+    // const userId = await getUserId()  이런식으로 토큰을 서버에 보내고, 내 userId를 가져오는 api를 수행해서 값을 받아옴
+
+    const param: GetMyPresetParams = {
+      userId: "1",
+    };
+
+    try {
+      dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
+        param
+      );
+      console.log(nowMyPresetList);
+      dispatch(
+        getMyPresetListActions.getPresetDataFulfilled({
+          presetList: nowMyPresetList,
+        })
+      );
+    } catch {
+      dispatch(getMyPresetListActions.getPresetDataRejected());
+      alert("에러");
+    }
+  };
+
   const urlParams = useParams<{ userId: string; presetId: string }>();
-  const dispatch = useDispatch();
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
@@ -138,6 +187,7 @@ export function MyPresetsPage() {
       userId: urlParams.userId,
       presetId: urlParams.presetId,
     };
+
 
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     const nowPresetData: Preset = await getPreset(config);
@@ -149,9 +199,16 @@ export function MyPresetsPage() {
     });
 
     dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+
+    const newPresetInfo = await getPresetInfo(urlParams.presetId);
+    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
+    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
+
   useEffect(() => {
+    getPresetListInfoData();
     getInitialPresetData();
   }, []);
 
@@ -173,9 +230,9 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage />
-            <PresetList createBtn={true} />
-            <PaginationContainer />
+            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
+            <PresetList createBtn={true} presetList={presetList} />
+            <PaginationContainer presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}>

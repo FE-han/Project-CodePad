@@ -6,7 +6,6 @@ import {
 } from "../../../components/LaunchPad/utils/types";
 
 export interface PresetDataState extends Preset {
-  userId: string;
   isLoading: boolean;
 }
 

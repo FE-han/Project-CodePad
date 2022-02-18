@@ -105,14 +105,20 @@ const DefaultPresetsPageStyles = makeStyles({
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
+  const presetId= useParams();
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
-  const defaultPresetId = useParams();
+  // const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
   const urlParams = useParams<{ userId: string; presetId: string }>();
+
+
+  const { presetList, isLoading } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
 
   const getInitialPresetData = async () => {
     const config: PresetParams = {
@@ -124,6 +130,7 @@ export function DefaultPresetsPage() {
     // setDefaultPresetData(newPresetData);
     try {
       const nowPresetData: Preset = await getPreset(config);
+
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -145,6 +152,7 @@ export function DefaultPresetsPage() {
         );
       });
       setSampleSoundMap(currentSampleSoundMap);
+      console.log("launchpadPresetData", state);
     } catch (err) {
       console.log("프리셋 Api에러", err);
       dispatch(getPresetActions.getPresetDataRejected());
@@ -178,8 +186,8 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage />
-            <PresetList createBtn={false} />
+            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
+            <PresetList createBtn={false} presetList={presetList}/>
           </div>
         </div>
         <div className={classes.community}></div>

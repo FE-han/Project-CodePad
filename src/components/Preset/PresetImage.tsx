@@ -1,6 +1,15 @@
+import React, { Props, useEffect, useState } from 'react'
 import { makeStyles } from "@mui/styles";
 import testImage from "../../assets/testImage.png";
 import { PresetImageColors } from "../../utils/CommonStyle";
+import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
+import { useParams } from 'react-router';
+import { getMyPresetList } from '../../api/getMyPresetList';
+import { imageListClasses } from '@mui/material';
+import { PresetData } from '../../utils/CommonInterface';
+import { getMyPresetListSlice } from '../../modules/actions/getMyPresetListSlice';
+
+
 
 const PrestImageStyles = makeStyles({
   presetImage: {
@@ -13,11 +22,29 @@ const PrestImageStyles = makeStyles({
     },
   },
 });
-const PresetImage = () => {
+interface PresetImageProps{
+  presetList: Array<PresetListElement>;
+  selectedPresetId: any
+}
+
+const PresetImage = ({presetList, selectedPresetId} : PresetImageProps) => {
   const classes = PrestImageStyles();
+
+  const [imgURL, setImgURL] = useState('');
+  
+
+  useEffect(()=>{
+   presetList.map((value)=>{
+      if(value.presetId === selectedPresetId.presetId){
+        setImgURL(value.thumbnailImageURL);
+      }
+    })
+  },[presetList, selectedPresetId])
+//감지할 대상 ex) nowselectedElement
+
   return (
     <div className={classes.presetImage}>
-      <img src={testImage} alt="" />
+      <img src={imgURL} alt=""/>
     </div>
   );
 };

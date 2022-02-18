@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
@@ -8,10 +8,15 @@ import ListItemText from "@mui/material/ListItemText";
 
 import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
+import { useState } from "react";
+import usePagination from "../../components/Preset/usePagination";
+import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
+import Pagination from "@mui/material/Pagination";
+import { Link } from "react-router-dom";
+
 
 const PresetsListStyles = makeStyles({
   listBox: {},
-
   presetList: {
     "& > div": {
       border: `1px solid ${PresetListBtnColors.COLOR}`,
@@ -41,16 +46,33 @@ const PresetsListStyles = makeStyles({
     textAlign: "center",
   },
 });
-export default function PresetList(props: { createBtn: Boolean }) {
+export default function PresetList(props: {
+  createBtn: Boolean;
+  presetList: Array<PresetListElement>;
+}) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const presetId = useParams();
+
+  const [ page, setPage ] = React.useState(1);
+  const PER_PAGE = 5;
+  const count = Math.ceil(props.presetList.length/PER_PAGE);
+  const _DATA = usePagination(props.presetList, PER_PAGE);
+
+  console.log(props)
+  console.log(_DATA)
+  console.log(selectedIndex);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    index: any
   ) => {
     setSelectedIndex(index);
+    console.log(index);
+    //link태그
+    window.location.href = `${index.presetId}`
+    
   };
 
   return (
@@ -70,15 +92,16 @@ export default function PresetList(props: { createBtn: Boolean }) {
           ""
         )}
 
-        {[1, 2, 3, 4, 5].map((value) => (
+        {_DATA.currentData().map((value: any) => (
           <ListItemButton
             selected={selectedIndex === value}
             onClick={(event) => handleListItemClick(event, value)}
           >
-            <ListItemText primary="presetTitle" />
+            <ListItemText primary={value.title} />
             <Reactions></Reactions>
           </ListItemButton>
         ))}
+
       </List>
     </div>
   );

@@ -145,7 +145,7 @@ export const HandleMyPresetPageStyles = makeStyles({
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
 
-  const [initialPresetData, setInitialPresetData] =
+  const [nowHandlePresetData, setNowHandlePresetData] =
     useState<NowPresetValueState>(
       initialEditPresetGenerator(LaunchPadScale.DEFAULT)
     );
@@ -185,17 +185,24 @@ export function HandleMyPresetPage() {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.launchPad}>
-          <LaunchPadEdit presetData={initialPresetData} />
+          <LaunchPadEdit presetData={nowHandlePresetData} />
         </div>
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
-            <PresetThumbnailUpload imgURL={testImage} />
-            <PresetInfo />
+            <PresetThumbnailUpload
+              imgURL={testImage}
+              setInitialPresetData={setNowHandlePresetData}
+              initialPresetData={nowHandlePresetData}
+            />
+            <PresetInfo
+              nowHandlePresetData={nowHandlePresetData}
+              setInitialPresetData={setNowHandlePresetData}
+            />
           </div>
         </div>
         <PresetSoundInfo
-          setInitialPresetData={setInitialPresetData}
-          initialPresetData={initialPresetData}
+          setInitialPresetData={setNowHandlePresetData}
+          initialPresetData={nowHandlePresetData}
         />
         <div className={classes.tags}></div>
       </div>

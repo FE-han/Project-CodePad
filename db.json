@@ -1,12 +1,109 @@
 {
-    "presets": [{
-            "id": 1,
-            "title": "preset1"
+    "userId=1": [{
+            "title": "preset1",
+            "presetId": "1",
+            "thumbnailImageURL": "https://cdn.pixabay.com/photo/2021/09/02/16/48/cat-6593947_960_720.jpg",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
         },
         {
-            "id": 2,
-            "title": "preset2"
+            "title": "preset2",
+            "presetId": "2",
+            "thumbnailImageURL": "https://picsum.photos/200",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset3",
+            "presetId": "3",
+            "thumbnailImageURL": "https://picsum.photos/199",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset4",
+            "presetId": 444,
+            "thumbnailImageURL": "test",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset5",
+            "presetId": 555,
+            "thumbnailImageURL": "test",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset6",
+            "presetId": 666,
+            "thumbnailImageURL": "test",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset7",
+            "presetId": 777,
+            "thumbnailImageURL": "test",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        },
+        {
+            "title": "preset8",
+            "presetId": 888,
+            "thumbnailImageURL": "test",
+            "reactions": {
+                "viewCount": 22,
+                "likeCount": 33,
+                "commentCount": 2
+            }
+        }
+    ],
+    "userId=2": [{
+            "title": "preset4",
+            "presetId": 444
+        },
+        {
+            "title": "preset5",
+            "presetId": 555
+        },
+        {
+            "title": "preset6",
+            "presetId": 666
+        }
+    ],
+    "userId=3": [{
+            "title": "preset7",
+            "presetId": 777
+        },
+        {
+            "title": "preset8",
+            "presetId": 888
+        },
+        {
+            "title": "preset9",
+            "presetId": 999
         }
     ]
-
 }
