@@ -80,6 +80,7 @@ export function LoopButton({
   // const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
+  console.log(soundType, location);
   const [buttonState, setButtonState] = useState({
     location: "",
     state: "EMPTY",
@@ -92,6 +93,7 @@ export function LoopButton({
   );
 
   useEffect(() => {
+    console.log("soundSamples", soundSamples);
     soundSamples.map((soundSample) => {
       if (soundSample.location === location) {
         setButtonState(soundSample);

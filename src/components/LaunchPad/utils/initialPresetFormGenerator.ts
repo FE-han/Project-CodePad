@@ -19,6 +19,7 @@ export function initialPresetGenerator(scale: LaunchPadScale) {
     presetId: "unsaved",
     areaSize: scale,
     soundSamples: [],
+    thumbnailURL: "",
   };
 
   //일단 2중 for문으로 만듦. but, magicNumber를 제거하고 좋은코드로 수정해야함
