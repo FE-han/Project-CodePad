@@ -59,17 +59,64 @@ const PresetInfoStyles = makeStyles({
 
 interface PresetInfoProps {
   nowHandlePresetData: NowPresetValueState;
+  setInitialPresetData: React.Dispatch<
+    React.SetStateAction<NowPresetValueState>
+  >;
 }
-export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
+export default function PresetInfo({
+  nowHandlePresetData,
+  setInitialPresetData,
+}: PresetInfoProps) {
   const classes = PresetInfoStyles();
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
+  const [presetTitle, setPresetTitle] = useState<string>("");
+
+  const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPresetTitle = event.target.value;
+    setPresetTitle(newPresetTitle);
+    setInitialPresetData({
+      ...nowHandlePresetData,
+      presetTitle: newPresetTitle,
+    });
+  };
 
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
-
+    console.log(value);
     setPrivacy(value);
+    // setInitialPresetData
+    setInitialPresetData({
+      ...nowHandlePresetData,
+      PrivacyOption: value,
+    });
   };
+
+  const postPresetDataWithOutSoundFile = async (
+    nowHandlePresetData: NowPresetValueState
+  ) => {
+    const formData = new FormData();
+    formData.append("userId", nowHandlePresetData.userId);
+    formData.append("presetId", nowHandlePresetData.presetId);
+    formData.append("presetTitle", nowHandlePresetData.presetTitle);
+    formData.append("areaSize", JSON.stringify(nowHandlePresetData.areaSize));
+    formData.append(
+      "thumbnailImg",
+      nowHandlePresetData.thumbnailImg.thumbnailImgFile || ""
+    );
+    formData.append("PrivacyOption", nowHandlePresetData.PrivacyOption);
+    formData.append("tags", JSON.stringify(nowHandlePresetData.tags));
+
+    //console.log
+    const testkeys = Array.from(formData.keys());
+    const testvalues = Array.from(formData.values());
+    console.log(
+      testkeys.map((ele, idx) => {
+        return [ele, testvalues[idx]];
+      })
+    );
+  };
+
   return (
     <div className={classes.root}>
       <TextField
@@ -77,6 +124,8 @@ export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
         label="Title"
         variant="outlined"
         className={classes.title}
+        value={presetTitle}
+        onChange={handlePresetTitle}
       />
       <FormControl>
         <RadioGroup
@@ -111,7 +160,7 @@ export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
           variant="outlined"
           startIcon={<SaveIcon />}
           onClick={() => {
-            console.log(nowHandlePresetData);
+            postPresetDataWithOutSoundFile(nowHandlePresetData);
           }}
         >
           SAVE

@@ -93,13 +93,15 @@ type UserPresetsPageParams = {
 
 export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
-  const presetId= useParams();
+  const presetId = useParams();
 
   const { userId } = useParams<UserPresetsPageParams>();
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
 
   const [userPresetData, setUserPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
@@ -152,9 +154,9 @@ export function UserPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
-            <PresetList createBtn={false} presetList={presetList}/>
-            <PaginationContainer presetList={presetList}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId} />
+            <PresetList createBtn={false} presetList={presetList} />
+            <PaginationContainer presetList={presetList} />
           </div>
         </div>
         <div className={classes.community}>
