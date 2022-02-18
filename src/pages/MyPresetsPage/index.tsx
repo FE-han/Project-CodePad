@@ -109,7 +109,6 @@ const MyPresetsPageStyles = makeStyles({
     "& > .presetListContainer": {
       display: "flex",
       flexDirection: "column",
-      margin: "23px 30px",
       gap: "8px",
       width: "93%",
     },
@@ -118,7 +117,7 @@ const MyPresetsPageStyles = makeStyles({
     gridArea: "community",
     padding: "18px",
     display: "grid",
-    // alignItems: "center",
+    alignItems: "center",
   },
 });
 

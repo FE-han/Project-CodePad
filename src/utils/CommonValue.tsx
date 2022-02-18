@@ -1,5 +1,5 @@
 export enum ScrollValues {
-  defaultPageNum = 0,
+  defaultPageNum = 1,
   limitNum = 10,
 }
 

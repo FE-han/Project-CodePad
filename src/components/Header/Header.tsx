@@ -101,6 +101,16 @@ export default function Header() {
     </Menu>
   );
 
+  const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = evt.target as HTMLInputElement;
+    const value = target.value;
+    if (evt.key === "Enter") {
+      if (value.length > 0) {
+        console.log("enter");
+        navigate(`/search/${value}`);
+      }
+    }
+  };
   return (
     <Box sx={{ zIndex: 0 }}>
       <AppBar
@@ -126,6 +136,13 @@ export default function Header() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onKeyDown={handleEnterKey}
+              sx={{
+                width: "100%",
+                "& .MuiInputBase-input": {
+                  width: "100%",
+                },
+              }}
             />
           </Search>
           <Box

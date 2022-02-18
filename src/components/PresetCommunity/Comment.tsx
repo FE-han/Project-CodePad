@@ -3,10 +3,9 @@ import { makeStyles } from "@mui/styles";
 import { Divider, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
+import React, { memo } from "react";
 import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
-import { memo } from "react";
 
 const commentStyles = makeStyles({
   root: {
