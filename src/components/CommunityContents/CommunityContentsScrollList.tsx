@@ -9,13 +9,16 @@ import { useEffect, useState, ReactElement } from "react";
 
 import { makePresetScrollList } from "./makePresetScrollList";
 import { PresetData } from "../../utils/CommonInterface";
-import { CommunityContentType } from "../../utils/CommonValue";
+import {
+  CommunityContentType,
+  IntroRequsetType,
+} from "../../utils/CommonValue";
 import { memo } from "react";
 import { PresetListparams } from "../../api/CommunityContents/getPresetList";
 
 const CommunityContentsScrollList = (props: {
   title: string;
-  listName: string;
+  listName: IntroRequsetType;
   type: CommunityContentType;
   scrollSize: number;
 }) => {
@@ -49,10 +52,19 @@ const CommunityContentsScrollList = (props: {
   const [isDone, setIsDone] = useState<boolean>(false);
 
   const [itemLists, setItemLists] = useState<Array<PresetData>>([]);
+
+  const visitedPresetIdList = localStorage.getItem("visitedPresetIdList");
+  let defaultPresetIds = "";
+
+  if (props.listName === "recentlyUsed" && visitedPresetIdList !== null) {
+    defaultPresetIds = visitedPresetIdList;
+  }
+
   const [config, setConfig] = useState<PresetListparams>({
     Listname: props.listName,
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
+    presetIds: defaultPresetIds,
   });
 
   const getMoreItem = async () => {
