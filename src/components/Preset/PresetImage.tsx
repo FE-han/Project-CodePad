@@ -8,6 +8,7 @@ import { getMyPresetList } from "../../api/getMyPresetList";
 import { imageListClasses } from "@mui/material";
 import { PresetData } from "../../utils/CommonInterface";
 import { getMyPresetListSlice } from "../../modules/actions/getMyPresetListSlice";
+import defaultImg from "../../assets/noImage.png";
 
 const PrestImageStyles = makeStyles({
   presetImage: {
@@ -45,8 +46,12 @@ const PresetImage = ({ imageURL }: PresetImageProps) => {
   return (
     <div className={classes.presetImage}>
       <img
-        src={`${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`}
-        alt=""
+        src={
+          imageURL !== null
+            ? `${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`
+            : defaultImg
+        }
+        alt="/src/assets/noImage.png"
       />
     </div>
   );
