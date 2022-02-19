@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getPreset, PresetParams } from "../../api/getPreset";
 
@@ -17,6 +17,7 @@ import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
+import { PresetListElement } from "../MyPresetsPage/utils/types";
 import { useDispatch } from "react-redux";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
@@ -32,11 +33,14 @@ import { getUserPreset } from "../../api/LaunchPadPreset/getUserPreset";
 import alertSnackBarMessage, {
   SnackBarMessageType,
 } from "../../utils/snackBarMessage";
+import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
+import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -108,6 +112,7 @@ interface NowSelectedUserPreset {
 export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
   const presetId = useParams();
+  const navigate = useNavigate();
 
   const { userId } = useParams<UserPresetsPageParams>();
   const { presetList, isLoading } = useAppSelector(
@@ -192,6 +197,7 @@ export function UserPresetsPage() {
         type: SnackBarMessageType.ERROR,
       });
       dispatch(getPresetActions.getPresetDataRejected());
+      navigate("/");
     }
   };
 

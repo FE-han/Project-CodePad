@@ -22,7 +22,7 @@ import setPresetData from "../../utils/setPresetData";
 import { PresetListElement } from "./utils/types";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Params, useParams } from "react-router-dom";
+import { Link, Params, useNavigate, useParams } from "react-router-dom";
 
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
 import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
@@ -37,12 +37,15 @@ import {
   getMyPresetList,
   GetMyPresetParams,
 } from "../../api/PresetList/getMyPresetList";
-import alertSnackBarMessage, { SnackBarMessageType } from "../../utils/snackBarMessage";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -141,6 +144,7 @@ const MyPresetsPageStyles = makeStyles({
 export function MyPresetsPage() {
   const classes = MyPresetsPageStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
@@ -215,6 +219,7 @@ export function MyPresetsPage() {
         type: SnackBarMessageType.ERROR,
       });
       dispatch(getPresetActions.getPresetDataRejected());
+      navigate("/");
     }
 
     const newPresetInfo = await getPresetInfo(urlParams.presetId);

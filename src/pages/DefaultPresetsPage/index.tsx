@@ -5,7 +5,7 @@ import { ToggleType } from "../../utils/CommonValue";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -37,6 +37,7 @@ const DefaultPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -122,6 +123,7 @@ interface NowSelectedDefaultPreset {
 
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
+  const navigate = useNavigate();
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
@@ -192,6 +194,7 @@ export function DefaultPresetsPage() {
         type: SnackBarMessageType.ERROR,
       });
       dispatch(getPresetActions.getPresetDataRejected());
+      navigate("/");
     }
   };
 

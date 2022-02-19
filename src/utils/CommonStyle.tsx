@@ -1,6 +1,6 @@
 export enum Fonts {
   DEFAULT = `Roboto, sans-serif`,
-  TITLE = `IBM Plex Sans Thai Looped, sans-serif`,
+  TITLE = `Ubuntu, sans-serif`,
 }
 
 export enum HeaderColors {

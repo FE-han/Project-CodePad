@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { makeStyles } from "@mui/styles";
 import { PresetData } from "../../utils/CommonInterface";
-import { Fonts } from "../../utils/CommonStyle";
+import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { useNavigate } from "react-router";
 import noImage from "../../assets/noImage.png";
 
@@ -58,18 +58,24 @@ const PresetContent = (props: { presetData: PresetData }) => {
 const PresetContentStyles = makeStyles({
   albumCoverContainer: {
     margin: `23px auto`,
-    cursor: "",
   },
   albumCoverImg: {
     width: "200px",
     height: "200px",
     marginBottom: "8px",
     cursor: "pointer",
+    boxShadow: `rgba(0, 0, 0, 0.15) 0px 2px 8px`,
+
+    "&:hover": {
+      boxShadow: `rgb(207 195 189) 0px 0px 20px 2px, rgb(255 255 255 / 80%) 0px 0px 20px 8px`,
+    },
   },
 
   albumCoverTitle: {
     fontSize: "20px",
+    fontWeight: "700",
     fontFamily: `${Fonts.DEFAULT}`,
+    color: `${PageColors.COLOR}`,
   },
 });
 

@@ -27,9 +27,9 @@ export interface NowPresetValueState {
 }
 
 const initialState: NowPresetValueState = {
-  userId: "TuWdQ6QcXQHhG-LPsD7mY",
+  userId: "",
   presetTitle: "",
-  presetId: "-S9Y43q1F_lt5pjBM_2E6",
+  presetId: "",
   areaSize: 64,
   soundSamples: [],
   thumbnailImg: {
@@ -64,7 +64,10 @@ export const setNowPresetValueSlice = createSlice({
       state,
       action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
     ) => {
-      state.thumbnailImg = action.payload.thumbnailImg;
+      state.thumbnailImg = {
+        thumbnailImgURL: action.payload.thumbnailImg.thumbnailImgURL,
+        thumbnailImgFile: action.payload.thumbnailImg.thumbnailImgFile,
+      };
     },
     setValueFromPrivacyOption: (
       state,
