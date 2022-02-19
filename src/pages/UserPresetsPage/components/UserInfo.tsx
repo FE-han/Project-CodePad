@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
-import { getPresetUserInfo } from "../../../api/getPresetUserInfo";
+import getPresetUserInfo from "../../../api/getPresetUserInfo";
 import testImage from "../../../assets/testImage.png";
 import { useAppSelector } from "../../../modules/hooks";
 import { PageColors } from "../../../utils/CommonStyle";
