@@ -166,13 +166,13 @@ export default function Header() {
   };
 
   //redux에 userId값 저장
-  React.useEffect(() => {
-    dispatch(
-      setNowLoginUserIdActions.getLoginUserId({
-        loginUserId: String(userInfo.userId),
-      })
-    );
-  }, [setUserInfo]);
+  // React.useEffect(() => {
+  //   dispatch(
+  //     setNowLoginUserIdActions.getLoginUserId({
+  //       loginUserId: String(userInfo.userId),
+  //     })
+  //   );
+  // }, [setUserInfo]);
 
   return (
     <Box sx={{ zIndex: 0 }}>

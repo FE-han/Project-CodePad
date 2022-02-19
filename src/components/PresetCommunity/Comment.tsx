@@ -40,7 +40,6 @@ const Comment = (props: {
   //const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const commentAuthorUserId = commentData.userId;
-  console.log();
 
   const presetAutorUserId = userId;
 
@@ -49,19 +48,19 @@ const Comment = (props: {
 
   const [toggleHover, setToggleHover] = useState(false);
 
-  const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
-    setToggleHover(!toggleHover);
-  };
-
   return (
     <div
       className={classes.root}
-      onMouseEnter={handleHover}
-      onMouseLeave={handleHover}
+      onMouseEnter={() => {
+        setToggleHover(true);
+      }}
+      onMouseLeave={() => {
+        setToggleHover(false);
+      }}
     >
       <Avatar
         alt="user-image"
-        src={commentData.userImageURL}
+        src={`${process.env.REACT_APP_SERVER_BASE_URL}/${commentData.userImageURL}`}
         sx={{ width: 24, height: 24 }}
       />
       <span className={classes.userName}>{commentData.userName}</span>
