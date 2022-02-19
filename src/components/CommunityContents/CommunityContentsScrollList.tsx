@@ -15,6 +15,7 @@ import {
 } from "../../utils/CommonValue";
 import { memo } from "react";
 import { PresetListparams } from "../../api/CommunityContents/getPresetList";
+import { Fonts } from "../../utils/CommonStyle";
 
 const CommunityContentsScrollList = (props: {
   title: string;
@@ -35,12 +36,30 @@ const CommunityContentsScrollList = (props: {
       overflow: "auto",
 
       "&::-webkit-scrollbar": {
-        display: "none",
+        width: "10px",
+      },
+
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(210, 95, 95, 0.5)",
+        borderRadius: "10px",
+      },
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: "rgb(255,255,255,0.3)",
+        borderRadius: "10px",
+        boxShadow: `inset 0px 0px 5px white`,
       },
     },
-
+    title: {
+      color: "#d16a6a",
+      marginTop: "56px",
+      marginBottom: "56px",
+      fontFamily: `${Fonts.TITLE}`,
+      fontSize: "28px",
+      fontWeight: "bold",
+      opacity: "65%",
+    },
     Loader: {
-      marginBottom: "50px",
+      //margin: "50px 0px",
     },
   });
 
@@ -138,7 +157,7 @@ const CommunityContentsScrollList = (props: {
 
   return (
     <>
-      <header>{props.title}</header>
+      <header className={classes.title}>{props.title}</header>
       <div className={classes.ScrollListContainer}>
         {ContentList()}
         <div ref={setTarget} className={classes.Loader}>

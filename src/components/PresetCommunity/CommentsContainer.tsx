@@ -52,7 +52,8 @@ const commentsContainerStyles = makeStyles({
     },
   },
   Loader: {
-    //marginBottom: "50px",
+    display: "flex",
+    justifyContent: "center",
   },
 });
 

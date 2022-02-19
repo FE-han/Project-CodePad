@@ -43,7 +43,8 @@ const Comment = (props: {
 
   const presetAutorUserId = userId;
 
-  const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
+  const deleteBtn =
+    loginUserId === presetAutorUserId || loginUserId === commentAuthorUserId;
   const updateBtn = loginUserId === commentAuthorUserId;
 
   const [toggleHover, setToggleHover] = useState(false);
@@ -94,7 +95,7 @@ const Comment = (props: {
           size="small"
           sx={{
             position: "absolute",
-            right: "30px",
+            right: `${!deleteBtn ? "30px" : "0px"}`,
             "&.disabled": {
               display: "none",
             },

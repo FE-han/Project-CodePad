@@ -2,7 +2,8 @@ import { makeStyles } from "@mui/styles";
 import PresetContent from "./PresetContent";
 import ArtistContent from "./ArtistContent";
 import Loader from "./Loader";
-
+import ClearIcon from "@mui/icons-material/Clear";
+import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 import { ScrollValues } from "../../utils/CommonValue";
 
 import { useEffect, useState, ReactElement } from "react";
@@ -17,6 +18,7 @@ import { memo } from "react";
 import { SearchParams } from "../../api/CommunityContents/getSearchList";
 import { useParams } from "react-router";
 import { makeSearchScrollList } from "./makeSearchScrollList";
+import { Fonts } from "../../utils/CommonStyle";
 
 const SearchContentsScrollList = (props: {
   title: string;
@@ -29,6 +31,7 @@ const SearchContentsScrollList = (props: {
       display: "flex",
       flexDirection: "column",
       width: "100%",
+      justifyContent: "center",
       alignItems: "center",
       PaddingTop: "42px",
       PaddingBottom: "42px",
@@ -37,12 +40,34 @@ const SearchContentsScrollList = (props: {
       overflow: "auto",
 
       "&::-webkit-scrollbar": {
-        display: "none",
+        width: "10px",
+      },
+
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(210, 95, 95, 0.5)",
+        borderRadius: "10px",
+      },
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: "rgb(255,255,255,0.3)",
+        borderRadius: "10px",
+        boxShadow: `inset 0px 0px 5px white`,
       },
     },
-
+    title: {
+      color: "#d16a6a",
+      marginTop: "56px",
+      marginBottom: "56px",
+      fontFamily: `${Fonts.TITLE}`,
+      fontSize: "28px",
+      fontWeight: "bold",
+      opacity: "65%",
+    },
     Loader: {
-      marginBottom: "50px",
+      //marginBottom: "50px",
+    },
+    noResult: {
+      fontWeight: 700,
+      color: `rgb(0,0,0,0.5)`,
     },
   });
 
@@ -165,8 +190,13 @@ const SearchContentsScrollList = (props: {
 
   return (
     <>
-      <header>{props.title}</header>
+      <header className={classes.title}>{props.title}</header>
       <div className={classes.ScrollListContainer}>
+        {itemLists.length === 0 ? (
+          <span className={classes.noResult}>No result</span>
+        ) : (
+          ""
+        )}
         {ContentList()}
         <div ref={setTarget} className={classes.Loader}>
           {isLoaded && <Loader />}

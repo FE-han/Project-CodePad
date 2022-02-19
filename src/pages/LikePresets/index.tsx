@@ -121,7 +121,17 @@ const likePresetsPageStyles = makeStyles({
     overflow: "auto",
 
     "&::-webkit-scrollbar": {
-      display: "none",
+      width: "10px",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(210, 95, 95, 0.5)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "rgb(255,255,255,0.3)",
+      borderRadius: "10px",
+      boxShadow: `inset 0px 0px 5px white`,
     },
   },
   Loader: {
