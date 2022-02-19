@@ -27,6 +27,10 @@ const tagsStyles = makeStyles({
 
       const [selectTag, setSelectTag] = React.useState('');
 
+      const handleDelete = () => {
+        console.info('delete');
+      }
+
       useEffect(()=>{
           data.map((value)=>{
             if(value.presetId === selectedPresetId.presetId){

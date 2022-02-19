@@ -25,6 +25,8 @@ import { useDispatch } from "react-redux";
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
 
 import { useAppSelector } from "../../modules/hooks";
+import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -93,22 +95,26 @@ type UserPresetsPageParams = {
 
 export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
-  const presetId= useParams();
+  const presetId = useParams();
 
   const { userId } = useParams<UserPresetsPageParams>();
   const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
 
   const [userPresetData, setUserPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
   const urlParams = useParams<{ userId: string; presetId: string }>();
   const dispatch = useDispatch();
   const userPresetPageState = useAppSelector(
     (state) => state.setNowPresetValueSlice
   );
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
@@ -118,18 +124,32 @@ export function UserPresetsPage() {
       userId: urlParams.userId,
       presetId: urlParams.presetId,
     };
-    console.log(config);
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(config);
-    console.log(nowPresetData);
-    // setDefaultPresetData(newPresetData);
-
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: userPresetData,
-      setDefaultPresetData: setUserPresetData,
-    });
-    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    try {
+      const nowPresetData: Preset = await getPreset(config);
+      dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
+      setPresetData({
+        nowPresetData,
+        defaultPresetData: userPresetData,
+        setDefaultPresetData: setUserPresetData,
+      });
+      dispatch(
+        soundButtonsActions.setButtonState({
+          soundSamples: nowPresetData.soundSamples,
+        })
+      );
+      const currentSampleSoundMap = sampleSoundMap;
+      nowPresetData.soundSamples.map((soundSample) => {
+        currentSampleSoundMap.set(
+          soundSample.location,
+          soundSample.soundSampleURL
+        );
+      });
+      setSampleSoundMap(currentSampleSoundMap);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    } catch (err) {
+      console.log("프리셋 Api에러", err);
+      dispatch(getPresetActions.getPresetDataRejected());
+    }
   };
 
   useEffect(() => {
@@ -145,16 +165,23 @@ export function UserPresetsPage() {
             onlyFork={true}
             presetId={userPresetData.presetId || "unknownPresetId"}
           />
-          <LaunchPad presetData={userPresetData} sampleSoundMap={new Map()} />
+          {state.isLoading ? (
+            "로딩중"
+          ) : (
+            <LaunchPad
+              presetData={userPresetData}
+              sampleSoundMap={sampleSoundMap}
+            />
+          )}
         </div>
         <div className={classes.UserInfo}>
           <UserInfo userId={urlParams.userId || "잘못된UserId"} />
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
-            <PresetList createBtn={false} presetList={presetList}/>
-            <PaginationContainer presetList={presetList}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId} />
+            <PresetList createBtn={false} presetList={presetList} />
+            <PaginationContainer presetList={presetList} />
           </div>
         </div>
         <div className={classes.community}>

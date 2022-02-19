@@ -12,6 +12,14 @@ import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
+import { postBasePresetData } from "../../../api/CreatePreset/postBasePresetData";
+import axios, { AxiosRequestConfig } from "axios";
+import { axiosInstance } from "../../../api/axiosInstance";
+import {
+  setBasePresetFormData,
+  setPresetSoundFormDataArray,
+} from "../../../utils/setPresetFormData";
+import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -59,17 +67,103 @@ const PresetInfoStyles = makeStyles({
 
 interface PresetInfoProps {
   nowHandlePresetData: NowPresetValueState;
+  setInitialPresetData: React.Dispatch<
+    React.SetStateAction<NowPresetValueState>
+  >;
 }
-export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
+
+type PresetSoundFormDataArray = Map<string, FormData>;
+
+export default function PresetInfo({
+  nowHandlePresetData,
+  setInitialPresetData,
+}: PresetInfoProps) {
   const classes = PresetInfoStyles();
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
+  const [presetTitle, setPresetTitle] = useState<string>("");
+
+  const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPresetTitle = event.target.value;
+    setPresetTitle(newPresetTitle);
+    setInitialPresetData({
+      ...nowHandlePresetData,
+      presetTitle: newPresetTitle,
+    });
+  };
 
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
-
+    console.log(value);
     setPrivacy(value);
+    // setInitialPresetData
+    setInitialPresetData({
+      ...nowHandlePresetData,
+      PrivacyOption: value,
+    });
   };
+
+  const postPresetSoundFiles = async (
+    nowHandlePresetData: NowPresetValueState
+  ) => {
+    const formData = new FormData();
+    if (nowHandlePresetData.soundSamples === undefined) return;
+    formData.append(
+      "sound",
+      nowHandlePresetData.soundSamples[0].soundFile || ""
+    );
+    formData.append("presetId", "s9faOIF-XKdeaA0tYdbzV");
+    formData.append("location", nowHandlePresetData.soundSamples[0].location);
+    formData.append(
+      "buttonType",
+      nowHandlePresetData.soundSamples[0].buttonType || ""
+    );
+    formData.append(
+      "soundType",
+      nowHandlePresetData.soundSamples[0].soundType || ""
+    );
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const response = await axiosInstance(config).post(
+      "/presets/soundUpload",
+      formData
+    );
+
+    console.log(response.data);
+  };
+
+  const postPresetDataWithOutSoundFile = async (
+    nowHandlePresetData: NowPresetValueState
+  ) => {
+    const firstFormData = setBasePresetFormData(nowHandlePresetData);
+    const { presetId } = await postBasePresetData(firstFormData);
+    console.log("targetPresetId: ", presetId);
+
+    const presetSoundFormDataArray: Array<PresetSoundFormDataArray> =
+      setPresetSoundFormDataArray({
+        nowHandlePresetData,
+        targetPresetId: presetId,
+      });
+
+    const responses = new Array();
+
+    await Promise.all(
+      presetSoundFormDataArray.map(async (presetSoundFormData) => {
+        const [formDataKey] = presetSoundFormData.values();
+        const [formData] = presetSoundFormData.values();
+        const { data, status } = await postPresetSoundSampleData(formData);
+        responses.push([formDataKey, data, status]);
+      })
+    );
+
+    console.log("sound저장결과", responses);
+  };
+
   return (
     <div className={classes.root}>
       <TextField
@@ -77,6 +171,8 @@ export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
         label="Title"
         variant="outlined"
         className={classes.title}
+        value={presetTitle}
+        onChange={handlePresetTitle}
       />
       <FormControl>
         <RadioGroup
@@ -111,7 +207,7 @@ export default function PresetInfo({ nowHandlePresetData }: PresetInfoProps) {
           variant="outlined"
           startIcon={<SaveIcon />}
           onClick={() => {
-            console.log(nowHandlePresetData);
+            postPresetDataWithOutSoundFile(nowHandlePresetData);
           }}
         >
           SAVE

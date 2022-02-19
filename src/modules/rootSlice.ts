@@ -7,6 +7,8 @@ import soundButtonsStateSlice from "./actions/LaunchPad/soundButtonsSlice";
 import setNowPresetValueSlice from "./actions/setNowPresetValueSlice";
 import selectedButtonSlice from "./actions/LaunchPadEdit/selectedButtonSlice";
 import getTagsSlice from "./actions/getTagsSlice"
+import setNowLoginUserIdSlice from "./actions/setNowLoginUserIdSlice";
+
 
 export const reducers = {
   //2. 작성한 슬라이스를 여기에 추가한다.
@@ -18,4 +20,5 @@ export const reducers = {
   setNowPresetValueSlice,
   selectedButtonSlice,
   getTagsSlice,
+  setNowLoginUserIdSlice,
 };

@@ -51,9 +51,6 @@ export function OneShotButton({
       console.log("음악이 없음");
       return;
     }
-    console.log(sound);
-    //https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-    //load되고있는 상황일때는 재생하지 못하게 동기적 처리가 필요 => load단에서 막아버리면 된다 여기서는 재생 바로 할 수 있게끔
     sound.play();
   };
 
@@ -72,7 +69,9 @@ export function OneShotButton({
       //URL없을경우 에러컨트롤
       setSound(undefined);
     } else {
-      setSound(new Audio(soundSampleURL));
+      setSound(
+        new Audio(`${process.env.REACT_APP_SERVER_BASE_URL}/${soundSampleURL}`)
+      );
     }
   }, [setSound]);
 

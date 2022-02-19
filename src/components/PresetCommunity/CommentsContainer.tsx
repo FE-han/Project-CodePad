@@ -7,18 +7,17 @@ import { Fonts, ButtonColors, CommentColors } from "../../utils/CommonStyle";
 import React, { useEffect } from "react";
 import { memo } from "react";
 import {
-  getCommentListAPI,
+  deleteCommnetListAPI,
   getCommentListParams,
   postCommentListAPI,
+  putCommnetListAPI,
 } from "../../api/Comment/commentListAPI";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
 import { ScrollValues } from "../../utils/CommonValue";
 import Loader from "../CommunityContents/Loader";
-import { setConstantValue } from "typescript";
+
 import { makeCommentScrollList } from "./makeCommentScroll";
-import { useRef } from "react";
-import { AlternateEmailTwoTone } from "@mui/icons-material";
 import { useAppSelector } from "../../modules/hooks";
 
 const commentsContainerStyles = makeStyles({
@@ -60,20 +59,25 @@ const commentsContainerStyles = makeStyles({
 const CommentsContainer = () => {
   const classes = commentsContainerStyles();
 
-  //  const { userId , presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
+  const { presetId } = useAppSelector((state) => state.setNowPresetValueSlice);
 
   const [target, setTarget] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
 
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+
+  const [IsUpdate, setIsUpdate] = useState<boolean>(false);
+  const [commentIdForUpdate, setCommentIdForUpdate] = useState<string>("");
   const [commentList, setCommentList] = useState<Array<CommentData>>([]);
   //const [pageNum, setPageNum] = useState<number>(ScrollValues.defaultPageNum);
   const [config, setConfig] = useState<getCommentListParams>({
-    presetId: "-S9Y43q1F_lt5pjBM_2E6",
+    presetId,
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
   });
+
   const [text, setText] = useState<string>("");
 
   const getMoreItem = async () => {
@@ -84,17 +88,16 @@ const CommentsContainer = () => {
         setCommentList((arr) => arr.concat(res.data));
       } else {
         setIsDone(true);
-        console.log("Done!");
       }
-    }
-    if (!res.success) {
+    } else {
       setIsError(true);
-      alert(res.errorMessage);
     }
+
+    setIsLoaded(false);
   };
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || isError || isDone) return;
 
     getMoreItem();
     const newPageNum = config.pageNum + 1;
@@ -129,7 +132,7 @@ const CommentsContainer = () => {
 
   const handleCreate = async () => {
     const configdata = {
-      presetId: "-S9Y43q1F_lt5pjBM_2E6",
+      presetId,
       text,
     };
 
@@ -137,22 +140,78 @@ const CommentsContainer = () => {
       const newCommentList = await postCommentListAPI(configdata);
       setCommentList(newCommentList);
     } catch (error) {
-      alert("send Error");
+      //alert("send Error");
     }
   };
-  const handleSendBtn = (evt: React.ChangeEvent<HTMLButtonElement>) => {};
-  const handleEnterKey = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleSendBtn = () => {
+    setText("");
+    setIsUpdate(false);
+    setBtnDisabled(true);
+  };
+
+  const handleKeyPress = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     const target = evt.target as HTMLInputElement;
-    const value = target.value;
+    const value = target.value.trim();
+
+    if (value.length > 20) {
+      setText(value.substr(0, 20));
+    }
+
     if (evt.key === "Enter") {
       if (value.length > 0) {
-        handleCreate();
-        setText("");
+        if (IsUpdate) {
+          updateComment(commentIdForUpdate);
+          setIsUpdate(false);
+        } else {
+          handleCreate();
+        }
       }
+      setText("");
     }
   };
-  const handleDelete = () => {};
-  const handleUpdate = () => {};
+
+  const handleUpdate = (commentId: string, comment: string) => {
+    setIsUpdate(true);
+    setText(comment);
+    setCommentIdForUpdate(commentId);
+  };
+  const updateComment = async (commentId: string) => {
+    const configdata = {
+      presetId,
+      commentId,
+      text,
+    };
+
+    try {
+      await putCommnetListAPI(configdata);
+      const newCommentList = [...commentList];
+
+      newCommentList.map((dt) => {
+        if (dt.commentId === commentId) {
+          dt.comment = text;
+        }
+      });
+      setCommentList(newCommentList);
+    } catch (error) {
+      //alert("update Error");
+    }
+  };
+  const handleDelete = async (commentId: string) => {
+    const configdata = {
+      presetId,
+      commentId,
+    };
+
+    try {
+      await deleteCommnetListAPI(configdata);
+      const newCommentList = commentList.filter(
+        (dt) => dt.commentId !== commentId
+      );
+      setCommentList((prev) => newCommentList);
+    } catch (error) {
+      //alert("delete Error");
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -181,11 +240,23 @@ const CommentsContainer = () => {
             },
           }}
           value={text}
-          onChange={(evt) => setText(evt.target.value)}
-          onKeyDown={handleEnterKey}
+          onChange={(evt) => {
+            setText(evt.target.value);
+            if (evt.target.value.trim().length > 0) {
+              setBtnDisabled(false);
+            } else {
+              setBtnDisabled(true);
+            }
+          }}
+          onKeyPress={handleKeyPress}
         />
-        <Button variant="outlined" size="small" disabled onClick={handleCreate}>
-          send
+        <Button
+          variant="outlined"
+          size="small"
+          disabled={btnDisabled}
+          onClick={handleSendBtn}
+        >
+          cancle
         </Button>
       </div>
     </div>

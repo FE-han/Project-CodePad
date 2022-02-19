@@ -6,10 +6,9 @@ export async function getAudioArrayBuffer(url: string) {
     //token input
   };
 
-  const response = await axiosInstance(config).get(url, {
+  const response = await axiosInstance(config).get(`${url}`, {
     responseType: "arraybuffer",
   });
 
-  console.log(response.data);
   return response.data;
 }

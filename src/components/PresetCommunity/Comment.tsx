@@ -3,9 +3,10 @@ import { makeStyles } from "@mui/styles";
 import { Divider, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { useState } from "react";
 import { CommentData } from "../../utils/CommonInterface";
+import { useAppSelector } from "../../modules/hooks";
 
 const commentStyles = makeStyles({
   root: {
@@ -26,34 +27,40 @@ const Comment = (props: {
   deleteFn: Function;
   updateFn: Function;
 }) => {
-  const { commentData } = props;
-
   const classes = commentStyles();
 
-  const loginUserId = "IYfxLxA9t3BwCjCodzvwTa";
+  const { commentData } = props;
+
+  const { userId } = useAppSelector((state) => state.setNowPresetValueSlice);
+
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
+
+  //const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const commentAuthorUserId = commentData.userId;
 
-  const presetAutorUserId = "IYfxLxA9t3BwCjCodzvwTa";
+  const presetAutorUserId = userId;
 
   const deleteBtn = loginUserId === (presetAutorUserId || commentAuthorUserId);
   const updateBtn = loginUserId === commentAuthorUserId;
 
   const [toggleHover, setToggleHover] = useState(false);
 
-  const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
-    setToggleHover(!toggleHover);
-  };
-
   return (
     <div
       className={classes.root}
-      onMouseEnter={handleHover}
-      onMouseLeave={handleHover}
+      onMouseEnter={() => {
+        setToggleHover(true);
+      }}
+      onMouseLeave={() => {
+        setToggleHover(false);
+      }}
     >
       <Avatar
         alt="user-image"
-        src={commentData.userImageURL}
+        src={`${process.env.REACT_APP_SERVER_BASE_URL}/${commentData.userImageURL}`}
         sx={{ width: 24, height: 24 }}
       />
       <span className={classes.userName}>{commentData.userName}</span>
@@ -72,7 +79,9 @@ const Comment = (props: {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
-          onClick={props.deleteFn(commentData.commentId)}
+          onClick={() => {
+            props.deleteFn(commentData.commentId);
+          }}
         >
           <DeleteIcon />
         </IconButton>
@@ -91,7 +100,9 @@ const Comment = (props: {
             },
           }}
           className={!toggleHover ? "disabled" : ""}
-          onClick={props.updateFn(commentData.commentId)}
+          onClick={() => {
+            props.updateFn(commentData.commentId, commentData.comment);
+          }}
         >
           {" "}
           <EditIcon />
