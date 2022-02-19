@@ -79,16 +79,7 @@ const searchResultPageStyles = makeStyles({
       flexDirection: "column",
       alignItems: "center",
       flexWrap: "nowrap",
-
-      "& > header": {
-        color: "indianred",
-        marginTop: "56px",
-        marginBottom: "56px",
-        fontFamily: `${Fonts.TITLE}`,
-        fontSize: "26px",
-        fontWeight: "bold",
-        opacity: "65%",
-      },
+      height: "98%",
     },
   },
   preset: {

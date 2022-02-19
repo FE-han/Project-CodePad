@@ -5,7 +5,7 @@ import { makeStyles } from "@mui/styles";
 const Loader = () => {
   return (
     <div>
-      <ReactLoading type="spin" color="#A593E0" />
+      <ReactLoading type="spin" color="rgba(251,201,143,0.6)" />
     </div>
   );
 };
