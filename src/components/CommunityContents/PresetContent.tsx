@@ -44,8 +44,10 @@ const PresetContent = (props: { presetData: PresetData }) => {
         addLocalStroage();
         navigate(
           `/${
-            loginUserId === presetData.userId ? "mypresets" : "userpresets"
-          }/${presetData.userId}/${presetData.presetId}`
+            loginUserId === presetData.userId
+              ? "mypresets"
+              : `userpresets/${presetData.userId}`
+          }/${presetData.presetId}`
         );
       }}
     >

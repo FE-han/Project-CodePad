@@ -23,8 +23,10 @@ const Artist = (props: { presetData: PresetData }) => {
       onClick={() => {
         navigate(
           `/${
-            loginUserId === presetData.userId ? "mypresets" : "userpresets"
-          }/${presetData.userId}/enter`
+            loginUserId === presetData.userId
+              ? "mypresets"
+              : `userpresets/${presetData.userId}`
+          }/enter`
         );
       }}
     >
