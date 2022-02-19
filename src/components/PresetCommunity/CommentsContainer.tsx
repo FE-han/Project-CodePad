@@ -77,6 +77,7 @@ const CommentsContainer = () => {
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
   });
+
   const [text, setText] = useState<string>("");
 
   const getMoreItem = async () => {

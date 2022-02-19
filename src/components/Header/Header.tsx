@@ -61,7 +61,7 @@ export default function Header() {
         });
       })
       .catch((err) => {
-        // alert("API요청 실패");
+        console.log("API요청 실패");
         setIsLogin(false);
       });
   };
@@ -173,7 +173,7 @@ export default function Header() {
         loginUserId: String(userInfo.userId),
       })
     );
-  }, [setUserInfo]);
+  }, [userCookie, userInfo, setUserInfo]);
 
   return (
     <Box sx={{ zIndex: 0 }}>
