@@ -69,6 +69,9 @@ export const soundButtonsStateSlice = createSlice({
       });
       state.soundSamples = newSoundButtonsState;
     },
+    resetSampleSoundButtonState: (state) => {
+      state = initialState;
+    },
   },
 });
 

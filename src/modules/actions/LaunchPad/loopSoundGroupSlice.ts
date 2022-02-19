@@ -98,6 +98,22 @@ export const loopSoundGroupSlice = createSlice({
     clearWaitStopQueue: (state) => {
       state.nowWaitStopSampleSound = "";
     },
+    clearAllPlays: (state) => {
+      state.isPlay = false;
+      state.nowBar = "bar1";
+      state.nowPlayingSampleSounds = [];
+      state.nowWaitStopSampleSound = "";
+      state.soundGroup = {
+        bar1: [],
+        bar2: [],
+        bar3: [],
+        bar4: [],
+        bar5: [],
+        bar6: [],
+        bar7: [],
+        bar8: [],
+      };
+    },
   },
 });
 
