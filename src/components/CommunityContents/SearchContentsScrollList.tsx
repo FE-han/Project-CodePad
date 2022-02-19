@@ -31,7 +31,6 @@ const SearchContentsScrollList = (props: {
       display: "flex",
       flexDirection: "column",
       width: "100%",
-      justifyContent: "center",
       alignItems: "center",
       PaddingTop: "42px",
       PaddingBottom: "42px",
