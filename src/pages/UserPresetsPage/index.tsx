@@ -33,7 +33,6 @@ const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
-    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
