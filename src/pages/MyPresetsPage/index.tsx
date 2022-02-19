@@ -171,7 +171,7 @@ export function MyPresetsPage() {
       );
     } catch {
       dispatch(getMyPresetListActions.getPresetDataRejected());
-      alert("에러");
+      console.log("에러")
     }
   };
 
