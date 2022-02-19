@@ -5,7 +5,7 @@ import { ToggleType } from "../../utils/CommonValue";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPreset, PresetParams } from "../../api/getPreset";
 import LaunchPad from "../../components/LaunchPad";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -23,6 +23,14 @@ import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/
 import { GetMyPresetParams, getMyPresetList } from "../../api/getMyPresetList";
 import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
 import { PresetListElement } from "../MyPresetsPage/utils/types";
+import {
+  getDefaultPresetList,
+  GetDefaultPresetParams,
+} from "../../api/PresetList/getDefaultPresetList";
+import { getDefaultPreset } from "../../api/LaunchPadPreset/getDefaultPreset";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -107,14 +115,19 @@ const DefaultPresetsPageStyles = makeStyles({
   },
 });
 
+interface NowSelectedDefaultPreset {
+  presetId: string;
+  title: string;
+  thumbnailURL: string;
+}
+
 export function DefaultPresetsPage() {
   const classes = DefaultPresetsPageStyles();
-  const presetId = useParams();
+  const navigate = useNavigate();
   const [defaultPresetData, setDefaultPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
   const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
-  // const defaultPresetId = useParams();
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.getPresetSlice);
   const urlParams = useParams<{ userId: string; presetId: string }>();
@@ -123,37 +136,35 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const getPresetListInfoData = async () => {
-    const param: GetMyPresetParams = {
-      userId: "1",
+  const [defaultPresetList, setDefaultPresetList] = useState([]);
+  const [nowPresetListPage, setNowPresetListPage] = useState(1);
+  const [nowSelectedDefaultPreset, setNowSelectedDefaultPreset] =
+    useState<NowSelectedDefaultPreset>({
+      presetId: "",
+      title: "",
+      thumbnailURL: "",
+    });
+
+  const getMyPresetListData = async (nowPresetListPage: number) => {
+    const params: GetDefaultPresetParams = {
+      page: nowPresetListPage,
+      limit: 5,
     };
 
-    try {
-      dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
-      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
-        param
-      );
-      dispatch(
-        getMyPresetListActions.getPresetDataFulfilled({
-          presetList: nowMyPresetList,
-        })
-      );
-    } catch {
-      dispatch(getMyPresetListActions.getPresetDataRejected());
-      console.log("에러");
-    }
+    const res = await getDefaultPresetList(params);
+    console.log(res);
+    setDefaultPresetList(res);
   };
 
-  const getInitialPresetData = async () => {
+  const getInitialPresetData = async (presetId?: string) => {
     const config: PresetParams = {
       userId: urlParams.userId,
-      presetId: urlParams.presetId,
+      presetId: presetId || urlParams.presetId,
     };
-    console.log(config);
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
     // setDefaultPresetData(newPresetData);
     try {
-      const nowPresetData: Preset = await getPreset(config);
+      const nowPresetData: Preset = await getDefaultPreset({ presetId });
 
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
@@ -178,13 +189,22 @@ export function DefaultPresetsPage() {
       setSampleSoundMap(currentSampleSoundMap);
       console.log("launchpadPresetData", state);
     } catch (err) {
-      console.log("프리셋 Api에러", err);
+      alertSnackBarMessage({
+        message: `프리셋이 없거나, 가져오지 못했습니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
       dispatch(getPresetActions.getPresetDataRejected());
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    getPresetListInfoData();
+    // getPresetListInfoData();
+    getMyPresetListData(nowPresetListPage);
+    getInitialPresetData();
+  }, []);
+
+  useEffect(() => {
     getInitialPresetData();
   }, []);
 
@@ -211,8 +231,13 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId} />
-            <PresetList createBtn={false} presetList={presetList} />
+            <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} />
+            <PresetList
+              createBtn={false}
+              presetList={defaultPresetList}
+              nowPresetListPage={nowPresetListPage}
+              setNowPresetListPage={setNowPresetListPage}
+            />
           </div>
         </div>
         <div className={classes.community}></div>
