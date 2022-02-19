@@ -103,7 +103,9 @@ const SearchContentsScrollList = (props: {
   }, [keyword]);
 
   useEffect(() => {
-    getNewItem();
+    if (config.pageNum === ScrollValues.defaultPageNum) {
+      getNewItem();
+    }
   }, [config]);
 
   const getNewItem = async () => {
