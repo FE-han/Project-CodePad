@@ -53,7 +53,7 @@ function App() {
 
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
 
-          <Route path={"/errorpage"} element={<ErrorPage />} />
+          <Route path={"*"} element={<ErrorPage />} />
         </Routes>
       </div>
     </>

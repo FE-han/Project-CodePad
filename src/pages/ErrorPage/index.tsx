@@ -1,8 +1,18 @@
 import { makeStyles } from "@mui/styles";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
 
 export default function ErrorPage() {
   const classes = ErrorPageStyles();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 2500);
+  }, []);
+
   return (
     <div className={classes.root}>
       <div className={classes.title}>
