@@ -12,14 +12,11 @@ import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
-import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
 import { PageColors } from "../../utils/CommonStyle";
-import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
-import { PresetListElement } from "../MyPresetsPage/utils/types"
 import { useDispatch } from "react-redux";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
@@ -27,7 +24,14 @@ import { actions as setNowPresetValueActions } from "../../modules/actions/setNo
 import { useAppSelector } from "../../modules/hooks";
 import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
-import { getMyPresetList,GetMyPresetParams } from "../../api/getMyPresetList";
+import {
+  getUserPresetList,
+  GetUserPresetParams,
+} from "../../api/PresetList/getUserPresetList";
+import { getUserPreset } from "../../api/LaunchPadPreset/getUserPreset";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -43,7 +47,7 @@ const UserPresetsPageStyles = makeStyles({
     minHeight: "814.5px",
 
     display: "grid",
-    gridTemplateRows: "1fr 2fr 2fr",
+    gridTemplateRows: "1fr 4fr 3fr",
     gridTemplateColumns: "1fr 1fr",
     gridColumnGap: "20px",
     gridRowGap: "20px",
@@ -94,6 +98,13 @@ type UserPresetsPageParams = {
   userId: any;
 };
 
+interface NowSelectedUserPreset {
+  presetId: string;
+  reactions: { viewCount: number; likeCount: number; commentCount: number };
+  thumbnailImageURL: string;
+  title: string;
+}
+
 export function UserPresetsPage() {
   const classes = UserPresetsPageStyles();
   const presetId = useParams();
@@ -117,31 +128,29 @@ export function UserPresetsPage() {
   );
   const state = useAppSelector((state) => state.getPresetSlice);
 
+  const [userPresetList, setUserPresetList] = useState([]);
+  const [nowPresetListPage, setNowPresetListPage] = useState(1);
+  const [nowSelectedUserPreset, setNowSelectedUserPreset] =
+    useState<NowSelectedUserPreset>({
+      presetId: "",
+      reactions: { viewCount: 0, likeCount: 0, commentCount: 0 },
+      thumbnailImageURL: "",
+      title: "",
+    });
 
-    const getPresetListInfoData = async () => {
-      const param: GetMyPresetParams = {
-        userId: "1",
-      };
-
-      try{
-        dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
-      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
-        param
-      );
-      
-      dispatch(
-        getMyPresetListActions.getPresetDataFulfilled({
-          presetList: nowMyPresetList,
-        })
-      );
-      }
-      catch{
-        dispatch(getMyPresetListActions.getPresetDataRejected());
-        console.log("에러")
-      }
-
+  const getUserPresetListData = async (nowPresetListPage: number) => {
+    if (!urlParams.presetId) {
+      throw new Error("urlParams에서 presetId를 가져오지 못했습니다.");
     }
-
+    const params: GetUserPresetParams = {
+      presetId: urlParams.presetId,
+      page: nowPresetListPage,
+      limit: 5,
+    };
+    const res = await getUserPresetList(params);
+    console.log("유저프리셋리스트", res);
+    setUserPresetList(res);
+  };
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
@@ -152,7 +161,10 @@ export function UserPresetsPage() {
       presetId: urlParams.presetId,
     };
     try {
-      const nowPresetData: Preset = await getPreset(config);
+      console.log("userPresetdata api");
+      const nowPresetData: Preset = await getUserPreset(config);
+
+      console.log("userPresetdata", nowPresetData);
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -175,12 +187,17 @@ export function UserPresetsPage() {
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
     } catch (err) {
       console.log("프리셋 Api에러", err);
+      alertSnackBarMessage({
+        message: `프리셋이 없거나, 가져오지 못했습니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
       dispatch(getPresetActions.getPresetDataRejected());
     }
   };
 
   useEffect(() => {
-    getPresetListInfoData();
+    // getPresetListInfoData();
+    getUserPresetListData(nowPresetListPage);
     getInitialPresetData();
   }, []);
 
@@ -207,9 +224,13 @@ export function UserPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId} />
-            <PresetList createBtn={false} presetList={presetList} />
-            <PaginationContainer presetList={presetList} />
+            <PresetImage imageURL={nowSelectedUserPreset.thumbnailImageURL} />
+            <PresetList
+              createBtn={false}
+              presetList={userPresetList}
+              nowPresetListPage={nowPresetListPage}
+              setNowPresetListPage={setNowPresetListPage}
+            />
           </div>
         </div>
         <div className={classes.community}>
