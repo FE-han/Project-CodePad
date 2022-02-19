@@ -1,8 +1,10 @@
 import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
-import { getUserInfo } from "../../../api/getUserInfo";
+import { getPresetUserInfo } from "../../../api/getPresetUserInfo";
 import testImage from "../../../assets/testImage.png";
+import { useAppSelector } from "../../../modules/hooks";
 import { PageColors } from "../../../utils/CommonStyle";
+import defaultUserProfileImg from "../../../assets/defaultUserProfileImg.png";
 
 const UserInfoStyles = makeStyles({
   container: {
@@ -37,26 +39,21 @@ const UserInfoStyles = makeStyles({
   },
 });
 
-type UserInfoTypes = {
-  name: string;
-  thumbnailURL: string;
-};
-
 type UserInfoProps = {
   userId: string;
-};
+}
 
-export default function UserInfo({ userId }: UserInfoProps) {
+export default function UserInfo({userId}:UserInfoProps) {
   const classes = UserInfoStyles();
 
-  const [userInfo, setUserInfo] = useState<UserInfoTypes>({
-    name: "",
-    thumbnailURL: "",
+  const [userInfo, setUserInfo] = useState({
+    name: "default",
+    thumbnailURL: defaultUserProfileImg,
   });
 
   const getInitialData = async () => {
     try {
-      const userInfoData: UserInfoTypes = await getUserInfo({ userId: userId });
+      const userInfoData = await getPresetUserInfo(userId);
       setUserInfo(userInfoData);
     } catch (err) {
       console.log(err);
@@ -70,12 +67,10 @@ export default function UserInfo({ userId }: UserInfoProps) {
   return (
     <div className={classes.container}>
       <div className={classes.userImageWrap}>
-        {/* <img src={userInfo.thumbnailURL} alt="user-profile" /> */}
-        <img src={testImage} alt="user-profile" />
+        <img src={userInfo.thumbnailURL} alt="user-profile" />
       </div>
       <div className={classes.userNameWrap}>
-        {/* <p>{userInfo.name}</p> */}
-        <p>eundore</p>
+        <p>{userInfo.name}</p>
       </div>
     </div>
   );
