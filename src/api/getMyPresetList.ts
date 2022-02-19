@@ -11,10 +11,6 @@ export async function getMyPresetList(params: GetMyPresetParams) {
     //token input
     baseURL: "http://localhost:3001",
   };
-  console.log(params);
-  const response = await axiosInstance(config).get(
-    `/userId=${params.userId}`
-  );
-    console.log(response)
+  const response = await axiosInstance(config).get(`/userId=${params.userId}`);
   return response.data;
 }

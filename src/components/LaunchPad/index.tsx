@@ -154,11 +154,6 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   useEffect(() => {
     const newPlayedSoundSamples = alreadyPlayedSoundSamples;
 
-    console.log(
-      "삭제대상",
-      nowWaitStopSampleSound,
-      alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
-    );
     stopBufferSource(
       nowWaitStopSampleSound,
       alreadyPlayedSoundSamples.get(nowWaitStopSampleSound)
@@ -176,10 +171,8 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   }, [nowWaitStopSampleSound]);
 
   useEffect(() => {
-    console.log(alreadyPlayedSoundSamples);
     soundGroup[nowBar].map((btnLocation) => {
       if (alreadyPlayedSoundSamples.get(btnLocation)) {
-        console.log("이미 재생했어!");
       } else {
         const sourcePromise = getBufferSource(
           sampleSoundMap.get(btnLocation),
