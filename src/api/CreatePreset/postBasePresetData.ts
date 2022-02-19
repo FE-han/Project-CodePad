@@ -1,17 +1,19 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "../axiosInstance";
 
-interface editPresetValue {}
+interface BasePresetDataResponse {
+  presetId: string;
+}
 
-export async function editPresetValue(params: any) {
-  console.log("editPresetValue Params", params);
+export async function postBasePresetData(
+  params: FormData
+): Promise<BasePresetDataResponse> {
   const config: AxiosRequestConfig = {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   };
 
-  const response = await axiosInstance(config).post("/preset/create", params);
-
+  const response = await axiosInstance(config).post("/presets", params);
   return response.data;
 }
