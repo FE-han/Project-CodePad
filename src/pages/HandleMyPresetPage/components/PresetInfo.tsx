@@ -8,20 +8,17 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import { makeStyles } from "@mui/styles";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
 import { postBasePresetData } from "../../../api/CreatePreset/postBasePresetData";
-import axios, { AxiosRequestConfig } from "axios";
-import { axiosInstance } from "../../../api/axiosInstance";
 import {
   setBasePresetFormData,
   setPresetSoundFormDataArray,
 } from "../../../utils/setPresetFormData";
 import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
 import { useNavigate } from "react-router";
-import { updatePreset } from "../../../api/updatePreset";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -83,11 +80,7 @@ export default function PresetInfo({
   const classes = PresetInfoStyles();
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
   const [presetTitle, setPresetTitle] = useState<string>("");
-
-  useEffect(() => {
-    setPrivacy(nowHandlePresetData.PrivacyOption);
-    setPresetTitle(nowHandlePresetData.presetTitle);
-  }, [nowHandlePresetData])
+  const navigate = useNavigate();
 
   const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPresetTitle = event.target.value;
@@ -110,40 +103,6 @@ export default function PresetInfo({
     });
   };
 
-  const postPresetSoundFiles = async (
-    nowHandlePresetData: NowPresetValueState
-  ) => {
-    const formData = new FormData();
-    if (nowHandlePresetData.soundSamples === undefined) return;
-    formData.append(
-      "sound",
-      nowHandlePresetData.soundSamples[0].soundFile || ""
-    );
-    formData.append("presetId", "s9faOIF-XKdeaA0tYdbzV");
-    formData.append("location", nowHandlePresetData.soundSamples[0].location);
-    formData.append(
-      "buttonType",
-      nowHandlePresetData.soundSamples[0].buttonType || ""
-    );
-    formData.append(
-      "soundType",
-      nowHandlePresetData.soundSamples[0].soundType || ""
-    );
-
-    const config: AxiosRequestConfig = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    const response = await axiosInstance(config).post(
-      "/presets/soundUpload",
-      formData
-    );
-
-    console.log(response.data);
-  };
-
   const postPresetDataWithOutSoundFile = async (
     nowHandlePresetData: NowPresetValueState
   ) => {
@@ -159,24 +118,21 @@ export default function PresetInfo({
 
     const responses = new Array();
 
-    await Promise.all([
-      updatePreset(firstFormData, presetId),
-      presetSoundFormDataArray.map(async (presetSoundFormData) => {
-        const [formDataKey] = presetSoundFormData.values();
-        const [formData] = presetSoundFormData.values();
-        const { data, status } = await postPresetSoundSampleData(formData);
-        responses.push([formDataKey, data, status]);
-      })
-    ]);
+    try {
+      await Promise.all(
+        presetSoundFormDataArray.map(async (presetSoundFormData) => {
+          const [formDataKey] = presetSoundFormData.values();
+          const [formData] = presetSoundFormData.values();
+          const { data, status } = await postPresetSoundSampleData(formData);
+          responses.push([formDataKey, data, status]);
+        })
+      );
+      console.log("sound저장결과", responses);
+      navigate(`/mypresets/${presetId}`);
+    } catch (error) {
+      console.log("Preset 생성 에러발생", error);
+    }
   };
-
-  const navigate = useNavigate();
-  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if(window.confirm("작성을 취소하시겠습니까?")){
-      navigate(-1);
-    } 
-  }
-
 
   return (
     <div className={classes.root}>
@@ -214,11 +170,7 @@ export default function PresetInfo({
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button 
-          variant="outlined" 
-          startIcon={<ClearIcon />}
-          onClick={handleCancelClick}
-          >
+        <Button variant="outlined" startIcon={<ClearIcon />}>
           CANCLE
         </Button>
         <Button
