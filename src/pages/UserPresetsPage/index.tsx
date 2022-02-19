@@ -144,6 +144,7 @@ export function UserPresetsPage() {
       thumbnailImageURL: "",
       title: "",
     });
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const getUserPresetListData = async (nowPresetListPage: number) => {
     if (!urlParams.presetId) {
@@ -236,9 +237,8 @@ export function UserPresetsPage() {
             <PresetImage imageURL={nowSelectedUserPreset.thumbnailImageURL} />
             <PresetList
               createBtn={false}
-              presetList={userPresetList.presetList}
-              nowPresetListPage={nowPresetListPage}
-              setNowPresetListPage={setNowPresetListPage}
+              type={"mypresets"}
+              presetId={urlParams.presetId}
             />
           </div>
         </div>

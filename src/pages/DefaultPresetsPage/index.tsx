@@ -135,28 +135,6 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const [defaultPresetList, setDefaultPresetList] = useState({
-    presetList: [],
-    maxPage: 0,
-  });
-  const [nowPresetListPage, setNowPresetListPage] = useState(1);
-  const [nowSelectedDefaultPreset, setNowSelectedDefaultPreset] =
-    useState<NowSelectedDefaultPreset>({
-      presetId: "",
-      title: "",
-      thumbnailURL: "",
-    });
-
-  const getMyPresetListData = async (nowPresetListPage: number) => {
-    const params: GetDefaultPresetParams = {
-      page: nowPresetListPage,
-      limit: 5,
-    };
-
-    const res = await getDefaultPresetList(params);
-    setDefaultPresetList(res);
-  };
-
   const getInitialPresetData = async (presetId?: string) => {
     const config: PresetParams = {
       userId: urlParams.userId,
@@ -200,11 +178,6 @@ export function DefaultPresetsPage() {
 
   useEffect(() => {
     // getPresetListInfoData();
-    getMyPresetListData(nowPresetListPage);
-    getInitialPresetData();
-  }, []);
-
-  useEffect(() => {
     getInitialPresetData();
   }, []);
 
@@ -231,13 +204,8 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} />
-            <PresetList
-              createBtn={false}
-              presetList={defaultPresetList.presetList}
-              nowPresetListPage={nowPresetListPage}
-              setNowPresetListPage={setNowPresetListPage}
-            />
+            {/* <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} /> */}
+            <PresetList createBtn={false} type={"defaultpresets"} />
           </div>
         </div>
         <div className={classes.community}></div>
