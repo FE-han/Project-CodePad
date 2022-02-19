@@ -146,7 +146,7 @@ export function DefaultPresetsPage() {
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
-        defaultPresetData: defaultPresetData,
+        defaultPresetData: initialPresetGenerator(LaunchPadScale.DEFAULT),
         setDefaultPresetData: setDefaultPresetData,
       });
 
