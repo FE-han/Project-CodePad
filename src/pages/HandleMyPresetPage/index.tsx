@@ -169,49 +169,6 @@ export function HandleMyPresetPage() {
     (state) => state.setNowPresetValueSlice
   );
 
-  const getInitialDataForUpdate = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-
-    const config: PresetParams = {
-      userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
-      presetId: setPresetId(urlParams),
-    };
-
-    const nowPresetData: Preset = await getPreset(config);
-    // setinitialPresetData(newPresetData);
-
-    // setPresetData({
-    //   nowPresetData,
-    //   defaultPresetData: initialPresetData,
-    //   setDefaultPresetData: setinitialPresetData,
-    // });
-
-    try {
-      const nowPresetImageAndPrivateOption = await getPresetInfo(
-        urlParams.presetId
-      );
-      const nowPresetTags = await getPresetTags(urlParams.presetId);
-      dispatch(
-        setNowPresetValueActions.setValueFromImage(
-          nowPresetImageAndPrivateOption
-        )
-      );
-      dispatch(
-        setNowPresetValueActions.setValueFromPrivacyOption(
-          nowPresetImageAndPrivateOption
-        )
-      );
-      dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
-    } catch (e) {
-      alertSnackBarMessage({
-        message: `프리셋 image , privacyOption 호출 에러: ${e}`,
-        type: SnackBarMessageType.ERROR,
-      });
-    }
-
-    setPresetstate();
-  };
-
   const setPresetstate = () => {
     setNowHandlePresetData({
       ...nowHandlePresetData,
@@ -226,14 +183,56 @@ export function HandleMyPresetPage() {
     });
   };
 
+  const getInitialDataForUpdate = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+
+    const config: PresetParams = {
+      userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
+      presetId: urlParams.presetId,
+    };
+
+    const nowPresetData: Preset = await getPreset(config);
+    // setinitialPresetData(newPresetData);
+    console.log(nowPresetData)
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: initialPresetData,
+    //   setDefaultPresetData: setinitialPresetData,
+    // });
+
+    try {
+
+      // const nowPresetTags = await getPresetTags(urlParams.presetId);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData));
+      
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+    } catch(e) {
+      alertSnackBarMessage({
+        message: `프리셋데이터 호출 에러: ${e}`,
+        type: SnackBarMessageType.ERROR,
+      });
+    }
+
+    setPresetstate();
+    
+  };
+
+  useEffect(() => {
+    setPresetstate();
+  }, [nowPresetDataState])
+
   useEffect(() => {
     if (urlParams.presetId === undefined) {
-      console.log("create page");
+      // console.log("create page");
       return;
     }
 
-    console.log("update page");
-    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
+    // console.log("update page");
+    if (nowPresetDataState.presetTitle === ''){
+      getInitialDataForUpdate();
+    }
   }, []);
 
   return (

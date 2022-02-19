@@ -179,6 +179,10 @@ export function MyPresetsPage() {
       });
       setSampleSoundMap(currentSampleSoundMap);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
+
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetData));
     } catch (err) {
       // alertSnackBarMessage({
       //   message: `프리셋이 없거나, 가져오지 못했습니다.`,
@@ -188,10 +192,6 @@ export function MyPresetsPage() {
       // navigate("/");
     }
 
-    const newPresetInfo = await getPresetInfo(urlParams.presetId);
-    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
   const state = useAppSelector((state) => state.getPresetSlice);
