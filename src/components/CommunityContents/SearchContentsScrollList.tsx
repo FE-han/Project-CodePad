@@ -63,7 +63,7 @@ const SearchContentsScrollList = (props: {
       opacity: "65%",
     },
     Loader: {
-      //marginBottom: "50px",
+      margin: "30px 0px",
     },
     noResult: {
       fontWeight: 700,
