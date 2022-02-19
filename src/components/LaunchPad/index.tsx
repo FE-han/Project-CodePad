@@ -93,6 +93,9 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   const [alreadyPlayedSoundSamples, setAlreadyPlayedSoundSamples] = useState(
     new Map()
   );
+  const { soundSamples } = useAppSelector(
+    (state) => state.soundButtonsStateSlice
+  );
 
   const getBufferSource = async (url: string | undefined, location: string) => {
     if (url === undefined) return;
@@ -123,9 +126,9 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     if (sourcePromise === undefined) return;
     await sourcePromise.then((res) => {
       if (res === undefined) return;
-      const context = new AudioContext();
 
       // //남은 한 사이클 재생후 정지
+      // const context = new AudioContext();
       // setTimeout(() => {
       //   dispatch(
       //     soundButtonsActions.changeButtonState({
@@ -186,6 +189,31 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
       }
     });
   }, [nowBar]);
+
+  useEffect(() => {
+    return () => {
+      const toStopList = alreadyPlayedSoundSamples;
+      console.log(toStopList);
+
+      for (const ele of toStopList.keys()) {
+        stopBufferSource(ele, alreadyPlayedSoundSamples.get(ele));
+        toStopList.delete(ele);
+
+        dispatch(loopSoundGroupActions.clearWaitStopQueue());
+        dispatch(
+          soundButtonsActions.changeButtonState({
+            location: nowWaitStopSampleSound,
+            state: "WAIT_STOP",
+          })
+        );
+      }
+
+      dispatch(loopSoundGroupActions.clearAllPlays());
+      // dispatch(soundButtonsActions.resetSampleSoundButtonState());
+
+      console.log("페이지 나감", nowPlayingSampleSounds);
+    };
+  }, []);
 
   return (
     <>

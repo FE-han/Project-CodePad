@@ -25,9 +25,8 @@ import { actions as setNowPresetValueActions } from "../../modules/actions/setNo
 import { getPresetInfo } from "../../api/getPresetInfo";
 import { getPresetTags } from "../../api/getPresetTags";
 import { updatePreset } from "../../api/updatePreset";
-import PresetTags from "../../components/PresetCommunity/PresetTags"
+import PresetTags from "../../components/PresetCommunity/PresetTags";
 import { PrivacyType } from "../../utils/CommonValue";
-
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -149,7 +148,7 @@ export const HandleMyPresetPageStyles = makeStyles({
   tags: {
     gridArea: "tags",
     padding: "18px",
-    display:"grid",
+    display: "grid",
     alignItems: "column",
   },
 });
@@ -163,7 +162,9 @@ export function HandleMyPresetPage() {
     );
   const urlParams = useParams<{ presetId: string }>();
 
-  const nowPresetDataState = useAppSelector((state) => state.setNowPresetValueSlice)
+  const nowPresetDataState = useAppSelector(
+    (state) => state.setNowPresetValueSlice
+  );
 
   const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
@@ -209,23 +210,34 @@ export function HandleMyPresetPage() {
       thumbnailImg: nowPresetDataState.thumbnailImg,
       PrivacyOption: nowPresetDataState.PrivacyOption,
       tags: nowPresetDataState.tags,
-    })
-  }
+    });
+  };
+
+  // useEffect(() => {
+  //   if (urlParams.presetId === undefined) {
+  //     // console.log("create page");
+  //     return;
+  //   }
+
+  //   // console.log("update page");
+  //   if (nowPresetDataState.presetTitle === ''){
+  //     getInitialDataForUpdate();
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   setPresetstate();
+  // }, [nowPresetDataState]);
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {
-      // console.log("create page");
+      console.log("create page");
       return;
     }
 
-    // console.log("update page");
-    getInitialDataForUpdate();
+    console.log("update page");
+    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
   }, []);
-  
-
-  useEffect(() => {
-    setPresetstate();
-  }, [nowPresetDataState])
 
   return (
     <div className={classes.root}>
@@ -240,8 +252,8 @@ export function HandleMyPresetPage() {
               setInitialPresetData={setNowHandlePresetData}
             />
             <PresetInfo
-             nowHandlePresetData={nowHandlePresetData}
-             setInitialPresetData={setNowHandlePresetData} 
+              nowHandlePresetData={nowHandlePresetData}
+              setInitialPresetData={setNowHandlePresetData}
             />
           </div>
         </div>

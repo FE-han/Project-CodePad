@@ -47,8 +47,10 @@ export default function Header() {
 
   React.useEffect(() => {}, [userInfo, userCookie]);
   const [isLogin, setIsLogin] = React.useState<boolean>(false);
+  const [updateUserInfoTryCnt, setUpdateUserInfoTryCnt] = React.useState(0);
 
   const updateUserInfo = () => {
+    setUpdateUserInfoTryCnt(updateUserInfoTryCnt + 1);
     getProfileInfo()
       .then((res) => {
         setUserInfo({
@@ -66,11 +68,12 @@ export default function Header() {
       });
   };
 
-  if (getCookie(cookieName) && !isLogin) {
+  if (getCookie(cookieName) && updateUserInfoTryCnt < 5 && !isLogin) {
     setIsLogin(true);
     updateUserInfo();
     setUserCookie(getCookie(cookieName));
   }
+
   const handleLogout = () => {
     handleMenuClose();
     logout().then((res) => {
