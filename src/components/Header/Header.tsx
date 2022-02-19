@@ -68,7 +68,7 @@ export default function Header() {
 
   if (getCookie(cookieName) && !isLogin) {
     setIsLogin(true);
-    // updateUserInfo();
+    updateUserInfo();
     setUserCookie(getCookie(cookieName));
   }
   const handleLogout = () => {
