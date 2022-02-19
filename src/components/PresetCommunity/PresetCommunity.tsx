@@ -53,7 +53,7 @@ export default function PresetCommunity() {
 
   const presetTagsData = async () => {
     const param: GetTags = {
-      tags: "2"
+      tagId: "2"
     }
 
     try{

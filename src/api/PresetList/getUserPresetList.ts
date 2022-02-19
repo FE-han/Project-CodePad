@@ -1,18 +1,21 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "../axiosInstance";
 
-export interface GetDefaultPresetParams {
+export interface GetUserPresetParams {
+  presetId: string;
   page: number;
-  limit: number;
+  limit?: number;
 }
 
-export async function getDefaultPresetList(params: GetDefaultPresetParams) {
+export async function getUserPresetList(params: GetUserPresetParams) {
   const config: AxiosRequestConfig = {
     //tokeninput
   };
 
   const response = await axiosInstance(config).get(
-    `presets/defaultpresetlist?page=${params.page}&limit=${params.limit || 5}`
+    `presets/${params.presetId}/list?page=${params.page}&limit=${
+      params.limit || 5
+    }`
   );
 
   return response.data;

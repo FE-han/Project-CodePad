@@ -32,6 +32,7 @@ export const HandleMyPresetPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -186,16 +187,25 @@ export function HandleMyPresetPage() {
     // });
 
     try {
-
-      const nowPresetImageAndPrivateOption = await getPresetInfo(urlParams.presetId);
+      const nowPresetImageAndPrivateOption = await getPresetInfo(
+        urlParams.presetId
+      );
       const nowPresetTags = await getPresetTags(urlParams.presetId);
-      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetImageAndPrivateOption));
-      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetImageAndPrivateOption));
+      dispatch(
+        setNowPresetValueActions.setValueFromImage(
+          nowPresetImageAndPrivateOption
+        )
+      );
+      dispatch(
+        setNowPresetValueActions.setValueFromPrivacyOption(
+          nowPresetImageAndPrivateOption
+        )
+      );
       dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
-    } catch(e) {
-      console.log(`프리셋 image , privacyOption 호출 에러`)
+    } catch (e) {
+      console.log(`프리셋 image , privacyOption 호출 에러`);
     }
-    
+
     setPresetstate();
   };
 
