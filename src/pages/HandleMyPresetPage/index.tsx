@@ -185,20 +185,17 @@ export function HandleMyPresetPage() {
     //   setDefaultPresetData: setinitialPresetData,
     // });
 
-    const nowPresetImageAndPrivateOption = await getPresetInfo(
-      urlParams.presetId
-    );
-    const nowPresetTags = await getPresetTags(urlParams.presetId);
-    dispatch(
-      setNowPresetValueActions.setValueFromImage(nowPresetImageAndPrivateOption)
-    );
-    dispatch(
-      setNowPresetValueActions.setValueFromPrivacyOption(
-        nowPresetImageAndPrivateOption
-      )
-    );
-    dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+    try {
 
+      const nowPresetImageAndPrivateOption = await getPresetInfo(urlParams.presetId);
+      const nowPresetTags = await getPresetTags(urlParams.presetId);
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetImageAndPrivateOption));
+      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetImageAndPrivateOption));
+      dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+    } catch(e) {
+      console.log(`프리셋 image , privacyOption 호출 에러`)
+    }
+    
     setPresetstate();
   };
 

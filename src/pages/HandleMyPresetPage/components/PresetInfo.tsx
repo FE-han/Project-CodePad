@@ -94,7 +94,6 @@ export default function PresetInfo({
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
-    console.log(value);
     setPrivacy(value);
     // setInitialPresetData
     setInitialPresetData({

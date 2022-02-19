@@ -54,7 +54,9 @@ export default function PresetThumbnailUpload({
   const [currImg, setCurrImg] = useState<string>(noImage);
   
   useEffect(() => {
-    setCurrImg(nowHandlePresetData.thumbnailImg.thumbnailImgURL);
+    if(nowHandlePresetData.thumbnailImg.thumbnailImgURL != ''){
+      setCurrImg(nowHandlePresetData.thumbnailImg.thumbnailImgURL);
+    }
   },[nowHandlePresetData])
   
   //파일 변환
