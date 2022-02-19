@@ -61,10 +61,11 @@ export default function Header() {
         });
       })
       .catch((err) => {
-        alert("API요청 실패");
+        console.log("API요청 실패");
         setIsLogin(false);
       });
   };
+
   if (getCookie(cookieName) && !isLogin) {
     setIsLogin(true);
     updateUserInfo();
@@ -166,13 +167,13 @@ export default function Header() {
   };
 
   //redux에 userId값 저장
-  // React.useEffect(() => {
-  //   dispatch(
-  //     setNowLoginUserIdActions.getLoginUserId({
-  //       loginUserId: String(userInfo.userId),
-  //     })
-  //   );
-  // }, [setUserInfo]);
+  React.useEffect(() => {
+    dispatch(
+      setNowLoginUserIdActions.getLoginUserId({
+        loginUserId: String(userInfo.userId),
+      })
+    );
+  }, [userCookie, userInfo, setUserInfo]);
 
   return (
     <Box sx={{ zIndex: 0 }}>

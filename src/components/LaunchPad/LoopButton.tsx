@@ -76,8 +76,6 @@ export function LoopButton({
   location,
 }: Omit<SoundSample, "soundSampleId">) {
   const classes = LoopButtonStyles();
-  // const [isWait, setIsWait] = useState<boolean>(false);
-  // const [isPlaySample, setIsPlaySample] = useState<boolean>(false);
   const isEven = Number(location.split("X")[1]) % 2 === 1;
 
   const [buttonState, setButtonState] = useState({
@@ -126,13 +124,6 @@ export function LoopButton({
     <div
       className={getClassNameByBtnState()}
       onClick={() => {
-        //처음 클릭시
-        // 1. (stop) 버튼 state를 wait_play로 바꿈, 그룹에 선택한 셈플로써 올림
-        // (이후 메트로눔을 통해서 재생시 state를 play로 바꿈)
-        // 2. (play) 버튼 state를 wait_stop으로 바꿈
-        // (이후 메트로눔을 통해서 해당 음원을 stop하고 unstaging처리함 )
-        // 3. (wait_play) 버튼 state를 stop으로 바꿈, 바로 그룹에서 unstaging처리
-        // 4. (wait_stop) 버튼 state를 play로 바꿈
         switch (buttonState.state) {
           case "STOP":
             dispatch(
@@ -186,7 +177,6 @@ export function LoopButton({
         }
       }}
     >
-      {/* <div className={getClassNameByBtnState()}> */}
       <div className={classes.buttonText}>{soundType || ""}</div>
       <div className={classes.buttonIcon}>
         <AutorenewIcon />

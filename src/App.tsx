@@ -11,8 +11,6 @@ import UserPresetsPage from "./pages/UserPresetsPage";
 import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
 
-import CreatePresetsPage from "./pages/CreatePresetsPage";
-import ModifyPresetsPage from "./pages/UpdatePresetsPage";
 import HandleMyPresetPage from "./pages/HandleMyPresetPage";
 
 const AppStyles = makeStyles({

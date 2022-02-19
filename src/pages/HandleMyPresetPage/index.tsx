@@ -19,6 +19,7 @@ import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
+import { PrivacyType } from "../../utils/CommonValue";
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -141,7 +142,14 @@ export const HandleMyPresetPageStyles = makeStyles({
     gridArea: "tags",
   },
 });
-
+export type formDataTypes = {
+  presetId: string;
+  presetTitle: string;
+  PrivacyOption: PrivacyType;
+  thumbnailImg: any;
+  tags: any;
+  soundSample: any;
+};
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
 

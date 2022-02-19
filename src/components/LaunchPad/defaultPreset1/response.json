@@ -4,6 +4,7 @@
     "userId": "awesomeHuman",
     "presetId": "12-34-56-12",
     "areaSize": 64,
+    "thumbnailURL": "asdfas",
     "soundSamples": [
       {
         "location": "0X1",
@@ -247,6 +248,13 @@
         "location": "7X6",
         "soundSampleId": "onlineSampleSound",
         "soundSampleURL": "https://elice-kdt-sw-1st-team7.elicecoding.com/api/uploads/sound/sound-qwer.mp3",
+        "buttonType": "LOOP",
+        "soundType": "CP_SP"
+      },
+      {
+        "location": "7X7",
+        "soundSampleId": "onlineSampleSound",
+        "soundSampleURL": "https://elice-kdt-sw-1st-team7.elicecoding.com/api/uploads/sound/sound-7qtL64t5g27v50bxJbqWw.mp3",
         "buttonType": "LOOP",
         "soundType": "CP_SP"
       }
