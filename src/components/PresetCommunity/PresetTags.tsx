@@ -54,7 +54,7 @@ export default function presetTags() {
             )
         }catch{
             dispatch(getTagsActions.getTagsDataRejecterd());
-            alert('에러')
+            console.log('에러')
         }
     }
 

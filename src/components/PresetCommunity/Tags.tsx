@@ -17,6 +17,7 @@ const tagsStyles = makeStyles({
 
 interface tagsProps{
   data: Array<TagsElement>;
+  // selectedPresetId: any
 }
 
 const Tags = ({data} : tagsProps) => {
@@ -36,9 +37,9 @@ const Tags = ({data} : tagsProps) => {
 
   useEffect(()=>{
     data.map((value)=>{
-      setSelectTag(value.tags)
+        setSelectTag(value.tags)
     })
-  })
+  },[data])
   
 
   return (
@@ -46,9 +47,6 @@ const Tags = ({data} : tagsProps) => {
       {data.map((value) => (
         <Chip label={value.tags} size="small" />
       ))}
-      
-      <Chip label="house" size="small" />
-      
     </Stack>
   );
 }
