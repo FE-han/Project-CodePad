@@ -27,9 +27,9 @@ const tagsStyles = makeStyles({
 
       const [selectTag, setSelectTag] = React.useState('');
 
-      const handleDelete = () => {
-        console.info('delete');
-      }
+
+    console.log(data)
+      
 
       useEffect(()=>{
           data.map((value)=>{
@@ -42,7 +42,7 @@ const tagsStyles = makeStyles({
       return (
         <Stack direction="row" spacing={1} className={classes.chip}>
         {data.map((value) => (
-          <Chip label={selectTag} size="small" />
+          <Chip label={value.tags} size="small" />
         ))}
       </Stack>
       )

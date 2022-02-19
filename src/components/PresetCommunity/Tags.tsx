@@ -27,13 +27,13 @@ const Tags = ({data} : tagsProps) => {
 
   console.log(data)
 
-  // const handleChipClick = (
-  //   event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  //   Tag: any
-  // ) => {
-  //   setSelectTag(Tag);
-  //   console.log(Tag)
-  // }
+  const handleChipClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    Tag: any
+  ) => {
+    setSelectTag(Tag);
+    console.log(Tag)
+  }
 
   useEffect(()=>{
     data.map((value)=>{
@@ -45,7 +45,7 @@ const Tags = ({data} : tagsProps) => {
   return (
     <Stack direction="row" spacing={1} className={classes.chip}>
       {data.map((value) => (
-        <Chip label={value.tags} size="small" />
+        <Chip label={value.tags} size="small"  />
       ))}
     </Stack>
   );
