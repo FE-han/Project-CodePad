@@ -180,12 +180,12 @@ export function MyPresetsPage() {
       setSampleSoundMap(currentSampleSoundMap);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
     } catch (err) {
-      alertSnackBarMessage({
-        message: `프리셋이 없거나, 가져오지 못했습니다.`,
-        type: SnackBarMessageType.ERROR,
-      });
+      // alertSnackBarMessage({
+      //   message: `프리셋이 없거나, 가져오지 못했습니다.`,
+      //   type: SnackBarMessageType.ERROR,
+      // });
       dispatch(getPresetActions.getPresetDataRejected());
-      navigate("/");
+      // navigate("/");
     }
 
     const newPresetInfo = await getPresetInfo(urlParams.presetId);
