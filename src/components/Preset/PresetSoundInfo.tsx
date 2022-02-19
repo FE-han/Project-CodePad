@@ -14,7 +14,6 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LoopIcon from "@mui/icons-material/Loop";
 
-import { CreatePresetsPageStyles } from "../../pages/CreatePresetsPage/index";
 import { useEffect, useState } from "react";
 import { ButtonColors } from "../../utils/CommonStyle";
 import { BtnType } from "../../utils/CommonValue";
@@ -28,6 +27,7 @@ import {
   SoundSample,
 } from "../LaunchPad/utils/types";
 import { useDispatch } from "react-redux";
+import { HandleMyPresetPageStyles } from "../../pages/HandleMyPresetPage";
 
 interface SoundSampleValue {
   name: string;
@@ -45,7 +45,7 @@ export default function PresetSoundInfo({
   initialPresetData,
   setInitialPresetData,
 }: PresetSoundInfoProps) {
-  const classes = CreatePresetsPageStyles();
+  const classes = HandleMyPresetPageStyles();
 
   const dispatch = useDispatch();
   const selectedButtonState = useAppSelector(

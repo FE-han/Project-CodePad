@@ -53,7 +53,6 @@ export const soundButtonsStateSlice = createSlice({
         }
       });
       state.soundSamples = newSoundSamplesMap;
-      console.log(state.soundSamples);
     },
     changeButtonState: (
       state,
