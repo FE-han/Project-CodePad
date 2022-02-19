@@ -4,7 +4,7 @@ import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { PresetData } from "../../utils/CommonInterface";
 import { memo } from "react";
 import { useNavigate } from "react-router";
-import noImage from "../../assets/noImage.png";
+import noUserImage from "../../assets/noUserImage.png";
 
 const Artist = (props: { presetData: PresetData }) => {
   const classes = PresetContentStyles();
@@ -23,7 +23,7 @@ const Artist = (props: { presetData: PresetData }) => {
         className={classes.albumCoverImg}
         src={
           imgSrc === null || imgSrc === undefined
-            ? noImage
+            ? noUserImage
             : `${process.env.REACT_APP_SERVER_BASE_URL}/${imgSrc}`
         }
         alt="artist-img"
