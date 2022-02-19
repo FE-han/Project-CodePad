@@ -30,7 +30,8 @@ import { PresetData } from "../../utils/CommonInterface";
 
 import { useAppSelector } from "../../modules/hooks";
 import { getPresetInfo } from "../../api/getPresetInfo";
-
+import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
+import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -138,17 +139,14 @@ export function MyPresetsPage() {
   const [myPresetData, setMyPresetData] = useState<Preset>(
     initialPresetGenerator(LaunchPadScale.DEFAULT)
   );
+  const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
 
-  const presetId= useParams();
+  const presetId = useParams();
   // const userId = useParams();
 
-  const { presetList, isLoading  } = useAppSelector(
+  const { presetList, isLoading } = useAppSelector(
     (state) => state.getMyPresetListSlice
   );
-  
-  
-  
-  
 
   // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
   // console.log(state)
@@ -187,18 +185,32 @@ export function MyPresetsPage() {
       userId: urlParams.userId,
       presetId: urlParams.presetId,
     };
-
-
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    const nowPresetData: Preset = await getPreset(config);
-    // setDefaultPresetData(newPresetData);
-    setPresetData({
-      nowPresetData,
-      defaultPresetData: myPresetData,
-      setDefaultPresetData: setMyPresetData,
-    });
-
-    dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    try {
+      const nowPresetData: Preset = await getPreset(config);
+      dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
+      setPresetData({
+        nowPresetData,
+        defaultPresetData: myPresetData,
+        setDefaultPresetData: setMyPresetData,
+      });
+      dispatch(
+        soundButtonsActions.setButtonState({
+          soundSamples: nowPresetData.soundSamples,
+        })
+      );
+      const currentSampleSoundMap = sampleSoundMap;
+      nowPresetData.soundSamples.map((soundSample) => {
+        currentSampleSoundMap.set(
+          soundSample.location,
+          soundSample.soundSampleURL
+        );
+      });
+      setSampleSoundMap(currentSampleSoundMap);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+    } catch (err) {
+      console.log("프리셋 Api에러", err);
+      dispatch(getPresetActions.getPresetDataRejected());
+    }
 
     const newPresetInfo = await getPresetInfo(urlParams.presetId);
     dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
@@ -206,11 +218,12 @@ export function MyPresetsPage() {
     dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
-
   useEffect(() => {
     getPresetListInfoData();
     getInitialPresetData();
   }, []);
+
+  const state = useAppSelector((state) => state.getPresetSlice);
 
   return (
     <div className={classes.root}>
@@ -222,7 +235,14 @@ export function MyPresetsPage() {
             presetId={myPresetData.presetId || "unknownId"}
           />
 
-          <LaunchPad presetData={myPresetData} sampleSoundMap={new Map()} />
+          {state.isLoading ? (
+            "로딩중"
+          ) : (
+            <LaunchPad
+              presetData={myPresetData}
+              sampleSoundMap={sampleSoundMap}
+            />
+          )}
         </div>
         <div className={classes.togglePresetBtn}>
           <PresetToggleButton type={ToggleType.myPreset} />
@@ -230,9 +250,9 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage presetList={presetList} selectedPresetId={presetId}/>
+            <PresetImage presetList={presetList} selectedPresetId={presetId} />
             <PresetList createBtn={true} presetList={presetList} />
-            <PaginationContainer presetList={presetList}/>
+            <PaginationContainer presetList={presetList} />
           </div>
         </div>
         <div className={classes.community}>

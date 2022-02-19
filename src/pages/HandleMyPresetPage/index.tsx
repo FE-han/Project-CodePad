@@ -149,15 +149,6 @@ export const HandleMyPresetPageStyles = makeStyles({
   },
 });
 
-export type formDataTypes = {
-  presetId: string,
-  presetTitle: string,
-  PrivacyOption: PrivacyType,
-  thumbnailImg: any,
-  tags: any,
-  soundSample: any,
-}
-
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
   const dispatch = useDispatch();

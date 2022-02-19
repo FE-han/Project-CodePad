@@ -19,4 +19,5 @@ export interface Preset {
   presetId?: string;
   areaSize?: LaunchPadScale;
   soundSamples: Array<SoundSample>;
+  thumbnailURL: string;
 }

@@ -10,9 +10,6 @@ import {
 import { useState, ChangeEvent, useEffect } from "react";
 import editProfileInfo from "../../api/editProfileInfo";
 
-//const cookieDummy =
-//  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpWa1gzUlJhRkNIVlNrT3ptcXMteCIsIm5hbWUiOiLquYDtlZjripgiLCJpYXQiOjE2NDQ4NjA1ODV9.dBnj213d_ojFAnybjxeRUlaEm3d7xdRfl9mHT3eVS9M";
-
 export type USERID = string | null;
 
 export type USERINFO = {
@@ -88,8 +85,11 @@ export default function ProfileModal(props: ProfileModalProps) {
     Blob | string
   >("");
 
-  useEffect(() => {}, [userNameInput, userProfileImageSrc]);
   const classes = ProfileModalStyles();
+
+  useEffect(() => {}, [userNameInput, userProfileImageSrc]);
+
+  //토스트 메시지 핸들링 함수
 
   // 모달 창 닫기 함수
   const handleClose = () => {
@@ -120,11 +120,8 @@ export default function ProfileModal(props: ProfileModalProps) {
   };
   //프로필 수정 클릭 함수
   const onClickForEditProfile = () => {
-    const userNameLengthIsZeroMessage = "유저 이름은 1글자 이상이어야 합니다.";
-    const beEdittedMessage = "수정되었습니다";
-
     if (userNameInput.length === 0) {
-      alert(userNameLengthIsZeroMessage);
+      console.log("유저 이름은 1글자 이상이어야 합니다");
       return;
     }
     const userFormData = new FormData();
@@ -133,7 +130,7 @@ export default function ProfileModal(props: ProfileModalProps) {
       userFormData.append("img", userProfileImageFile);
     }
     editProfileInfo(userFormData);
-    alert(beEdittedMessage);
+    console.log("수정되었습니다");
     handleClose();
   };
 
