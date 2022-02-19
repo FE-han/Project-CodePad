@@ -59,7 +59,7 @@ const CommunityContentsScrollList = (props: {
       opacity: "65%",
     },
     Loader: {
-      //margin: "50px 0px",
+      margin: "30px 0px",
     },
   });
 

@@ -12,6 +12,7 @@ import MyPresetsPage from "./pages/MyPresetsPage";
 import LikePresetsPage from "./pages/LikePresets";
 
 import HandleMyPresetPage from "./pages/HandleMyPresetPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const AppStyles = makeStyles({
   root: {
@@ -51,6 +52,8 @@ function App() {
           />
 
           <Route path={"/likepresets"} element={<LikePresetsPage />} />
+
+          <Route path={"*"} element={<ErrorPage />} />
         </Routes>
       </div>
     </>
