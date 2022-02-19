@@ -87,6 +87,17 @@ export default function PresetList(props: {
     setSelectedIndex(index);
     console.log(index);
     //link태그
+    // window.location.href = `${index.presetId}`
+    
+  };
+
+  const handleListClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: any
+  ) => {
+    setSelectedIndex(index);
+    console.log(index);
+    //link태그
     window.location.href = `${index.presetId}`
     
   };
@@ -112,7 +123,7 @@ export default function PresetList(props: {
         {_DATA.currentData().map((value: any) => (
           <ListItemButton
             selected={selectedIndex === value}
-            onClick={(event) => handleListItemClick(event, value)}
+            onClick={(event) => handleListClick(event, value)}
           >
             <ListItemText primary={value.title} />
             

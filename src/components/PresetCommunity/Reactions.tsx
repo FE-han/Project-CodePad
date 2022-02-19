@@ -17,6 +17,7 @@ import Chip from "@mui/material/Chip";
 import { flexbox } from "@mui/system";
 
 
+
 const ReactionStyles = makeStyles({
   container: {
     lineHeight: "20px",
@@ -43,6 +44,9 @@ const Reactions = ({presetList, selectedPresetId} : PresetReactionProps) => {
   const [commentCount, setCommentCount] = React.useState(0);
   const { presetId } = useParams();
 
+  const buttonClick = () => {
+    console.log('buttonclick')
+  }
 
   
 
@@ -63,7 +67,9 @@ const Reactions = ({presetList, selectedPresetId} : PresetReactionProps) => {
         <div >
               <PianoIcon fontSize="small" />
               <span className={classes.reactionNum}>{viewCount}</span>
+              <IconButton onClick={buttonClick}>
               <FavoriteIcon fontSize="small" />
+              </IconButton>
               <span className={classes.reactionNum}>{likeCount}</span>
               <CommentIcon fontSize="small" />
               <span className={classes.reactionNum}>{commentCount}</span>
