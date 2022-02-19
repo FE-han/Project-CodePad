@@ -41,13 +41,21 @@ const Comment = (props: {
 
   const commentAuthorUserId = commentData.userId;
 
-  const presetAutorUserId = userId;
-
-  const deleteBtn =
-    loginUserId === presetAutorUserId || loginUserId === commentAuthorUserId;
-  const updateBtn = loginUserId === commentAuthorUserId;
-
+  //const presetAutorUserId = userId;
+  const [deleteBtn, setDeleteBtn] = useState<boolean>(
+    loginUserId === userId || loginUserId === commentAuthorUserId
+  );
+  const [updateBtn, setUpdateBtn] = useState<boolean>(
+    loginUserId === commentAuthorUserId
+  );
   const [toggleHover, setToggleHover] = useState(false);
+
+  useEffect(() => {
+    setDeleteBtn(
+      (prev) => loginUserId === userId || loginUserId === commentAuthorUserId
+    );
+    setUpdateBtn((prev) => loginUserId === commentAuthorUserId);
+  }, [userId, loginUserId]);
 
   return (
     <div

@@ -1,10 +1,10 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
-export async function getPresetUserInfo(userId: string) {
+export default async function getPresetUserInfo(userId: string) {
   const config: AxiosRequestConfig = {
     //token input
   };
-  const response = await axiosInstance(config).get(`/userInfo/${userId}`);
+  const response = await axiosInstance(config).get(`/auth/userProfile/${userId}`);
   return response.data;
 }
