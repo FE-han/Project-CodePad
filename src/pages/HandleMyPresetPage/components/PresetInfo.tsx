@@ -13,13 +13,12 @@ import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
 import { postBasePresetData } from "../../../api/CreatePreset/postBasePresetData";
-import axios, { AxiosRequestConfig } from "axios";
-import { axiosInstance } from "../../../api/axiosInstance";
 import {
   setBasePresetFormData,
   setPresetSoundFormDataArray,
 } from "../../../utils/setPresetFormData";
 import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
+import { useNavigate } from "react-router";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -81,6 +80,7 @@ export default function PresetInfo({
   const classes = PresetInfoStyles();
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
   const [presetTitle, setPresetTitle] = useState<string>("");
+  const navigate = useNavigate();
 
   const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPresetTitle = event.target.value;
@@ -103,40 +103,6 @@ export default function PresetInfo({
     });
   };
 
-  const postPresetSoundFiles = async (
-    nowHandlePresetData: NowPresetValueState
-  ) => {
-    const formData = new FormData();
-    if (nowHandlePresetData.soundSamples === undefined) return;
-    formData.append(
-      "sound",
-      nowHandlePresetData.soundSamples[0].soundFile || ""
-    );
-    formData.append("presetId", "s9faOIF-XKdeaA0tYdbzV");
-    formData.append("location", nowHandlePresetData.soundSamples[0].location);
-    formData.append(
-      "buttonType",
-      nowHandlePresetData.soundSamples[0].buttonType || ""
-    );
-    formData.append(
-      "soundType",
-      nowHandlePresetData.soundSamples[0].soundType || ""
-    );
-
-    const config: AxiosRequestConfig = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    const response = await axiosInstance(config).post(
-      "/presets/soundUpload",
-      formData
-    );
-
-    console.log(response.data);
-  };
-
   const postPresetDataWithOutSoundFile = async (
     nowHandlePresetData: NowPresetValueState
   ) => {
@@ -152,16 +118,20 @@ export default function PresetInfo({
 
     const responses = new Array();
 
-    await Promise.all(
-      presetSoundFormDataArray.map(async (presetSoundFormData) => {
-        const [formDataKey] = presetSoundFormData.values();
-        const [formData] = presetSoundFormData.values();
-        const { data, status } = await postPresetSoundSampleData(formData);
-        responses.push([formDataKey, data, status]);
-      })
-    );
-
-    console.log("sound저장결과", responses);
+    try {
+      await Promise.all(
+        presetSoundFormDataArray.map(async (presetSoundFormData) => {
+          const [formDataKey] = presetSoundFormData.values();
+          const [formData] = presetSoundFormData.values();
+          const { data, status } = await postPresetSoundSampleData(formData);
+          responses.push([formDataKey, data, status]);
+        })
+      );
+      console.log("sound저장결과", responses);
+      navigate(`/mypresets/${presetId}`);
+    } catch (error) {
+      console.log("Preset 생성 에러발생", error);
+    }
   };
 
   return (
