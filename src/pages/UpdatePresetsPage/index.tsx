@@ -265,9 +265,9 @@ export function UpdatePresetsPage() {
 
   const handleSaveClick = (event: any) => {
     //samplesound upload api 추가
-    Promise.all([updatePreset(formData)])
-      .then((res) => alert("성공"))
-      .catch((err) => alert(err))
+    // Promise.all([updatePreset(formData)])
+    //   .then((res) => alert("성공"))
+    //   .catch((err) => alert(err))
   }
 
   return (
