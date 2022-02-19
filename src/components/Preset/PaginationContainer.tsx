@@ -21,7 +21,6 @@ const PaginationContainer = (props: {
   const PER_PAGE = 5;
   const count = Math.ceil(props.presetList.length / PER_PAGE);
   const _DATA = usePagination(props.presetList, PER_PAGE);
-  // console.log(props.presetList.length/PER_PAGE)
 
   const handleChange = (e: any, p: any) => {
     setPage(p);

@@ -159,6 +159,10 @@ export function UserPresetsPage() {
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
+      alertSnackBarMessage({
+        message: `잘못된 사용자 주소입니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
       throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
     }
     const config: PresetParams = {
@@ -166,10 +170,8 @@ export function UserPresetsPage() {
       presetId: urlParams.presetId,
     };
     try {
-      console.log("userPresetdata api");
       const nowPresetData: Preset = await getUserPreset(config);
 
-      console.log("userPresetdata", nowPresetData);
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
@@ -191,7 +193,6 @@ export function UserPresetsPage() {
       setSampleSoundMap(currentSampleSoundMap);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
     } catch (err) {
-      console.log("프리셋 Api에러", err);
       alertSnackBarMessage({
         message: `프리셋이 없거나, 가져오지 못했습니다.`,
         type: SnackBarMessageType.ERROR,

@@ -152,7 +152,6 @@ export function DefaultPresetsPage() {
     };
 
     const res = await getDefaultPresetList(params);
-    console.log(res);
     setDefaultPresetList(res);
   };
 
@@ -187,7 +186,6 @@ export function DefaultPresetsPage() {
         );
       });
       setSampleSoundMap(currentSampleSoundMap);
-      console.log("launchpadPresetData", state);
     } catch (err) {
       alertSnackBarMessage({
         message: `프리셋이 없거나, 가져오지 못했습니다.`,

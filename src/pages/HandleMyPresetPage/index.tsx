@@ -27,6 +27,9 @@ import { getPresetTags } from "../../api/getPresetTags";
 import { updatePreset } from "../../api/updatePreset";
 import PresetTags from "../../components/PresetCommunity/PresetTags";
 import { PrivacyType } from "../../utils/CommonValue";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -169,7 +172,6 @@ export function HandleMyPresetPage() {
 
   const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    console.log("asdf", urlParams.presetId);
 
     const config: PresetParams = {
       userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
@@ -177,7 +179,6 @@ export function HandleMyPresetPage() {
     };
 
     const nowPresetData: Preset = await getPreset(config);
-    console.log(nowPresetData);
     // setinitialPresetData(newPresetData);
 
     // setPresetData({
@@ -203,7 +204,10 @@ export function HandleMyPresetPage() {
       );
       dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
     } catch (e) {
-      console.log(`프리셋 image , privacyOption 호출 에러`);
+      alertSnackBarMessage({
+        message: `프리셋 image , privacyOption 호출 에러: ${e}`,
+        type: SnackBarMessageType.ERROR,
+      });
     }
 
     setPresetstate();
@@ -222,22 +226,6 @@ export function HandleMyPresetPage() {
       tags: nowPresetDataState.tags,
     });
   };
-
-  // useEffect(() => {
-  //   if (urlParams.presetId === undefined) {
-  //     // console.log("create page");
-  //     return;
-  //   }
-
-  //   // console.log("update page");
-  //   if (nowPresetDataState.presetTitle === ''){
-  //     getInitialDataForUpdate();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   setPresetstate();
-  // }, [nowPresetDataState]);
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {
