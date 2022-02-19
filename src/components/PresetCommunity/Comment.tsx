@@ -95,7 +95,7 @@ const Comment = (props: {
           size="small"
           sx={{
             position: "absolute",
-            right: `${!deleteBtn ? "30px" : "0px"}`,
+            right: `${deleteBtn ? "30px" : "0px"}`,
             "&.disabled": {
               display: "none",
             },
