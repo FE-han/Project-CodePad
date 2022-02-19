@@ -41,7 +41,7 @@ export default function presetTags() {
 
     const presetTagsData = async () => {
         const param: GetTags = {
-            tags: "1"
+            tagId: "1"
         }
 
         try{
@@ -52,6 +52,7 @@ export default function presetTags() {
                     data : nowpresetTags
                 })
             )
+            console.log(nowpresetTags)
         }catch{
             dispatch(getTagsActions.getTagsDataRejecterd());
             console.log('에러')

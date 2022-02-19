@@ -15,6 +15,8 @@ import { ListItemButton } from "@mui/material";
 import { IconButton } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { flexbox } from "@mui/system";
+import { postLike } from "../../api/postLike";
+import { check } from "prettier";
 
 
 const ReactionStyles = makeStyles({
@@ -43,8 +45,12 @@ const Reactions = ({presetList, selectedPresetId} : PresetReactionProps) => {
   const [commentCount, setCommentCount] = React.useState(0);
   const { presetId } = useParams();
 
+  const [isClicked, setisClicked] = useState<boolean>(true);
 
-  
+
+  const changeCheck = () =>{
+    setisClicked((check: boolean) => !check)
+  }
 
   useEffect(()=>{
     presetList.map((value)=>{
@@ -57,13 +63,16 @@ const Reactions = ({presetList, selectedPresetId} : PresetReactionProps) => {
     )
   },[presetList, selectedPresetId])
   
-  console.log(viewCount);
+  console.log(isClicked);
+
   return (
     <ListItemIcon className={classes.container}>
         <div >
               <PianoIcon fontSize="small" />
               <span className={classes.reactionNum}>{viewCount}</span>
+              <IconButton onClick={changeCheck}>
               <FavoriteIcon fontSize="small" />
+              </IconButton>
               <span className={classes.reactionNum}>{likeCount}</span>
               <CommentIcon fontSize="small" />
               <span className={classes.reactionNum}>{commentCount}</span>

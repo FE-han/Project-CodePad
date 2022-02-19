@@ -37,7 +37,7 @@ const Tags = ({data} : tagsProps) => {
 
   useEffect(()=>{
     data.map((value)=>{
-        setSelectTag(value.tags)
+        setSelectTag(value.tagId)
     })
   },[data])
   
@@ -45,7 +45,7 @@ const Tags = ({data} : tagsProps) => {
   return (
     <Stack direction="row" spacing={1} className={classes.chip}>
       {data.map((value) => (
-        <Chip label={value.tags} size="small"  />
+        <Chip label={value.text} size="small"  />
       ))}
     </Stack>
   );
