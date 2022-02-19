@@ -9,6 +9,9 @@ import {
 } from "@mui/material";
 import { useState, ChangeEvent, useEffect } from "react";
 import editProfileInfo from "../../api/editProfileInfo";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 export type USERID = string | null;
 
@@ -121,7 +124,10 @@ export default function ProfileModal(props: ProfileModalProps) {
   //프로필 수정 클릭 함수
   const onClickForEditProfile = () => {
     if (userNameInput.length === 0) {
-      console.log("유저 이름은 1글자 이상이어야 합니다");
+      alertSnackBarMessage({
+        message: `프로필 이름은 1글자 이상이어야 합니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
       return;
     }
     const userFormData = new FormData();
@@ -130,7 +136,10 @@ export default function ProfileModal(props: ProfileModalProps) {
       userFormData.append("img", userProfileImageFile);
     }
     editProfileInfo(userFormData);
-    console.log("수정되었습니다");
+    alertSnackBarMessage({
+      message: `프로필 수정 성공!`,
+      type: SnackBarMessageType.SUCCESS,
+    });
     handleClose();
   };
 

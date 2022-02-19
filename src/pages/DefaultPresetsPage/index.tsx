@@ -37,7 +37,6 @@ const DefaultPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
-    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -136,7 +135,10 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const [defaultPresetList, setDefaultPresetList] = useState([]);
+  const [defaultPresetList, setDefaultPresetList] = useState({
+    presetList: [],
+    maxPage: 0,
+  });
   const [nowPresetListPage, setNowPresetListPage] = useState(1);
   const [nowSelectedDefaultPreset, setNowSelectedDefaultPreset] =
     useState<NowSelectedDefaultPreset>({
@@ -152,7 +154,6 @@ export function DefaultPresetsPage() {
     };
 
     const res = await getDefaultPresetList(params);
-    console.log(res);
     setDefaultPresetList(res);
   };
 
@@ -187,7 +188,6 @@ export function DefaultPresetsPage() {
         );
       });
       setSampleSoundMap(currentSampleSoundMap);
-      console.log("launchpadPresetData", state);
     } catch (err) {
       alertSnackBarMessage({
         message: `프리셋이 없거나, 가져오지 못했습니다.`,
@@ -234,7 +234,7 @@ export function DefaultPresetsPage() {
             <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} />
             <PresetList
               createBtn={false}
-              presetList={defaultPresetList}
+              presetList={defaultPresetList.presetList}
               nowPresetListPage={nowPresetListPage}
               setNowPresetListPage={setNowPresetListPage}
             />

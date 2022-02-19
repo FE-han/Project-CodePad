@@ -19,6 +19,9 @@ import {
 } from "../../../utils/setPresetFormData";
 import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
 import { useNavigate } from "react-router";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../../utils/snackBarMessage";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -127,10 +130,18 @@ export default function PresetInfo({
           responses.push([formDataKey, data, status]);
         })
       );
-      console.log("sound저장결과", responses);
+
+      alertSnackBarMessage({
+        message: `프리셋 등록 성공!`,
+        type: SnackBarMessageType.SUCCESS,
+      });
+
       navigate(`/mypresets/${presetId}`);
     } catch (error) {
-      console.log("Preset 생성 에러발생", error);
+      alertSnackBarMessage({
+        message: `Preset 등록에 실패했습니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
     }
   };
 

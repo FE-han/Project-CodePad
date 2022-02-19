@@ -3,6 +3,9 @@ import { makeStyles } from "@mui/styles";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { SoundSample } from "./utils/types";
 import { LaunchPadButtonColor } from "./utils/launchPadStyles";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 const OneShotButtonStyles = makeStyles({
   oneshotBtn: {
@@ -48,7 +51,10 @@ export function OneShotButton({
     evt: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (sound === undefined) {
-      console.log("음악이 없음");
+      alertSnackBarMessage({
+        message: `음악파일을 불러오지 못했습니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
       return;
     }
     sound.play();

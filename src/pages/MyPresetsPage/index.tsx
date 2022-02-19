@@ -45,7 +45,6 @@ const MyPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
-    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -162,7 +161,10 @@ export function MyPresetsPage() {
   // console.log(state)
 
   // 리스트구역
-  const [myPresetList, setMyPresetList] = useState([]);
+  const [myPresetList, setMyPresetList] = useState({
+    presetList: [],
+    maxPage: 0,
+  });
   const [nowPresetListPage, setNowPresetListPage] = useState(1);
   const [nowSelectedMyPreset, setNowSelectedMyPreset] =
     useState<NowSelectedMyPreset>({
@@ -263,7 +265,7 @@ export function MyPresetsPage() {
             <PresetImage imageURL={nowSelectedMyPreset.thumbnailImageURL} />
             <PresetList
               createBtn={true}
-              presetList={myPresetList}
+              presetList={myPresetList.presetList}
               nowPresetListPage={nowPresetListPage}
               setNowPresetListPage={setNowPresetListPage}
             />

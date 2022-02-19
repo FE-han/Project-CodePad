@@ -5,6 +5,9 @@ import testImage from "../../../assets/testImage.png";
 import { useAppSelector } from "../../../modules/hooks";
 import { PageColors } from "../../../utils/CommonStyle";
 import defaultUserProfileImg from "../../../assets/defaultUserProfileImg.png";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../../utils/snackBarMessage";
 
 const UserInfoStyles = makeStyles({
   container: {
@@ -41,9 +44,9 @@ const UserInfoStyles = makeStyles({
 
 type UserInfoProps = {
   userId: string;
-}
+};
 
-export default function UserInfo({userId}:UserInfoProps) {
+export default function UserInfo({ userId }: UserInfoProps) {
   const classes = UserInfoStyles();
 
   const [userInfo, setUserInfo] = useState({
@@ -54,16 +57,19 @@ export default function UserInfo({userId}:UserInfoProps) {
   const getInitialData = async () => {
     try {
       const userInfoData = await getPresetUserInfo(userId);
-      if(!userInfoData.thumbnailURL){
+      if (!userInfoData.thumbnailURL) {
         setUserInfo({
           name: userInfoData.name,
-          thumbnailURL: defaultUserProfileImg
-        })
+          thumbnailURL: defaultUserProfileImg,
+        });
         return;
       }
       setUserInfo(userInfoData);
     } catch (err) {
-      console.log(err);
+      alertSnackBarMessage({
+        message: `Error : ${err}`,
+        type: SnackBarMessageType.ERROR,
+      });
     }
   };
 
