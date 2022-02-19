@@ -12,15 +12,12 @@ export interface Response extends Preset {
 }
 
 export async function getPreset(params: PresetParams) {
-  console.log(params);
   const config: AxiosRequestConfig = {
     //token input
   };
   const response = await axiosInstance(config).get(
     `/presets/${params.userId}/${params.presetId}`
   );
-
-  // const response = await axiosInstance(config).get(`/launchPad`);
 
   return response.data;
 }

@@ -15,6 +15,5 @@ export async function postBasePresetData(
   };
 
   const response = await axiosInstance(config).post("/presets", params);
-  console.log(response);
   return response.data;
 }

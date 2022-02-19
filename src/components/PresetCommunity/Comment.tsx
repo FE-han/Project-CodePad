@@ -40,7 +40,6 @@ const Comment = (props: {
   //const loginUserId = "TuWdQ6QcXQHhG-LPsD7mY";
 
   const commentAuthorUserId = commentData.userId;
-  console.log();
 
   const presetAutorUserId = userId;
 
@@ -52,10 +51,6 @@ const Comment = (props: {
   const handleHover = (event: React.MouseEvent<HTMLDivElement>) => {
     setToggleHover(!toggleHover);
   };
-
-  useEffect(() => {
-    console.log("리덕스 userId값", userId);
-  }, []);
 
   return (
     <div
