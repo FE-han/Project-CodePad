@@ -135,7 +135,10 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const [defaultPresetList, setDefaultPresetList] = useState([]);
+  const [defaultPresetList, setDefaultPresetList] = useState({
+    presetList: [],
+    maxPage: 0,
+  });
   const [nowPresetListPage, setNowPresetListPage] = useState(1);
   const [nowSelectedDefaultPreset, setNowSelectedDefaultPreset] =
     useState<NowSelectedDefaultPreset>({
@@ -231,7 +234,7 @@ export function DefaultPresetsPage() {
             <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} />
             <PresetList
               createBtn={false}
-              presetList={defaultPresetList}
+              presetList={defaultPresetList.presetList}
               nowPresetListPage={nowPresetListPage}
               setNowPresetListPage={setNowPresetListPage}
             />

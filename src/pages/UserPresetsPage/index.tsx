@@ -132,7 +132,10 @@ export function UserPresetsPage() {
   );
   const state = useAppSelector((state) => state.getPresetSlice);
 
-  const [userPresetList, setUserPresetList] = useState([]);
+  const [userPresetList, setUserPresetList] = useState({
+    presetList: [],
+    maxPage: 0,
+  });
   const [nowPresetListPage, setNowPresetListPage] = useState(1);
   const [nowSelectedUserPreset, setNowSelectedUserPreset] =
     useState<NowSelectedUserPreset>({
@@ -233,7 +236,7 @@ export function UserPresetsPage() {
             <PresetImage imageURL={nowSelectedUserPreset.thumbnailImageURL} />
             <PresetList
               createBtn={false}
-              presetList={userPresetList}
+              presetList={userPresetList.presetList}
               nowPresetListPage={nowPresetListPage}
               setNowPresetListPage={setNowPresetListPage}
             />
