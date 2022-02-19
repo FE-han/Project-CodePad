@@ -169,19 +169,19 @@ export function HandleMyPresetPage() {
     (state) => state.setNowPresetValueSlice
   );
 
-  const setPresetstate = () => {
-    setNowHandlePresetData({
-      ...nowHandlePresetData,
-      userId: nowPresetDataState.userId,
-      presetId: nowPresetDataState.presetId,
-      presetTitle: nowPresetDataState.presetTitle,
-      areaSize: nowPresetDataState.areaSize,
-      soundSamples: nowPresetDataState.soundSamples,
-      thumbnailImg: nowPresetDataState.thumbnailImg,
-      PrivacyOption: nowPresetDataState.PrivacyOption,
-      tags: nowPresetDataState.tags,
-    });
-  };
+  // const setPresetstate = () => { 문제있는부분?
+  //   setNowHandlePresetData({
+  //     ...nowHandlePresetData,
+  //     userId: nowPresetDataState.userId,
+  //     presetId: nowPresetDataState.presetId,
+  //     presetTitle: nowPresetDataState.presetTitle,
+  //     areaSize: nowPresetDataState.areaSize,
+  //     soundSamples: nowPresetDataState.soundSamples,
+  //     thumbnailImg: nowPresetDataState.thumbnailImg,
+  //     PrivacyOption: nowPresetDataState.PrivacyOption,
+  //     tags: nowPresetDataState.tags,
+  //   });
+  // };
 
   const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
@@ -193,7 +193,7 @@ export function HandleMyPresetPage() {
 
     const nowPresetData: Preset = await getPreset(config);
     // setinitialPresetData(newPresetData);
-    console.log(nowPresetData)
+    console.log(nowPresetData);
     // setPresetData({
     //   nowPresetData,
     //   defaultPresetData: initialPresetData,
@@ -201,27 +201,27 @@ export function HandleMyPresetPage() {
     // });
 
     try {
-
       // const nowPresetTags = await getPresetTags(urlParams.presetId);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData));
       dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
-      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData));
-      
+      dispatch(
+        setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData)
+      );
+
       // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
-    } catch(e) {
+    } catch (e) {
       alertSnackBarMessage({
         message: `프리셋데이터 호출 에러: ${e}`,
         type: SnackBarMessageType.ERROR,
       });
     }
 
-    setPresetstate();
-    
+    // setPresetstate(); 문제있는부분?
   };
 
-  useEffect(() => {
-    setPresetstate();
-  }, [nowPresetDataState])
+  // useEffect(() => { 문제있는부분?
+  //   setPresetstate();
+  // }, [nowPresetDataState]);
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {
@@ -230,7 +230,7 @@ export function HandleMyPresetPage() {
     }
 
     // console.log("update page");
-    if (nowPresetDataState.presetTitle === ''){
+    if (nowPresetDataState.presetTitle === "") {
       getInitialDataForUpdate();
     }
   }, []);
