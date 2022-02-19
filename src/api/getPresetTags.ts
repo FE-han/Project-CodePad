@@ -1,11 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
-export interface PresetParams {
-  userId: string;
-  presetId?: string;
-}
-
 export async function getPresetTags(presetId: any) {
   const config: AxiosRequestConfig = {
   };
@@ -13,7 +8,7 @@ export async function getPresetTags(presetId: any) {
   //   `/launchPad?userId=${params.userId}&PresetId=${params.presetId}`
   // );
 
-  const response = await axiosInstance(config).get(`/tags/${presetId}`);
+  const response = await axiosInstance(config).get(`/${presetId}/tags`);
 
   return response.data;
 }

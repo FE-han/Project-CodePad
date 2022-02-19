@@ -64,7 +64,10 @@ export const setNowPresetValueSlice = createSlice({
       state,
       action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
     ) => {
-      state.thumbnailImg = action.payload.thumbnailImg;
+      state.thumbnailImg = {
+        thumbnailImgURL: action.payload.thumbnailImg.thumbnailImgURL,
+        thumbnailImgFile: action.payload.thumbnailImg.thumbnailImgFile
+      };
     },
     setValueFromPrivacyOption: (
       state,
