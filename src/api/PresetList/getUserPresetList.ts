@@ -18,7 +18,5 @@ export async function getUserPresetList(params: GetUserPresetParams) {
     }`
   );
 
-  console.log(response.data);
-
   return response.data;
 }

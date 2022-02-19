@@ -21,7 +21,7 @@ const PrestImageStyles = makeStyles({
   },
 });
 interface PresetImageProps {
-  imageURL: string;
+  imageURL?: string;
 }
 
 const PresetImage = ({ imageURL }: PresetImageProps) => {

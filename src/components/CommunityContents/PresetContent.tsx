@@ -4,10 +4,15 @@ import { PresetData } from "../../utils/CommonInterface";
 import { Fonts, PageColors } from "../../utils/CommonStyle";
 import { useNavigate } from "react-router";
 import noImage from "../../assets/noImage.png";
+import { useAppSelector } from "../../modules/hooks";
 
 const PresetContent = (props: { presetData: PresetData }) => {
   const classes = PresetContentStyles();
   const navigate = useNavigate();
+
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
 
   const { presetData } = props;
   const imgSrc = presetData.thumbnailURL;
@@ -37,7 +42,11 @@ const PresetContent = (props: { presetData: PresetData }) => {
       className={`${classes.albumCoverContainer}`}
       onClick={() => {
         addLocalStroage();
-        navigate(`/userpresets/${presetData.userId}/${presetData.presetId}`);
+        navigate(
+          `/${
+            loginUserId === presetData.userId ? "mypresets" : "userpresets"
+          }/${presetData.userId}/${presetData.presetId}`
+        );
       }}
     >
       <img

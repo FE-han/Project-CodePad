@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { makeStyles } from "@mui/styles";
@@ -6,18 +6,17 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
-import Reactions from "../PresetCommunity/Reactions";
 import { PresetListBtnColors } from "../../utils/CommonStyle";
-import { useState } from "react";
-import usePagination from "../../components/Preset/usePagination";
-import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
 import Pagination from "@mui/material/Pagination";
-import { Link } from "react-router-dom";
-import { useAppSelector } from "../../modules/hooks";
 import { ListItemIcon } from "@mui/material";
 import PianoIcon from "@mui/icons-material/Piano";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
+import { getMyPresetList } from "../../api/PresetList/getMyPresetList";
+import { getUserPresetList } from "../../api/PresetList/getUserPresetList";
+import { getDefaultPresetList } from "../../api/PresetList/getDefaultPresetList";
+import { useDispatch } from "react-redux";
+import { actions as getPresetDataFromListActions } from "../../modules/actions/PresetList/getPresetDataFromListSlice";
 
 const PresetsListStyles = makeStyles({
   listBox: {},
@@ -64,44 +63,106 @@ const PresetsListStyles = makeStyles({
     justifyContent: "center",
   },
 });
-export interface NowSelectedMyPreset {
+export interface presetListElement {
   presetId: string;
   reactions?: { viewCount: number; likeCount: number; commentCount: number };
   thumbnailImageURL: string;
   title: string;
 }
+
+interface presetListResponse {
+  presetList: Array<presetListElement>;
+  maxPage: number;
+}
 interface PresetListProps {
   createBtn: Boolean;
-  presetList: Array<NowSelectedMyPreset>;
-  nowPresetListPage: number;
-  setNowPresetListPage: React.Dispatch<React.SetStateAction<number>>;
-  // nowSelectedPreset: T
-  // setNowSelectedPreset:
+  type: "mypresets" | "userpresets" | "defaultpresets";
+  presetId?: string;
 }
 
 export default function PresetList({
   createBtn,
-  presetList,
-  nowPresetListPage,
-  setNowPresetListPage,
+  type,
+  presetId,
 }: PresetListProps) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [nowPage, setNowPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+  const [list, setList] = useState<Array<presetListElement>>([]);
+  const urlParams = useParams<{ userId: string; presetId: string }>();
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: any,
-    element: NowSelectedMyPreset
+    element: presetListElement
   ) => {
     setSelectedIndex(index);
-    navigate(`/mypresets/${element.presetId}`);
+
+    dispatch(
+      getPresetDataFromListActions.getNewPresetData({
+        presetId: element.presetId,
+        userId: urlParams.userId,
+        thumbnailURL: element.thumbnailImageURL,
+      })
+    );
+
+    switch (type) {
+      case "mypresets":
+        navigate(`/mypresets/${element.presetId}`);
+        break;
+      case "userpresets":
+        navigate(`/userpresets/${urlParams.userId}/${element.presetId}`);
+        break;
+      case "defaultpresets":
+        navigate(`/defaultpresets/${element.presetId}`);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleNowPage = (event: React.ChangeEvent<unknown>, page: number) => {
-    setNowPresetListPage(page);
+    setNowPage(page);
   };
+
+  const getPresetList = async (type: string, page: number) => {
+    switch (type) {
+      case "mypresets":
+        const myRes: presetListResponse = await getMyPresetList({ page });
+        setList(myRes.presetList);
+        setMaxPage(myRes.maxPage);
+        return;
+
+      case "userpresets":
+        const userRes: presetListResponse = await getUserPresetList({
+          page,
+          presetId: presetId || "",
+        });
+        setList(userRes.presetList);
+        setMaxPage(userRes.maxPage);
+        return;
+
+      case "defaultpresets":
+        const defaultRes: presetListResponse = await getDefaultPresetList({
+          page,
+        });
+        setList(defaultRes.presetList);
+        setMaxPage(defaultRes.maxPage);
+        return;
+
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    getPresetList(type, nowPage);
+  }, [nowPage]);
 
   return (
     <div className={classes.listBox}>
@@ -119,7 +180,7 @@ export default function PresetList({
           ""
         )}
 
-        {presetList.map((element, idx) => {
+        {list.map((element, idx) => {
           return (
             <div key={element.presetId}>
               <ListItemButton
@@ -151,9 +212,9 @@ export default function PresetList({
       </List>
       <div className={classes.pagenationNavi}>
         <Pagination
-          count={5}
-          page={nowPresetListPage}
-          onChange={(evt) => handleNowPage(evt, nowPresetListPage)}
+          count={maxPage}
+          page={nowPage}
+          onChange={handleNowPage}
           variant="outlined"
           shape="rounded"
         />

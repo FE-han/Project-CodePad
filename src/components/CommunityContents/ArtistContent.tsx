@@ -5,10 +5,15 @@ import { PresetData } from "../../utils/CommonInterface";
 import { memo } from "react";
 import { useNavigate } from "react-router";
 import noUserImage from "../../assets/noUserImage.png";
+import { useAppSelector } from "../../modules/hooks";
 
 const Artist = (props: { presetData: PresetData }) => {
   const classes = PresetContentStyles();
   const navigate = useNavigate();
+
+  const { loginUserId } = useAppSelector(
+    (state) => state.setNowLoginUserIdSlice
+  );
 
   const { presetData } = props;
   const imgSrc = presetData.thumbnailURL;
@@ -16,7 +21,11 @@ const Artist = (props: { presetData: PresetData }) => {
     <div
       className={`${classes.albumCoverContainer}`}
       onClick={() => {
-        navigate(`/userpresets/${presetData.userId}/enter`);
+        navigate(
+          `/${
+            loginUserId === presetData.userId ? "mypresets" : "userpresets"
+          }/${presetData.userId}/enter`
+        );
       }}
     >
       <img

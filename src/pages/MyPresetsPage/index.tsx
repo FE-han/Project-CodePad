@@ -3,9 +3,7 @@ import { makeStyles } from "@mui/styles";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
-import PresetList, {
-  NowSelectedMyPreset,
-} from "../../components/Preset/PresetList";
+import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
 import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -151,47 +149,13 @@ export function MyPresetsPage() {
   const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
 
   const presetId = useParams();
-  // const userId = useParams();
-
-  // const { presetList, isLoading } = useAppSelector(
-  //   (state) => state.getMyPresetListSlice
-  // );
-
-  // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
-  // console.log(state)
-
-  // 리스트구역
-  const [myPresetList, setMyPresetList] = useState({
-    presetList: [],
-    maxPage: 0,
-  });
-  const [nowPresetListPage, setNowPresetListPage] = useState(1);
-  const [nowSelectedMyPreset, setNowSelectedMyPreset] =
-    useState<NowSelectedMyPreset>({
-      presetId: "",
-      reactions: { viewCount: 0, likeCount: 0, commentCount: 0 },
-      thumbnailImageURL: "",
-      title: "",
-    });
-
-  const getMyPresetListData = async (nowPresetListPage: number) => {
-    const params: GetMyPresetParams = {
-      page: nowPresetListPage,
-      limit: 5,
-    };
-
-    const res = await getMyPresetList(params);
-    console.log(res);
-    setMyPresetList(res);
-  };
-  //
 
   const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialPresetData = async () => {
+  const getInitialPresetData = async (params: PresetParams) => {
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
     try {
       const nowPresetData: Preset = await getPreset(config);
@@ -230,12 +194,20 @@ export function MyPresetsPage() {
     dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
-  useEffect(() => {
-    getMyPresetListData(nowPresetListPage);
-    getInitialPresetData();
-  }, []);
-
   const state = useAppSelector((state) => state.getPresetSlice);
+
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
+
+  useEffect(() => {
+    // getPresetListInfoData();
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -262,13 +234,8 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage imageURL={nowSelectedMyPreset.thumbnailImageURL} />
-            <PresetList
-              createBtn={true}
-              presetList={myPresetList.presetList}
-              nowPresetListPage={nowPresetListPage}
-              setNowPresetListPage={setNowPresetListPage}
-            />
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
+            <PresetList createBtn={true} type={"mypresets"} />
           </div>
         </div>
         <div className={classes.community}>
