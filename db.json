@@ -14,9 +14,9 @@
             "presetId": "2",
             "thumbnailImageURL": "https://picsum.photos/200",
             "reactions": {
-                "viewCount": 22,
-                "likeCount": 33,
-                "commentCount": 2
+                "viewCount": 7,
+                "likeCount": 32,
+                "commentCount": 4
             }
         },
         {
@@ -24,9 +24,9 @@
             "presetId": "3",
             "thumbnailImageURL": "https://picsum.photos/199",
             "reactions": {
-                "viewCount": 22,
-                "likeCount": 33,
-                "commentCount": 2
+                "viewCount": 10,
+                "likeCount": 1,
+                "commentCount": 7
             }
         },
         {
@@ -34,9 +34,9 @@
             "presetId": 444,
             "thumbnailImageURL": "test",
             "reactions": {
-                "viewCount": 22,
-                "likeCount": 33,
-                "commentCount": 2
+                "viewCount": 55,
+                "likeCount": 7,
+                "commentCount": 8
             }
         },
         {

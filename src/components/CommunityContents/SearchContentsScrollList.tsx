@@ -92,7 +92,7 @@ const SearchContentsScrollList = (props: {
   };
 
   const getMoreItem = async () => {
-    console.log(config);
+    //console.log(config);
     const res = await makeSearchScrollList(config);
 
     if (res.success) {

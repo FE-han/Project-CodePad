@@ -5,21 +5,29 @@ import { useParams } from "react-router-dom";
 
 import { getPreset, PresetParams } from "../../api/getPreset";
 
-import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 import { initialEditPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import PresetInfo from "./components/PresetInfo";
+import PresetThumbnailUpload from "./components/PresetThumbnailUpload";
 
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
+import { useAppSelector } from "../../modules/hooks";
+import { useDispatch } from "react-redux";
 
 import { ButtonColors } from "../../utils/CommonStyle";
 import testImage from "../../assets/testImage.png";
 import LaunchPadEdit from "../../components/LaunchPadEdit";
 import PresetSoundInfo from "../../components/Preset/PresetSoundInfo";
 import { NowPresetValueState } from "../../modules/actions/setNowPresetValueSlice";
+import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
+import { getPresetInfo } from "../../api/getPresetInfo";
+import { getPresetTags } from "../../api/getPresetTags";
+import { updatePreset } from "../../api/updatePreset";
+import PresetTags from "../../components/PresetCommunity/PresetTags"
 import { PrivacyType } from "../../utils/CommonValue";
+
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -140,24 +148,22 @@ export const HandleMyPresetPageStyles = makeStyles({
   },
   tags: {
     gridArea: "tags",
+    padding: "18px",
+    display:"grid",
+    alignItems: "column",
   },
 });
-export type formDataTypes = {
-  presetId: string;
-  presetTitle: string;
-  PrivacyOption: PrivacyType;
-  thumbnailImg: any;
-  tags: any;
-  soundSample: any;
-};
+
 export function HandleMyPresetPage() {
   const classes = HandleMyPresetPageStyles();
-
+  const dispatch = useDispatch();
   const [nowHandlePresetData, setNowHandlePresetData] =
     useState<NowPresetValueState>(
       initialEditPresetGenerator(LaunchPadScale.DEFAULT)
     );
   const urlParams = useParams<{ presetId: string }>();
+
+  const nowPresetDataState = useAppSelector((state) => state.setNowPresetValueSlice)
 
   const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
@@ -177,17 +183,47 @@ export function HandleMyPresetPage() {
     //   defaultPresetData: initialPresetData,
     //   setDefaultPresetData: setinitialPresetData,
     // });
+
+    
+    const nowPresetImageAndPrivateOption = await getPresetInfo(urlParams.presetId);
+    const nowPresetTags = await getPresetTags(urlParams.presetId);
+    dispatch(setNowPresetValueActions.setValueFromImage(nowPresetImageAndPrivateOption));
+    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetImageAndPrivateOption));
+    dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+    
+    setPresetstate();
   };
+
+  const setPresetstate = () => {
+    setNowHandlePresetData({
+      ...nowHandlePresetData,
+      userId: nowPresetDataState.userId,
+      presetId: nowPresetDataState.presetId,
+      presetTitle: nowPresetDataState.presetTitle,
+      areaSize: nowPresetDataState.areaSize,
+      soundSamples: nowPresetDataState.soundSamples,
+      thumbnailImg: nowPresetDataState.thumbnailImg,
+      PrivacyOption: nowPresetDataState.PrivacyOption,
+      tags: nowPresetDataState.tags,
+    })
+  }
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {
-      console.log("create page");
+      // console.log("create page");
       return;
     }
 
-    console.log("update page");
-    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
+    // console.log("update page");
+    if (nowPresetDataState.presetTitle === ''){
+      getInitialDataForUpdate();
+    }
   }, []);
+  
+
+  useEffect(() => {
+    setPresetstate();
+  }, [nowPresetDataState])
 
   return (
     <div className={classes.root}>
@@ -198,13 +234,12 @@ export function HandleMyPresetPage() {
         <div className={classes.presetInfo}>
           <div className="presetInfoContainer">
             <PresetThumbnailUpload
-              imgURL={testImage}
-              setInitialPresetData={setNowHandlePresetData}
-              initialPresetData={nowHandlePresetData}
-            />
-            <PresetInfo
               nowHandlePresetData={nowHandlePresetData}
               setInitialPresetData={setNowHandlePresetData}
+            />
+            <PresetInfo
+             nowHandlePresetData={nowHandlePresetData}
+             setInitialPresetData={setNowHandlePresetData} 
             />
           </div>
         </div>
@@ -212,7 +247,9 @@ export function HandleMyPresetPage() {
           setInitialPresetData={setNowHandlePresetData}
           initialPresetData={nowHandlePresetData}
         />
-        <div className={classes.tags}></div>
+        <div className={classes.tags}>
+          <PresetTags />
+        </div>
       </div>
     </div>
   );

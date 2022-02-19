@@ -108,6 +108,13 @@ export default function Metronome() {
     }
   }, [isPlay]);
 
+  useEffect(() => {
+    return () => {
+      console.log("메트로눔 닫기");
+      dispatch(actions.clearAllPlays());
+    };
+  }, []);
+
   return (
     <details>
       <summary>metronome기능</summary>

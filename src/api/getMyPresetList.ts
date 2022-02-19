@@ -1,4 +1,3 @@
-import { ViewSidebar } from "@mui/icons-material";
 import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
