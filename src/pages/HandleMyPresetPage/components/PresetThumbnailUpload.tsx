@@ -1,9 +1,10 @@
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ButtonColors, PresetImageColors } from "../../../utils/CommonStyle";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
+import noImage from "../../../assets/noImage.png";
 
 const PresetThumbnailUploadStyles = makeStyles({
   root: {
@@ -36,22 +37,26 @@ const PresetThumbnailUploadStyles = makeStyles({
 });
 
 type PresetThumbnailUploadProps = {
-  imgURL: string;
-  initialPresetData: NowPresetValueState;
+  nowHandlePresetData: NowPresetValueState;
   setInitialPresetData: React.Dispatch<
     React.SetStateAction<NowPresetValueState>
   >;
 };
 
+
 export default function PresetThumbnailUpload({
-  imgURL,
-  initialPresetData,
-  setInitialPresetData,
-}: PresetThumbnailUploadProps) {
+  nowHandlePresetData,
+  setInitialPresetData
+}:PresetThumbnailUploadProps) {
+
   const classes = PresetThumbnailUploadStyles();
 
-  const [currImg, setCurrImg] = useState(imgURL);
-
+  const [currImg, setCurrImg] = useState<string>(noImage);
+  
+  useEffect(() => {
+    setCurrImg(nowHandlePresetData.thumbnailImg.thumbnailImgURL);
+  },[nowHandlePresetData])
+  
   //파일 변환
   const encodeFileToBase64 = (file: File) => {
     const reader = new FileReader();
@@ -68,18 +73,16 @@ export default function PresetThumbnailUpload({
     const files = event.target.files;
     if (files) {
       encodeFileToBase64(files[0]);
+      setInitialPresetData({
+        ...nowHandlePresetData,
+        thumbnailImg: {
+          thumbnailImgURL: "",
+          thumbnailImgFile: files[0]
+        }
+      });
     }
-
-    if (files === null) return;
-
-    setInitialPresetData({
-      ...initialPresetData,
-      thumbnailImg: {
-        ...initialPresetData.thumbnailImg,
-        thumbnailImgFile: files[0],
-      },
-    });
   };
+
 
   return (
     <div className={classes.root}>

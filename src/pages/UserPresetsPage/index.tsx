@@ -12,14 +12,14 @@ import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
 import { LaunchPadScale, Preset } from "../../components/LaunchPad/utils/types";
 import LaunchPad from "../../components/LaunchPad";
-
+import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
 import { PageColors } from "../../utils/CommonStyle";
 import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
-
+import { PresetListElement } from "../MyPresetsPage/utils/types"
 import { useDispatch } from "react-redux";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
@@ -27,6 +27,7 @@ import { actions as setNowPresetValueActions } from "../../modules/actions/setNo
 import { useAppSelector } from "../../modules/hooks";
 import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
+import { getMyPresetList,GetMyPresetParams } from "../../api/getMyPresetList";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -116,6 +117,32 @@ export function UserPresetsPage() {
   );
   const state = useAppSelector((state) => state.getPresetSlice);
 
+
+    const getPresetListInfoData = async () => {
+      const param: GetMyPresetParams = {
+        userId: "1",
+      };
+
+      try{
+        dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
+        param
+      );
+      
+      dispatch(
+        getMyPresetListActions.getPresetDataFulfilled({
+          presetList: nowMyPresetList,
+        })
+      );
+      }
+      catch{
+        dispatch(getMyPresetListActions.getPresetDataRejected());
+        console.log("에러")
+      }
+
+    }
+
+
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {
       throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
@@ -153,6 +180,7 @@ export function UserPresetsPage() {
   };
 
   useEffect(() => {
+    getPresetListInfoData();
     getInitialPresetData();
   }, []);
 

@@ -20,6 +20,9 @@ import setPresetData from "../../utils/setPresetData";
 import setPresetId from "../../utils/setPresetId";
 import PresetImage from "../../components/Preset/PresetImage";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
+import { GetMyPresetParams, getMyPresetList } from "../../api/getMyPresetList";
+import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
+import { PresetListElement } from "../MyPresetsPage/utils/types";
 
 //스타일은 defaultPresetsPage, MyPresetsPage, UserPresetsPage모두 동일하게 사용하는것이 좋을듯
 const DefaultPresetsPageStyles = makeStyles({
@@ -119,6 +122,31 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
+    const getPresetListInfoData = async () => {
+      const param: GetMyPresetParams = {
+        userId: "1"
+      };
+
+      try{
+        dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+        const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
+          param
+        );
+        dispatch(
+          getMyPresetListActions.getPresetDataFulfilled({
+            presetList: nowMyPresetList,
+          })
+        );
+      }catch{
+        dispatch(getMyPresetListActions.getPresetDataRejected());
+        console.log('에러')
+      }
+  
+    }
+
+
+
+
   const getInitialPresetData = async () => {
     const config: PresetParams = {
       userId: urlParams.userId,
@@ -159,6 +187,7 @@ export function DefaultPresetsPage() {
   };
 
   useEffect(() => {
+    getPresetListInfoData();
     getInitialPresetData();
   }, []);
 

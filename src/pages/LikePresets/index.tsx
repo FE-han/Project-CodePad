@@ -4,10 +4,10 @@ import { ScrollValues } from "../../utils/CommonValue";
 
 import { useEffect, useState } from "react";
 import { PresetData } from "../../utils/CommonInterface";
-import { makePresetScrollList } from "../../components/CommunityContents/makePresetScrollList";
+import { makeLikePresetScroll } from "../../components/PresetCommunity/makeLikePresetScroll";
 import PresetContent from "../../components/CommunityContents/PresetContent";
 import Loader from "../../components/CommunityContents/Loader";
-import { PresetListparams } from "../../api/CommunityContents/getPresetList";
+import { LikePresetListparams } from "../../api/CommunityContents/getLikePresetList";
 
 export default function LikePresetsPage() {
   const classes = likePresetsPageStyles();
@@ -19,15 +19,13 @@ export default function LikePresetsPage() {
 
   const [itemLists, setItemLists] = useState<Array<PresetData>>([]);
 
-  const [config, setConfig] = useState<PresetListparams>({
-    Listname: "likes",
+  const [config, setConfig] = useState<LikePresetListparams>({
     pageNum: ScrollValues.defaultPageNum,
     limitNum: ScrollValues.limitNum,
-    presetIds: "",
   });
 
   const getMoreItem = async () => {
-    const res = await makePresetScrollList(config);
+    const res = await makeLikePresetScroll(config);
 
     if (res.success) {
       if (res.data.length > 0) {
