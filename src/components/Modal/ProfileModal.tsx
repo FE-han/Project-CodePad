@@ -52,6 +52,7 @@ const ProfileModalStyles = makeStyles({
   },
   ProfileImage: {
     width: "200px",
+    height: "200px",
     borderRadius: "50%",
     display: "block",
     margin: "auto auto",
@@ -81,9 +82,8 @@ export default function ProfileModal(props: ProfileModalProps) {
   const [userProfileImageSrc, setUserProfileImageSrc] = useState<
     string | undefined
   >(userInfo.userThumbnailURL);
-  const [userProfileImageFile, setUserProfileImageFile] = useState<
-    Blob | string
-  >("");
+  const [userProfileImageFile, setUserProfileImageFile] =
+    useState<Blob | string>("");
 
   const classes = ProfileModalStyles();
 

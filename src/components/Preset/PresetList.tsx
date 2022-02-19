@@ -19,7 +19,6 @@ import PianoIcon from "@mui/icons-material/Piano";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 
-
 const PresetsListStyles = makeStyles({
   listBox: {},
   container: {
@@ -60,46 +59,58 @@ const PresetsListStyles = makeStyles({
   createBtn: {
     textAlign: "center",
   },
+  pagenationNavi: {
+    display: "flex",
+    justifyContent: "center",
+  },
 });
-export default function PresetList(props: {
+export interface NowSelectedMyPreset {
+  presetId: string;
+  reactions?: { viewCount: number; likeCount: number; commentCount: number };
+  thumbnailImageURL: string;
+  title: string;
+}
+interface PresetListProps {
   createBtn: Boolean;
-  presetList: Array<PresetListElement>;
-}) {
+  presetList: Array<NowSelectedMyPreset>;
+  nowPresetListPage: number;
+  setNowPresetListPage: React.Dispatch<React.SetStateAction<number>>;
+  // nowSelectedPreset: T
+  // setNowSelectedPreset:
+}
+
+export default function PresetList({
+  createBtn,
+  presetList,
+  nowPresetListPage,
+  setNowPresetListPage,
+}: PresetListProps) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
+
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const presetId = useParams();
-
-  const [ page, setPage ] = React.useState(1);
-  const PER_PAGE = 5;
-  const count = Math.ceil(props.presetList.length/PER_PAGE);
-  const _DATA = usePagination(props.presetList, PER_PAGE);
-  const { presetList, isLoading  } = useAppSelector(
-    (state) => state.getMyPresetListSlice
-  );
-
-  console.log(props.presetList)
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: any
+    index: any,
+    element: NowSelectedMyPreset
   ) => {
     setSelectedIndex(index);
-    console.log(index);
-    //link태그
-    window.location.href = `${index.presetId}`
-    
+    navigate(`/mypresets/${element.presetId}`);
+  };
+
+  const handleNowPage = (event: React.ChangeEvent<unknown>, page: number) => {
+    setNowPresetListPage(page);
   };
 
   return (
     <div className={classes.listBox}>
       <List component="nav" className={classes.presetList}>
-        {props.createBtn ? (
+        {createBtn ? (
           <ListItemButton
             selected={selectedIndex === 0}
             onClick={(event) => {
               navigate("/mypresets/create");
-              handleListItemClick(event, 0);
             }}
           >
             <ListItemText primary="+" className={classes.createBtn} />
@@ -107,27 +118,46 @@ export default function PresetList(props: {
         ) : (
           ""
         )}
-        
 
-        {_DATA.currentData().map((value: any) => (
-          <ListItemButton
-            selected={selectedIndex === value}
-            onClick={(event) => handleListItemClick(event, value)}
-          >
-            <ListItemText primary={value.title} />
-            
-            <ListItemIcon className={classes.container}>
-            <PianoIcon fontSize="small" />
-              <span className={classes.reactionNum}>{value.reactions.viewCount}</span>
-              <FavoriteIcon fontSize="small" />
-              <span className={classes.reactionNum}>{value.reactions.likeCount}</span>
-              <CommentIcon fontSize="small" />
-              <span className={classes.reactionNum}>{value.reactions.commentCount}</span>
-            </ListItemIcon>
-          </ListItemButton>
-        ))}
+        {presetList.map((element, idx) => {
+          return (
+            <div key={element.presetId}>
+              <ListItemButton
+                selected={selectedIndex === idx}
+                onClick={(event) => handleListItemClick(event, idx, element)}
+              >
+                <ListItemText primary={element.title} />
 
+                {element.reactions !== undefined && (
+                  <ListItemIcon className={classes.container}>
+                    <PianoIcon fontSize="small" />
+                    <span className={classes.reactionNum}>
+                      {element.reactions.viewCount}
+                    </span>
+                    <FavoriteIcon fontSize="small" />
+                    <span className={classes.reactionNum}>
+                      {element.reactions.likeCount}
+                    </span>
+                    <CommentIcon fontSize="small" />
+                    <span className={classes.reactionNum}>
+                      {element.reactions.commentCount}
+                    </span>
+                  </ListItemIcon>
+                )}
+              </ListItemButton>
+            </div>
+          );
+        })}
       </List>
+      <div className={classes.pagenationNavi}>
+        <Pagination
+          count={5}
+          page={nowPresetListPage}
+          onChange={(evt) => handleNowPage(evt, nowPresetListPage)}
+          variant="outlined"
+          shape="rounded"
+        />
+      </div>
     </div>
   );
 }

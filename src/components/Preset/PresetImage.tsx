@@ -1,15 +1,13 @@
-import React, { Props, useEffect, useState } from 'react'
+import React, { Props, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import testImage from "../../assets/testImage.png";
 import { PresetImageColors } from "../../utils/CommonStyle";
 import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
-import { useParams } from 'react-router';
-import { getMyPresetList } from '../../api/getMyPresetList';
-import { imageListClasses } from '@mui/material';
-import { PresetData } from '../../utils/CommonInterface';
-import { getMyPresetListSlice } from '../../modules/actions/getMyPresetListSlice';
-
-
+import { useParams } from "react-router";
+import { getMyPresetList } from "../../api/getMyPresetList";
+import { imageListClasses } from "@mui/material";
+import { PresetData } from "../../utils/CommonInterface";
+import { getMyPresetListSlice } from "../../modules/actions/getMyPresetListSlice";
 
 const PrestImageStyles = makeStyles({
   presetImage: {
@@ -22,29 +20,27 @@ const PrestImageStyles = makeStyles({
     },
   },
 });
-interface PresetImageProps{
-  presetList: Array<PresetListElement>;
-  selectedPresetId: any
+interface PresetImageProps {
+  imageURL: string;
 }
 
-const PresetImage = ({presetList, selectedPresetId} : PresetImageProps) => {
+const PresetImage = ({ imageURL }: PresetImageProps) => {
   const classes = PrestImageStyles();
 
-  const [imgURL, setImgURL] = useState('');
-  
+  // const [imgURL, setImgURL] = useState('');
 
-  useEffect(()=>{
-   presetList.map((value)=>{
-      if(value.presetId === selectedPresetId.presetId){
-        setImgURL(value.thumbnailImageURL);
-      }
-    })
-  },[presetList, selectedPresetId])
-//감지할 대상 ex) nowselectedElement
+  // useEffect(()=>{
+  //  presetList.map((value)=>{
+  //     if(value.presetId === selectedPresetId.presetId){
+  //       setImgURL(value.thumbnailImageURL);
+  //     }
+  //   })
+  // },[presetList, selectedPresetId])
+  //감지할 대상 ex) nowselectedElement
 
   return (
     <div className={classes.presetImage}>
-      <img src={imgURL} alt=""/>
+      <img src={imageURL} alt="" />
     </div>
   );
 };

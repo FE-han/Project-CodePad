@@ -1,4 +1,5 @@
 export type TagsElement = {
-    tags: string;
+    text: string;
     presetId: string;
+    tagId: string;
 }
