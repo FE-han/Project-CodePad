@@ -6,14 +6,14 @@ export interface PresetParams {
   presetId?: string;
 }
 
-export async function getPresetInfo(presetId: any) {
+export async function getPresetTags(presetId: any) {
   const config: AxiosRequestConfig = {
   };
   // const response = await axiosInstance(config).get(
   //   `/launchPad?userId=${params.userId}&PresetId=${params.presetId}`
   // );
 
-  const response = await axiosInstance(config).get(`/presets/${presetId}`)
-  console.log(response.data)
+  const response = await axiosInstance(config).get(`/tags/${presetId}`);
+
   return response.data;
 }

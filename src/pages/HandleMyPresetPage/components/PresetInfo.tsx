@@ -8,10 +8,12 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
+import { useNavigate } from "react-router";
+import { updatePreset } from "../../../api/updatePreset";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -71,6 +73,11 @@ export default function PresetInfo({
   const [privacy, setPrivacy] = useState<PrivacyType>("PUBLIC");
   const [presetTitle, setPresetTitle] = useState<string>("");
 
+  useEffect(() => {
+    setPrivacy(nowHandlePresetData.PrivacyOption);
+    setPresetTitle(nowHandlePresetData.presetTitle);
+  }, [nowHandlePresetData])
+
   const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPresetTitle = event.target.value;
     setPresetTitle(newPresetTitle);
@@ -101,7 +108,7 @@ export default function PresetInfo({
     formData.append("presetTitle", nowHandlePresetData.presetTitle);
     formData.append("areaSize", JSON.stringify(nowHandlePresetData.areaSize));
     formData.append(
-      "thumbnailImg",
+      "thumbnailImgFile",
       nowHandlePresetData.thumbnailImg.thumbnailImgFile || ""
     );
     formData.append("PrivacyOption", nowHandlePresetData.PrivacyOption);
@@ -115,7 +122,18 @@ export default function PresetInfo({
         return [ele, testvalues[idx]];
       })
     );
+
+    Promise.all([updatePreset(formData, nowHandlePresetData.presetId)]).then(res => alert("성공"))
+
   };
+
+  const navigate = useNavigate();
+  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if(window.confirm("작성을 취소하시겠습니까?")){
+      navigate(-1);
+    } 
+  }
+
 
   return (
     <div className={classes.root}>
@@ -153,7 +171,11 @@ export default function PresetInfo({
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button variant="outlined" startIcon={<ClearIcon />}>
+        <Button 
+          variant="outlined" 
+          startIcon={<ClearIcon />}
+          onClick={handleCancelClick}
+          >
           CANCLE
         </Button>
         <Button
