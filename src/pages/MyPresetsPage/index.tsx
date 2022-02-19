@@ -171,16 +171,13 @@ export function MyPresetsPage() {
       );
     } catch {
       dispatch(getMyPresetListActions.getPresetDataRejected());
-      console.log("에러")
+      console.log("에러");
     }
   };
 
   const urlParams = useParams<{ userId: string; presetId: string }>();
 
   const getInitialPresetData = async () => {
-    if (!urlParams.userId) {
-      throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
-    }
     const config: PresetParams = {
       userId: urlParams.userId,
       presetId: urlParams.presetId,

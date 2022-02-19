@@ -107,6 +107,7 @@ export default function PresetInfo({
     nowHandlePresetData: NowPresetValueState
   ) => {
     const firstFormData = setBasePresetFormData(nowHandlePresetData);
+    console.log(firstFormData);
     const { presetId } = await postBasePresetData(firstFormData);
     console.log("targetPresetId: ", presetId);
 
@@ -177,7 +178,9 @@ export default function PresetInfo({
           variant="outlined"
           startIcon={<SaveIcon />}
           onClick={() => {
+            console.log(nowHandlePresetData);
             postPresetDataWithOutSoundFile(nowHandlePresetData);
+            // navigate(`/mypresets/84zDZNkkraThZuq1D-UAJ`);
           }}
         >
           SAVE
