@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
@@ -15,6 +15,8 @@ import CommentIcon from "@mui/icons-material/Comment";
 import { getMyPresetList } from "../../api/PresetList/getMyPresetList";
 import { getUserPresetList } from "../../api/PresetList/getUserPresetList";
 import { getDefaultPresetList } from "../../api/PresetList/getDefaultPresetList";
+import { useDispatch } from "react-redux";
+import { actions as getPresetDataFromListActions } from "../../modules/actions/PresetList/getPresetDataFromListSlice";
 
 const PresetsListStyles = makeStyles({
   listBox: {},
@@ -85,11 +87,13 @@ export default function PresetList({
 }: PresetListProps) {
   const classes = PresetsListStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [nowPage, setNowPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [list, setList] = useState<Array<presetListElement>>([]);
+  const urlParams = useParams<{ userId: string; presetId: string }>();
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -97,7 +101,29 @@ export default function PresetList({
     element: presetListElement
   ) => {
     setSelectedIndex(index);
-    // navigate(`/${type}/${element.presetId}`);
+
+    dispatch(
+      getPresetDataFromListActions.getNewPresetData({
+        presetId: element.presetId,
+        userId: urlParams.userId,
+        thumbnailURL: element.thumbnailImageURL,
+      })
+    );
+
+    switch (type) {
+      case "mypresets":
+        navigate(`/mypresets/${element.presetId}`);
+        break;
+      case "userpresets":
+        navigate(`/userpresets/${urlParams.userId}/${element.presetId}`);
+        break;
+      case "defaultpresets":
+        navigate(`/defaultpresets/${element.presetId}`);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleNowPage = (event: React.ChangeEvent<unknown>, page: number) => {

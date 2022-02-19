@@ -135,15 +135,13 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const getInitialPresetData = async (presetId?: string) => {
+  const getInitialPresetData = async (params: PresetParams) => {
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: presetId || urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    // setDefaultPresetData(newPresetData);
     try {
-      const nowPresetData: Preset = await getDefaultPreset({ presetId });
+      const nowPresetData: Preset = await getDefaultPreset(config);
 
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
@@ -176,10 +174,18 @@ export function DefaultPresetsPage() {
     }
   };
 
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
+
   useEffect(() => {
     // getPresetListInfoData();
-    getInitialPresetData();
-  }, []);
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -204,7 +210,7 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            {/* <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} /> */}
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
             <PresetList createBtn={false} type={"defaultpresets"} />
           </div>
         </div>

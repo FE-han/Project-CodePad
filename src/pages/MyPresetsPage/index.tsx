@@ -152,10 +152,10 @@ export function MyPresetsPage() {
 
   const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialPresetData = async () => {
+  const getInitialPresetData = async (params: PresetParams) => {
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
     try {
       const nowPresetData: Preset = await getPreset(config);
@@ -194,12 +194,20 @@ export function MyPresetsPage() {
     dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
-  useEffect(() => {
-    // getMyPresetListData(nowPresetListPage);
-    getInitialPresetData();
-  }, []);
-
   const state = useAppSelector((state) => state.getPresetSlice);
+
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
+
+  useEffect(() => {
+    // getPresetListInfoData();
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -226,8 +234,8 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            {/* <PresetImage imageURL={nowSelectedUserPreset.thumbnailImageURL} /> */}
-            <PresetList createBtn={false} type={"userpresets"} />
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
+            <PresetList createBtn={true} type={"mypresets"} />
           </div>
         </div>
         <div className={classes.community}>

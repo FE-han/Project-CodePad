@@ -35,6 +35,7 @@ import alertSnackBarMessage, {
 } from "../../utils/snackBarMessage";
 import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
 import { actions as getMyPresetListActions } from "../../modules/actions/getMyPresetListSlice";
+import { stat } from "fs";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
@@ -160,7 +161,7 @@ export function UserPresetsPage() {
     setUserPresetList(res);
   };
 
-  const getInitialPresetData = async () => {
+  const getInitialPresetData = async (params: PresetParams) => {
     if (!urlParams.userId) {
       alertSnackBarMessage({
         message: `잘못된 사용자 주소입니다.`,
@@ -169,10 +170,11 @@ export function UserPresetsPage() {
       throw new Error("urlParams에서 userId를 가져오지 못했습니다.");
     }
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
     try {
+      console.log("프리셋가져오는 컨피그", config);
       const nowPresetData: Preset = await getUserPreset(config);
 
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
@@ -205,11 +207,19 @@ export function UserPresetsPage() {
     }
   };
 
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
+
   useEffect(() => {
     // getPresetListInfoData();
     getUserPresetListData(nowPresetListPage);
-    getInitialPresetData();
-  }, []);
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -234,10 +244,10 @@ export function UserPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage imageURL={nowSelectedUserPreset.thumbnailImageURL} />
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
             <PresetList
               createBtn={false}
-              type={"mypresets"}
+              type={"userpresets"}
               presetId={urlParams.presetId}
             />
           </div>
