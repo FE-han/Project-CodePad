@@ -97,6 +97,25 @@ const CommentsContainer = () => {
     setIsLoaded(false);
   };
 
+  const getNewItem = async () => {
+    const res = await makeCommentScrollList(config);
+    if (res.success) {
+      const newData = res.data;
+      setCommentList((arr) => []);
+      setCommentList((arr) => [...newData]);
+    }
+  };
+
+  useEffect(() => {
+    setConfig((prev) => {
+      return { ...prev, presetId };
+    });
+  }, [presetId]);
+
+  useEffect(() => {
+    getNewItem();
+  }, [config]);
+
   useEffect(() => {
     if (!isLoaded || isError || isDone) return;
 
