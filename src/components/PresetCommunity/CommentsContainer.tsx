@@ -93,7 +93,6 @@ const CommentsContainer = () => {
     } else {
       setIsError(true);
     }
-
     setIsLoaded(false);
   };
 
@@ -108,11 +107,18 @@ const CommentsContainer = () => {
 
   useEffect(() => {
     setConfig((prev) => {
-      return { ...prev, presetId };
+      return {
+        ...prev,
+        presetId,
+        pageNum: ScrollValues.defaultPageNum,
+        limitNum: ScrollValues.limitNum,
+      };
     });
+    handleCancleBtn();
   }, [presetId]);
 
   useEffect(() => {
+    if (config.pageNum !== ScrollValues.defaultPageNum) return;
     getNewItem();
   }, [config]);
 
@@ -120,11 +126,11 @@ const CommentsContainer = () => {
     if (!isLoaded || isError || isDone) return;
 
     getMoreItem();
+
     const newPageNum = config.pageNum + 1;
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
     });
-    setIsLoaded(false);
   }, [isLoaded]);
 
   const onIntersect = (
@@ -163,7 +169,7 @@ const CommentsContainer = () => {
       //alert("send Error");
     }
   };
-  const handleSendBtn = () => {
+  const handleCancleBtn = () => {
     setText("");
     setIsUpdate(false);
     setBtnDisabled(true);
@@ -274,7 +280,7 @@ const CommentsContainer = () => {
           variant="outlined"
           size="small"
           disabled={btnDisabled}
-          onClick={handleSendBtn}
+          onClick={handleCancleBtn}
         >
           cancle
         </Button>
