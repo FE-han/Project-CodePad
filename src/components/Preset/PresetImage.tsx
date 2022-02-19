@@ -26,6 +26,10 @@ interface PresetImageProps {
 
 const PresetImage = ({ imageURL }: PresetImageProps) => {
   const classes = PrestImageStyles();
+  console.log(
+    "이미지주소",
+    `${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`
+  );
 
   // const [imgURL, setImgURL] = useState('');
 
@@ -40,7 +44,10 @@ const PresetImage = ({ imageURL }: PresetImageProps) => {
 
   return (
     <div className={classes.presetImage}>
-      <img src={imageURL} alt="" />
+      <img
+        src={`${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`}
+        alt=""
+      />
     </div>
   );
 };
