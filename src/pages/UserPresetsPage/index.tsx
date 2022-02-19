@@ -133,34 +133,6 @@ export function UserPresetsPage() {
   );
   const state = useAppSelector((state) => state.getPresetSlice);
 
-  const [userPresetList, setUserPresetList] = useState({
-    presetList: [],
-    maxPage: 0,
-  });
-  const [nowPresetListPage, setNowPresetListPage] = useState(1);
-  const [nowSelectedUserPreset, setNowSelectedUserPreset] =
-    useState<NowSelectedUserPreset>({
-      presetId: "",
-      reactions: { viewCount: 0, likeCount: 0, commentCount: 0 },
-      thumbnailImageURL: "",
-      title: "",
-    });
-  const [selectedIndex, setSelectedIndex] = useState(1);
-
-  const getUserPresetListData = async (nowPresetListPage: number) => {
-    if (!urlParams.presetId) {
-      throw new Error("urlParams에서 presetId를 가져오지 못했습니다.");
-    }
-    const params: GetUserPresetParams = {
-      presetId: urlParams.presetId,
-      page: nowPresetListPage,
-      limit: 5,
-    };
-    const res = await getUserPresetList(params);
-    console.log("유저프리셋리스트", res);
-    setUserPresetList(res);
-  };
-
   const getInitialPresetData = async (params: PresetParams) => {
     if (!urlParams.userId) {
       alertSnackBarMessage({
@@ -180,7 +152,7 @@ export function UserPresetsPage() {
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
-        defaultPresetData: userPresetData,
+        defaultPresetData: initialPresetGenerator(LaunchPadScale.DEFAULT),
         setDefaultPresetData: setUserPresetData,
       });
       dispatch(
@@ -213,7 +185,6 @@ export function UserPresetsPage() {
 
   useEffect(() => {
     // getPresetListInfoData();
-    getUserPresetListData(nowPresetListPage);
     const params: PresetParams = {
       userId: selectedListDataState.userId,
       presetId: selectedListDataState.presetId,
