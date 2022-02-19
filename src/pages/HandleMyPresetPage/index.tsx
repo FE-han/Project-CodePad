@@ -166,39 +166,6 @@ export function HandleMyPresetPage() {
     (state) => state.setNowPresetValueSlice
   );
 
-  const getInitialDataForUpdate = async () => {
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    console.log("asdf", urlParams.presetId);
-
-    const config: PresetParams = {
-      userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
-      presetId: setPresetId(urlParams),
-    };
-
-    const nowPresetData: Preset = await getPreset(config);
-    console.log(nowPresetData);
-    // setinitialPresetData(newPresetData);
-
-    // setPresetData({
-    //   nowPresetData,
-    //   defaultPresetData: initialPresetData,
-    //   setDefaultPresetData: setinitialPresetData,
-    // });
-
-    try {
-
-      const nowPresetImageAndPrivateOption = await getPresetInfo(urlParams.presetId);
-      const nowPresetTags = await getPresetTags(urlParams.presetId);
-      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetImageAndPrivateOption));
-      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetImageAndPrivateOption));
-      dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
-    } catch(e) {
-      console.log(`프리셋 image , privacyOption 호출 에러`)
-    }
-    
-    setPresetstate();
-  };
-
   const setPresetstate = () => {
     setNowHandlePresetData({
       ...nowHandlePresetData,
@@ -213,21 +180,56 @@ export function HandleMyPresetPage() {
     });
   };
 
-  // useEffect(() => {
-  //   if (urlParams.presetId === undefined) {
-  //     // console.log("create page");
-  //     return;
-  //   }
+  const getInitialDataForUpdate = async () => {
+    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
+    console.log("asdf", urlParams.presetId);
 
-  //   // console.log("update page");
-  //   if (nowPresetDataState.presetTitle === ''){
-  //     getInitialDataForUpdate();
-  //   }
-  // }, []);
+    const config: PresetParams = {
+      userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
+      presetId: urlParams.presetId,
+    };
 
-  // useEffect(() => {
-  //   setPresetstate();
-  // }, [nowPresetDataState]);
+    const nowPresetData: Preset = await getPreset(config);
+    // setinitialPresetData(newPresetData);
+    console.log(nowPresetData)
+    // setPresetData({
+    //   nowPresetData,
+    //   defaultPresetData: initialPresetData,
+    //   setDefaultPresetData: setinitialPresetData,
+    // });
+
+    try {
+
+      // const nowPresetTags = await getPresetTags(urlParams.presetId);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData));
+      
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+    } catch(e) {
+      console.log(e)
+    }
+    
+    setPresetstate();
+    
+  };
+
+  useEffect(() => {
+    setPresetstate();
+  }, [nowPresetDataState])
+
+  useEffect(() => {
+    if (urlParams.presetId === undefined) {
+      // console.log("create page");
+      return;
+    }
+
+    // console.log("update page");
+    if (nowPresetDataState.presetTitle === ''){
+      getInitialDataForUpdate();
+    }
+  }, []);
+
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {

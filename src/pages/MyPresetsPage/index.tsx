@@ -204,15 +204,15 @@ export function MyPresetsPage() {
       });
       setSampleSoundMap(currentSampleSoundMap);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
+      dispatch(setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
+
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetData));
     } catch (err) {
       console.log("프리셋 Api에러", err);
       dispatch(getPresetActions.getPresetDataRejected());
     }
 
-    const newPresetInfo = await getPresetInfo(urlParams.presetId);
-    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
   };
 
   useEffect(() => {

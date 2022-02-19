@@ -62,18 +62,18 @@ export const setNowPresetValueSlice = createSlice({
 
     setValueFromImage: (
       state,
-      action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
+      action: PayloadAction<any>
     ) => {
       state.thumbnailImg = {
-        thumbnailImgURL: action.payload.thumbnailImg.thumbnailImgURL,
-        thumbnailImgFile: action.payload.thumbnailImg.thumbnailImgFile
+        thumbnailImgURL: action.payload.thumbnailURL,
+        thumbnailImgFile: undefined
       };
     },
     setValueFromPrivacyOption: (
       state,
-      action: PayloadAction<Pick<NowPresetValueState, "PrivacyOption">>
+      action: PayloadAction<any>
     ) => {
-      state.PrivacyOption = action.payload.PrivacyOption;
+      state.PrivacyOption = action.payload.isPrivate ? "PRIVATE" : "PUBLIC";
     },
     setValueFromTags: (
       state,
