@@ -54,6 +54,13 @@ export default function UserInfo({userId}:UserInfoProps) {
   const getInitialData = async () => {
     try {
       const userInfoData = await getPresetUserInfo(userId);
+      if(!userInfoData.thumbnailURL){
+        setUserInfo({
+          name: userInfoData.name,
+          thumbnailURL: defaultUserProfileImg
+        })
+        return;
+      }
       setUserInfo(userInfoData);
     } catch (err) {
       console.log(err);
