@@ -15,7 +15,6 @@ import setPresetId from "../../utils/setPresetId";
 import setPresetData from "../../utils/setPresetData";
 import { useAppSelector } from "../../modules/hooks";
 import { useDispatch } from "react-redux";
-import { PrivacyType } from "../../utils/CommonValue";
 
 import { ButtonColors } from "../../utils/CommonStyle";
 import testImage from "../../assets/testImage.png";
@@ -26,6 +25,9 @@ import { actions as setNowPresetValueActions } from "../../modules/actions/setNo
 import { getPresetInfo } from "../../api/getPresetInfo";
 import { getPresetTags } from "../../api/getPresetTags";
 import { updatePreset } from "../../api/updatePreset";
+import PresetTags from "../../components/PresetCommunity/PresetTags"
+import { PrivacyType } from "../../utils/CommonValue";
+
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -146,6 +148,9 @@ export const HandleMyPresetPageStyles = makeStyles({
   },
   tags: {
     gridArea: "tags",
+    padding: "18px",
+    display:"grid",
+    alignItems: "column",
   },
 });
 
@@ -242,7 +247,9 @@ export function HandleMyPresetPage() {
           setInitialPresetData={setNowHandlePresetData}
           initialPresetData={nowHandlePresetData}
         />
-        <div className={classes.tags}></div>
+        <div className={classes.tags}>
+          <PresetTags />
+        </div>
       </div>
     </div>
   );

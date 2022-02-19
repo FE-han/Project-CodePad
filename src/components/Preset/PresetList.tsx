@@ -13,10 +13,25 @@ import usePagination from "../../components/Preset/usePagination";
 import { PresetListElement } from "../../pages/MyPresetsPage/utils/types";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../modules/hooks";
+import { ListItemIcon } from "@mui/material";
+import PianoIcon from "@mui/icons-material/Piano";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
 
 
 const PresetsListStyles = makeStyles({
   listBox: {},
+  container: {
+    lineHeight: "20px",
+    float: "right",
+    color: PresetListBtnColors.COLOR,
+    fontWeight: "700",
+  },
+  reactionNum: {
+    fontSize: "12px",
+    margin: "0px 5px",
+  },
   presetList: {
     "& > div": {
       border: `1px solid ${PresetListBtnColors.COLOR}`,
@@ -59,10 +74,11 @@ export default function PresetList(props: {
   const PER_PAGE = 5;
   const count = Math.ceil(props.presetList.length/PER_PAGE);
   const _DATA = usePagination(props.presetList, PER_PAGE);
+  const { presetList, isLoading  } = useAppSelector(
+    (state) => state.getMyPresetListSlice
+  );
 
-  console.log(props)
-  console.log(_DATA)
-  console.log(selectedIndex);
+  console.log(props.presetList)
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -91,6 +107,7 @@ export default function PresetList(props: {
         ) : (
           ""
         )}
+        
 
         {_DATA.currentData().map((value: any) => (
           <ListItemButton
@@ -98,7 +115,15 @@ export default function PresetList(props: {
             onClick={(event) => handleListItemClick(event, value)}
           >
             <ListItemText primary={value.title} />
-            <Reactions></Reactions>
+            
+            <ListItemIcon className={classes.container}>
+            <PianoIcon fontSize="small" />
+              <span className={classes.reactionNum}>{value.reactions.viewCount}</span>
+              <FavoriteIcon fontSize="small" />
+              <span className={classes.reactionNum}>{value.reactions.likeCount}</span>
+              <CommentIcon fontSize="small" />
+              <span className={classes.reactionNum}>{value.reactions.commentCount}</span>
+            </ListItemIcon>
           </ListItemButton>
         ))}
 
