@@ -212,6 +212,14 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
     };
   }, []);
 
+  // useEffect(() => {
+  //   console.log("===sampleSoundMap==", sampleSoundMap);
+  //   const [keys] = sampleSoundMap.keys();
+  //   const [url] = sampleSoundMap.values();
+
+  //   console.log([keys], [url]);
+  // }, [sampleSoundMap]);
+
   return (
     <>
       <div className={classes.root}>
