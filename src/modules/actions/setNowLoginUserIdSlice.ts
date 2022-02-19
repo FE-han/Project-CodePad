@@ -5,7 +5,7 @@ interface NowLoginUserId {
 }
 
 const initialState: NowLoginUserId = {
-  loginUserId: "notLogin",
+  loginUserId: "TuWdQ6QcXQHhG-LPsD7mY",
 };
 
 export const setNowLoginUserIdSlice = createSlice({

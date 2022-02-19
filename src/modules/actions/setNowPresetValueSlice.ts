@@ -27,9 +27,9 @@ export interface NowPresetValueState {
 }
 
 const initialState: NowPresetValueState = {
-  userId: "",
+  userId: "TuWdQ6QcXQHhG-LPsD7mY",
   presetTitle: "",
-  presetId: "",
+  presetId: "-S9Y43q1F_lt5pjBM_2E6",
   areaSize: 64,
   soundSamples: [],
   thumbnailImg: {
@@ -59,7 +59,7 @@ export const setNowPresetValueSlice = createSlice({
 
       state.soundSamples = canSaveFileForm;
     },
-   
+
     setValueFromImage: (
       state,
       action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
