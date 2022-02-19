@@ -184,12 +184,12 @@ export function MyPresetsPage() {
 
       // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetData));
     } catch (err) {
-      alertSnackBarMessage({
-        message: `프리셋이 없거나, 가져오지 못했습니다.`,
-        type: SnackBarMessageType.ERROR,
-      });
+      // alertSnackBarMessage({
+      //   message: `프리셋이 없거나, 가져오지 못했습니다.`,
+      //   type: SnackBarMessageType.ERROR,
+      // });
       dispatch(getPresetActions.getPresetDataRejected());
-      navigate("/");
+      // navigate("/");
     }
 
   };
