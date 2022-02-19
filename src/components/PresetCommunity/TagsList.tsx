@@ -34,7 +34,7 @@ const tagsStyles = makeStyles({
       useEffect(()=>{
           data.map((value)=>{
             if(value.presetId === selectedPresetId.presetId){
-              setSelectTag(value.tags)
+              setSelectTag(value.text)
             }
           })
       },[data, selectedPresetId])
@@ -42,7 +42,7 @@ const tagsStyles = makeStyles({
       return (
         <Stack direction="row" spacing={1} className={classes.chip}>
         {data.map((value) => (
-          <Chip label={value.tags} size="small" />
+          <Chip label={value.text} size="small" />
         ))}
       </Stack>
       )
