@@ -19,7 +19,7 @@ import setPresetData from "../../utils/setPresetData";
 
 import UserInfo from "./components/UserInfo";
 import PresetCommunity from "../../components/PresetCommunity/PresetCommunity";
-import { PresetListElement } from "../MyPresetsPage/utils/types"
+import { PresetListElement } from "../MyPresetsPage/utils/types";
 import { useDispatch } from "react-redux";
 
 import { actions as setNowPresetValueActions } from "../../modules/actions/setNowPresetValueSlice";
@@ -27,12 +27,13 @@ import { actions as setNowPresetValueActions } from "../../modules/actions/setNo
 import { useAppSelector } from "../../modules/hooks";
 import { actions as getPresetActions } from "../../modules/actions/LaunchPad/getPresetSlice";
 import { actions as soundButtonsActions } from "../../modules/actions/LaunchPad/soundButtonsSlice";
-import { getMyPresetList,GetMyPresetParams } from "../../api/getMyPresetList";
+import { getMyPresetList, GetMyPresetParams } from "../../api/getMyPresetList";
 
 const UserPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -117,31 +118,27 @@ export function UserPresetsPage() {
   );
   const state = useAppSelector((state) => state.getPresetSlice);
 
+  const getPresetListInfoData = async () => {
+    const param: GetMyPresetParams = {
+      userId: "1",
+    };
 
-    const getPresetListInfoData = async () => {
-      const param: GetMyPresetParams = {
-        userId: "1",
-      };
-
-      try{
-        dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+    try {
+      dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
       const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
         param
       );
-      
+
       dispatch(
         getMyPresetListActions.getPresetDataFulfilled({
           presetList: nowMyPresetList,
         })
       );
-      }
-      catch{
-        dispatch(getMyPresetListActions.getPresetDataRejected());
-        console.log("에러")
-      }
-
+    } catch {
+      dispatch(getMyPresetListActions.getPresetDataRejected());
+      console.log("에러");
     }
-
+  };
 
   const getInitialPresetData = async () => {
     if (!urlParams.userId) {

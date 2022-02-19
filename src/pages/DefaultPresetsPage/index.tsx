@@ -29,6 +29,7 @@ const DefaultPresetsPageStyles = makeStyles({
   root: {
     height: `calc(100% - 64px)`,
     minWidth: "1041px",
+    overflow: "hidden",
   },
   container: {
     margin: "0 auto",
@@ -122,30 +123,26 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-    const getPresetListInfoData = async () => {
-      const param: GetMyPresetParams = {
-        userId: "1"
-      };
+  const getPresetListInfoData = async () => {
+    const param: GetMyPresetParams = {
+      userId: "1",
+    };
 
-      try{
-        dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
-        const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
-          param
-        );
-        dispatch(
-          getMyPresetListActions.getPresetDataFulfilled({
-            presetList: nowMyPresetList,
-          })
-        );
-      }catch{
-        dispatch(getMyPresetListActions.getPresetDataRejected());
-        console.log('에러')
-      }
-  
+    try {
+      dispatch(getMyPresetListActions.getPresetDataPending(param)); //내가 리스트를 가져오기 시작하겠다! 명시
+      const nowMyPresetList: Array<PresetListElement> = await getMyPresetList(
+        param
+      );
+      dispatch(
+        getMyPresetListActions.getPresetDataFulfilled({
+          presetList: nowMyPresetList,
+        })
+      );
+    } catch {
+      dispatch(getMyPresetListActions.getPresetDataRejected());
+      console.log("에러");
     }
-
-
-
+  };
 
   const getInitialPresetData = async () => {
     const config: PresetParams = {
