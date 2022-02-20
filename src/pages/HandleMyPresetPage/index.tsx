@@ -193,7 +193,7 @@ export function HandleMyPresetPage() {
 
     const nowPresetData: Preset = await getPreset(config);
     // setinitialPresetData(newPresetData);
-    console.log(nowPresetData);
+    // console.log(nowPresetData);
     // setPresetData({
     //   nowPresetData,
     //   defaultPresetData: initialPresetData,

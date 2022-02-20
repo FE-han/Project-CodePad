@@ -104,7 +104,7 @@ export default function PresetInfo({
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setPrivacy(value);
     setInitialPresetData({
       ...nowHandlePresetData,
@@ -116,9 +116,9 @@ export default function PresetInfo({
     nowHandlePresetData: NowPresetValueState
   ) => {
     const firstFormData = setBasePresetFormData(nowHandlePresetData);
-    console.log(firstFormData);
+    // console.log(firstFormData);
     const { presetId } = await postBasePresetData(firstFormData);
-    console.log("targetPresetId: ", presetId);
+    // console.log("targetPresetId: ", presetId);
 
     const presetSoundFormDataArray: Array<PresetSoundFormDataArray> =
       setPresetSoundFormDataArray({
@@ -205,7 +205,7 @@ export default function PresetInfo({
           variant="outlined"
           startIcon={<SaveIcon />}
           onClick={() => {
-            console.log(nowHandlePresetData);
+            // console.log(nowHandlePresetData);
             if (nowHandlePresetData.presetTitle === "") {
               alertSnackBarMessage({
                 message: `Preset Title을 입력해주세요.`,

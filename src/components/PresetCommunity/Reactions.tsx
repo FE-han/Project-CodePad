@@ -60,7 +60,7 @@ const Reactions = ({ presetList, selectedPresetId }: PresetReactionProps) => {
     });
   }, [presetList, selectedPresetId]);
 
-  console.log(isClicked);
+  // console.log(isClicked);
 
   return (
     <ListItemIcon className={classes.container}>
