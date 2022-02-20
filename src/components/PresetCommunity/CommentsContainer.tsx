@@ -135,6 +135,7 @@ const CommentsContainer = () => {
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
     });
+    setIsLoaded(false);
   }, [isLoaded]);
 
   const onIntersect = (
