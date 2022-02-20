@@ -206,7 +206,7 @@ export default function PresetInfo({
           startIcon={<SaveIcon />}
           onClick={() => {
             console.log(nowHandlePresetData);
-            if (nowHandlePresetData.presetTitle === "untitled") {
+            if (nowHandlePresetData.presetTitle === "") {
               alertSnackBarMessage({
                 message: `Preset Title을 입력해주세요.`,
                 type: SnackBarMessageType.ERROR,
