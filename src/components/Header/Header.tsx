@@ -21,6 +21,8 @@ import { USERINFO } from "../Modal/ProfileModal";
 import getProfileInfo from "../../api/getProfileInfo";
 import { useDispatch } from "react-redux";
 import { actions as setNowLoginUserIdActions } from "../../modules/actions/setNowLoginUserIdSlice";
+import noUserImage from "../../assets/noUserImage.png";
+
 import alertSnackBarMessage, {
   SnackBarMessageType,
 } from "../../utils/snackBarMessage";
@@ -44,7 +46,7 @@ export default function Header() {
   const [userInfo, setUserInfo] = React.useState<USERINFO>({
     userId: null,
     userName: "",
-    userThumbnailURL: defaultUserProfileImageSrc,
+    userThumbnailURL: noUserImage,
   });
   const [userCookie, setUserCookie] = React.useState<string>("");
 
@@ -62,7 +64,7 @@ export default function Header() {
           userName: res.name,
           userThumbnailURL: res.thumbnailURL
             ? `${process.env.REACT_APP_SERVER_BASE_URL}/${res.thumbnailURL}`
-            : defaultUserProfileImageSrc,
+            : noUserImage,
         });
       })
       .catch((err) => {

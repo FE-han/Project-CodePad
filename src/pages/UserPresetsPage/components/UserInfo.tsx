@@ -4,7 +4,7 @@ import getPresetUserInfo from "../../../api/getPresetUserInfo";
 import testImage from "../../../assets/testImage.png";
 import { useAppSelector } from "../../../modules/hooks";
 import { PageColors } from "../../../utils/CommonStyle";
-import defaultUserProfileImg from "../../../assets/defaultUserProfileImg.png";
+import noUserImage from "../../../assets/noUserImage.png";
 import alertSnackBarMessage, {
   SnackBarMessageType,
 } from "../../../utils/snackBarMessage";
@@ -51,7 +51,7 @@ export default function UserInfo({ userId }: UserInfoProps) {
 
   const [userInfo, setUserInfo] = useState({
     name: "default",
-    thumbnailURL: defaultUserProfileImg,
+    thumbnailURL: noUserImage,
   });
 
   const getInitialData = async () => {
@@ -60,7 +60,7 @@ export default function UserInfo({ userId }: UserInfoProps) {
       if (!userInfoData.thumbnailURL) {
         setUserInfo({
           name: userInfoData.name,
-          thumbnailURL: defaultUserProfileImg,
+          thumbnailURL: noUserImage,
         });
         return;
       }
