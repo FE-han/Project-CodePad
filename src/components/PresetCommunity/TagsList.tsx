@@ -25,7 +25,7 @@ const TagsList = ({ data, selectedPresetId }: tagsListProps) => {
 
   const [selectTag, setSelectTag] = React.useState("");
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     data.map((value) => {

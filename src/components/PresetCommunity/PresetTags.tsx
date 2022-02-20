@@ -53,7 +53,7 @@ export default function presetTags() {
           data: nowpresetTags,
         })
       );
-      console.log(nowpresetTags);
+      // console.log(nowpresetTags);
     } catch (err) {
       dispatch(getTagsActions.getTagsDataRejecterd());
       alertSnackBarMessage({
