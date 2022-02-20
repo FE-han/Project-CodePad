@@ -294,7 +294,6 @@ export function MyPresetsPage() {
   }, []);
 
   useEffect(() => {
-    // getPresetListInfoData();
     const params: PresetParams = {
       userId: selectedListDataState.userId,
       presetId: selectedListDataState.presetId,
