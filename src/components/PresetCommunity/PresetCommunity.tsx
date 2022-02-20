@@ -10,9 +10,6 @@ import { getTags, GetTags } from "../../api/getTags";
 import { actions as getTagsActions } from "../../modules/actions/getTagsSlice";
 import { TagsElement } from "../../pages/HandleMyPresetPage/utils/types";
 import { useEffect } from "react";
-import alertSnackBarMessage, {
-  SnackBarMessageType,
-} from "../../utils/snackBarMessage";
 
 const PresetCommunityStyles = makeStyles({
   root: {
@@ -23,66 +20,67 @@ const PresetCommunityStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  tags: {
-    display: "flex",
-    overflow: "auto",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-  },
-  reactions: {
-    display: "flex",
-    alignItems: "center",
-  },
+  // tags: {
+  //   display: "flex",
+  //   overflow: "auto",
+  //   "&::-webkit-scrollbar": {
+  //     display: "none",
+  //   },
+  // },
+  // reactions: {
+  //   display: "flex",
+  //   alignItems: "center",
+  // },
   commentsContainer: {
     gridColumn: `1 / 3`,
   },
 });
 export default function PresetCommunity() {
   const classes = PresetCommunityStyles();
-  const presetId = useParams();
-  const dispatch = useDispatch();
+  //   const presetId= useParams();
+  //   const dispatch = useDispatch();
 
-  const { data } = useAppSelector((state) => state.getTagsSlice);
+  //   const {data} = useAppSelector(
+  //     (state) => state.getTagsSlice
+  // )
 
-  const { presetList } = useAppSelector((state) => state.getMyPresetListSlice);
+  //   const {presetList} = useAppSelector(
+  //     (state) => state.getMyPresetListSlice
+  //   )
 
-  //내 tags를 가져오는 api에서 값을 받아옴
+  //   //내 tags를 가져오는 api에서 값을 받아옴
 
-  const presetTagsData = async () => {
-    const param: GetTags = {
-      tagId: "2",
-    };
+  //   const presetTagsData = async () => {
+  //     const param: GetTags = {
+  //       tagId: "2"
+  //     }
 
-    try {
-      dispatch(getTagsActions.getTagsDataPending(param));
-      const nowpresetTags: Array<TagsElement> = await getTags(param);
-      dispatch(
-        getTagsActions.getTagsDataFulfilled({
-          data: nowpresetTags,
-        })
-      );
-    } catch (err) {
-      dispatch(getTagsActions.getTagsDataRejecterd());
-      alertSnackBarMessage({
-        message: `에러발생: ${err}`,
-        type: SnackBarMessageType.ERROR,
-      });
-    }
-  };
+  //     try{
+  //       dispatch(getTagsActions.getTagsDataPending(param));
+  //       const nowpresetTags: Array<TagsElement> = await getTags(param);
+  //       dispatch(
+  //         getTagsActions.getTagsDataFulfilled({
+  //           data: nowpresetTags
+  //         })
+  //       )
+  //     }catch{
+  //       dispatch(getTagsActions.getTagsDataRejecterd());
+  //       console.log('에러')
+  //     }
+  //   }
 
-  useEffect(() => {
-    presetTagsData();
-  }, []);
+  //   useEffect(()=>{
+  //     presetTagsData();
+  //   },[])
 
   return (
     <div className={classes.root}>
-      <div className={classes.tags}>
-        <TagsList data={data} selectedPresetId={presetId} />
+      {/* <div className={classes.tags}>
+        <TagsList data={data} selectedPresetId={presetId}/>
       </div>
       <div className={classes.reactions}>
-        <Reactions presetList={presetList} selectedPresetId={presetId} />
-      </div>
+        <Reactions presetList={presetList} selectedPresetId={presetId}/>
+      </div> */}
       <div className={classes.commentsContainer}>
         <CommentsContainer />
       </div>
