@@ -155,21 +155,21 @@ export function MyPresetsPage() {
   const urlParams = useParams<{ userId: string; presetId: string }>();
 
   //====
-  const [audioCtx, setAudioCtx] = useState<any>([]);
-  const makeAudioCtx = async (location: string, url: string) => {
-    const data: ArrayBuffer = await getAudioArrayBuffer(url);
+  // const [audioCtx, setAudioCtx] = useState<any>([]);
+  // const makeAudioCtx = async (location: string, url: string) => {
+  //   const data: ArrayBuffer = await getAudioArrayBuffer(url);
 
-    const audioContext = new AudioContext();
-    const audioBuffer = await audioContext.decodeAudioData(data);
+  //   const audioContext = new AudioContext();
+  //   const audioBuffer = await audioContext.decodeAudioData(data);
 
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.loop = true;
-    source.connect(audioContext.destination);
-    setAudioCtx([...audioCtx, [location, source]]);
-    console.log("제작중", audioCtx);
-    // return source;
-  };
+  //   const source = audioContext.createBufferSource();
+  //   source.buffer = audioBuffer;
+  //   source.loop = true;
+  //   source.connect(audioContext.destination);
+  //   setAudioCtx([...audioCtx, [location, source]]);
+  //   console.log("제작중", audioCtx);
+  //   // return source;
+  // };
   //====
 
   const getInitialPresetData = async (params: PresetParams) => {
@@ -198,25 +198,25 @@ export function MyPresetsPage() {
         );
       });
 
-      //=========
-      console.log("===sampleSoundMap==", sampleSoundMap);
-      const [keys] = sampleSoundMap.keys();
+      // //=========
+      // console.log("===sampleSoundMap==", sampleSoundMap);
+      // const [keys] = sampleSoundMap.keys();
 
-      const ctxArray = new Array();
+      // const ctxArray = new Array();
 
-      for (const key of sampleSoundMap.keys()) {
-        ctxArray.push([key, sampleSoundMap.get(key)]);
-      }
-      console.log(ctxArray);
+      // for (const key of sampleSoundMap.keys()) {
+      //   ctxArray.push([key, sampleSoundMap.get(key)]);
+      // }
+      // console.log(ctxArray);
 
-      const result = new Array();
-      Promise.all(
-        ctxArray.map((ele) => {
-          makeAudioCtx(ele[0], ele[1]);
-        })
-      );
+      // const result = new Array();
+      // Promise.all(
+      //   ctxArray.map((ele) => {
+      //     makeAudioCtx(ele[0], ele[1]);
+      //   })
+      // );
 
-      await console.log("결과물", audioCtx);
+      // await console.log("결과물", audioCtx);
 
       //=========
 
