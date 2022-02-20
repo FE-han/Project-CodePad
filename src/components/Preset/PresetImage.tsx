@@ -27,27 +27,12 @@ interface PresetImageProps {
 
 const PresetImage = ({ imageURL }: PresetImageProps) => {
   const classes = PrestImageStyles();
-  console.log(
-    "이미지주소",
-    `${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`
-  );
-
-  // const [imgURL, setImgURL] = useState('');
-
-  // useEffect(()=>{
-  //  presetList.map((value)=>{
-  //     if(value.presetId === selectedPresetId.presetId){
-  //       setImgURL(value.thumbnailImageURL);
-  //     }
-  //   })
-  // },[presetList, selectedPresetId])
-  //감지할 대상 ex) nowselectedElement
 
   return (
     <div className={classes.presetImage}>
       <img
         src={
-          imageURL !== null
+          imageURL !== null && imageURL !== undefined
             ? `${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`
             : defaultImg
         }
