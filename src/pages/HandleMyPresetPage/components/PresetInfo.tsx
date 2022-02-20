@@ -22,6 +22,7 @@ import { useNavigate } from "react-router";
 import alertSnackBarMessage, {
   SnackBarMessageType,
 } from "../../../utils/snackBarMessage";
+import { updatePreset } from "../../../api/updatePreset";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -86,11 +87,11 @@ export default function PresetInfo({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (nowHandlePresetData.presetTitle !== "") {
+    if(nowHandlePresetData.presetTitle !== ''){
       setPrivacy(nowHandlePresetData.PrivacyOption);
       setPresetTitle(nowHandlePresetData.presetTitle);
     }
-  }, [nowHandlePresetData]);
+  },[nowHandlePresetData])
 
   const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPresetTitle = event.target.value;
@@ -104,21 +105,31 @@ export default function PresetInfo({
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
-    // console.log(event.target.value);
+    console.log(event.target.value)
     setPrivacy(value);
     setInitialPresetData({
       ...nowHandlePresetData,
-      PrivacyOption: value,
+      PrivacyOption: value
     });
   };
 
+  const handleSaveClick = async () => {
+    const formData = new FormData();
+
+    formData.append("presetId", nowHandlePresetData.presetId);
+    formData.append("title", nowHandlePresetData.presetTitle);
+    formData.append("img",nowHandlePresetData.thumbnailImg.thumbnailImgFile || "");
+    formData.append("isPrivate", JSON.stringify(nowHandlePresetData.PrivacyOption === "PUBLIC" ? false : true));
+    formData.append("tags", JSON.stringify(nowHandlePresetData.tags));
+    await updatePreset(formData, nowHandlePresetData.presetId);
+  };
   const postPresetDataWithOutSoundFile = async (
     nowHandlePresetData: NowPresetValueState
   ) => {
     const firstFormData = setBasePresetFormData(nowHandlePresetData);
-    // console.log(firstFormData);
+    console.log(firstFormData);
     const { presetId } = await postBasePresetData(firstFormData);
-    // console.log("targetPresetId: ", presetId);
+    console.log("targetPresetId: ", presetId);
 
     const presetSoundFormDataArray: Array<PresetSoundFormDataArray> =
       setPresetSoundFormDataArray({
@@ -153,10 +164,11 @@ export default function PresetInfo({
   };
 
   const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (window.confirm("작성을 취소하시겠습니까?")) {
+    if(window.confirm("작성을 취소하시겠습니까?")){
       navigate(-1);
-    }
-  };
+    } 
+  }
+
 
   return (
     <div className={classes.root}>
@@ -194,26 +206,20 @@ export default function PresetInfo({
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button
+        <Button 
           variant="outlined"
           startIcon={<ClearIcon />}
-          onClick={handleCancelClick}
-        >
+          onClick={handleCancelClick}>
           CANCLE
         </Button>
         <Button
           variant="outlined"
           startIcon={<SaveIcon />}
           onClick={() => {
-            // console.log(nowHandlePresetData);
-            if (nowHandlePresetData.presetTitle === "") {
-              alertSnackBarMessage({
-                message: `Preset Title을 입력해주세요.`,
-                type: SnackBarMessageType.ERROR,
-              });
-              return;
-            }
-            postPresetDataWithOutSoundFile(nowHandlePresetData);
+            console.log(nowHandlePresetData);
+            // postPresetDataWithOutSoundFile(nowHandlePresetData);
+            handleSaveClick();
+            // navigate(`/mypresets/84zDZNkkraThZuq1D-UAJ`);
           }}
         >
           SAVE
