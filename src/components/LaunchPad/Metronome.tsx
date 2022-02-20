@@ -115,7 +115,11 @@ export default function Metronome() {
   }, []);
 
   return (
-    <details>
+    <details
+      style={{
+        display: "none",
+      }}
+    >
       <summary>metronome기능</summary>
 
       <label htmlFor="bpm">BPM : {tempo} </label>

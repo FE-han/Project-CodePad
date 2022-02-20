@@ -23,6 +23,7 @@ const OneShotButtonStyles = makeStyles({
 
   buttonText: {
     color: "white",
+    fontSize: "0.5rem",
 
     position: "absolute",
     left: "50%",
