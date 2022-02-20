@@ -10,7 +10,9 @@ export async function getDefaultPreset(params: GetDefaultPresetParams) {
     //token input
   };
   const response = await axiosInstance(config).get(
-    `/presets/defaultPreset/${params.presetId || ""}`
+    `/presets/defaultPreset/${
+      params.presetId === "enter" ? "" : params.presetId
+    }`
   );
 
   return response.data;
