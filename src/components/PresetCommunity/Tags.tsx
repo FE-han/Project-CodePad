@@ -15,41 +15,39 @@ const tagsStyles = makeStyles({
   },
 });
 
-interface tagsProps{
+interface tagsProps {
   data: Array<TagsElement>;
   // selectedPresetId: any
 }
 
-const Tags = ({data} : tagsProps) => {
+const Tags = ({ data }: tagsProps) => {
   const classes = tagsStyles();
-  
-  const [selectTag,setSelectTag] = React.useState("");
 
-  console.log(data)
+  const [selectTag, setSelectTag] = React.useState("");
+
+  // console.log(data)
 
   const handleChipClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     Tag: any
   ) => {
     setSelectTag(Tag);
-    console.log(Tag)
-  }
+    // console.log(Tag)
+  };
 
-  useEffect(()=>{
-    data.map((value)=>{
-        setSelectTag(value.tagId)
-    })
-  },[data])
-  
+  useEffect(() => {
+    data.map((value) => {
+      setSelectTag(value.tagId);
+    });
+  }, [data]);
 
   return (
     <Stack direction="row" spacing={1} className={classes.chip}>
       {data.map((value) => (
-        <Chip label={value.text} size="small"  />
+        <Chip label={value.text} size="small" />
       ))}
     </Stack>
   );
-}
-
+};
 
 export default Tags;

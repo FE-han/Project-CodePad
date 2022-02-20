@@ -146,7 +146,7 @@ export function UserPresetsPage() {
       presetId: params.presetId || urlParams.presetId,
     };
     try {
-      console.log("프리셋가져오는 컨피그", config);
+      // console.log("프리셋가져오는 컨피그", config);
       const nowPresetData: Preset = await getUserPreset(config);
 
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
