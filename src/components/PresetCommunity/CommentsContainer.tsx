@@ -93,6 +93,7 @@ const CommentsContainer = () => {
     } else {
       setIsError(true);
     }
+    setIsLoaded(false);
   };
 
   const getNewItem = async () => {
