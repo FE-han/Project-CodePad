@@ -8,6 +8,7 @@ import { getMyPresetList } from "../../api/getMyPresetList";
 import { imageListClasses } from "@mui/material";
 import { PresetData } from "../../utils/CommonInterface";
 import { getMyPresetListSlice } from "../../modules/actions/getMyPresetListSlice";
+import defaultImg from "../../assets/noImage.png";
 
 const PrestImageStyles = makeStyles({
   presetImage: {
@@ -21,26 +22,22 @@ const PrestImageStyles = makeStyles({
   },
 });
 interface PresetImageProps {
-  imageURL: string;
+  imageURL?: string;
 }
 
 const PresetImage = ({ imageURL }: PresetImageProps) => {
   const classes = PrestImageStyles();
 
-  // const [imgURL, setImgURL] = useState('');
-
-  // useEffect(()=>{
-  //  presetList.map((value)=>{
-  //     if(value.presetId === selectedPresetId.presetId){
-  //       setImgURL(value.thumbnailImageURL);
-  //     }
-  //   })
-  // },[presetList, selectedPresetId])
-  //감지할 대상 ex) nowselectedElement
-
   return (
     <div className={classes.presetImage}>
-      <img src={imageURL} alt="" />
+      <img
+        src={
+          imageURL !== null && imageURL !== undefined
+            ? `${process.env.REACT_APP_SERVER_BASE_URL}/${imageURL}`
+            : defaultImg
+        }
+        alt="/src/assets/noImage.png"
+      />
     </div>
   );
 };

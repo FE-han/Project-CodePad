@@ -3,7 +3,7 @@ import { axiosInstance } from "../axiosInstance";
 
 export interface GetDefaultPresetParams {
   page: number;
-  limit: number;
+  limit?: number;
 }
 
 export async function getDefaultPresetList(params: GetDefaultPresetParams) {

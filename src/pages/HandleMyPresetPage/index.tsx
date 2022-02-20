@@ -27,6 +27,9 @@ import { getPresetTags } from "../../api/getPresetTags";
 import { updatePreset } from "../../api/updatePreset";
 import PresetTags from "../../components/PresetCommunity/PresetTags";
 import { PrivacyType } from "../../utils/CommonValue";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../utils/snackBarMessage";
 
 export const HandleMyPresetPageStyles = makeStyles({
   root: {
@@ -166,19 +169,31 @@ export function HandleMyPresetPage() {
     (state) => state.setNowPresetValueSlice
   );
 
+  // const setPresetstate = () => { 문제있는부분?
+  //   setNowHandlePresetData({
+  //     ...nowHandlePresetData,
+  //     userId: nowPresetDataState.userId,
+  //     presetId: nowPresetDataState.presetId,
+  //     presetTitle: nowPresetDataState.presetTitle,
+  //     areaSize: nowPresetDataState.areaSize,
+  //     soundSamples: nowPresetDataState.soundSamples,
+  //     thumbnailImg: nowPresetDataState.thumbnailImg,
+  //     PrivacyOption: nowPresetDataState.PrivacyOption,
+  //     tags: nowPresetDataState.tags,
+  //   });
+  // };
+
   const getInitialDataForUpdate = async () => {
     //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    console.log("asdf", urlParams.presetId);
 
     const config: PresetParams = {
       userId: "userIdFromApi", //token을 이용해서 서버에서 받아옴
-      presetId: setPresetId(urlParams),
+      presetId: urlParams.presetId,
     };
 
     const nowPresetData: Preset = await getPreset(config);
-    console.log(nowPresetData);
     // setinitialPresetData(newPresetData);
-
+    console.log(nowPresetData);
     // setPresetData({
     //   nowPresetData,
     //   defaultPresetData: initialPresetData,
@@ -186,66 +201,38 @@ export function HandleMyPresetPage() {
     // });
 
     try {
-      const nowPresetImageAndPrivateOption = await getPresetInfo(
-        urlParams.presetId
-      );
-      const nowPresetTags = await getPresetTags(urlParams.presetId);
+      // const nowPresetTags = await getPresetTags(urlParams.presetId);
+      dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData));
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
       dispatch(
-        setNowPresetValueActions.setValueFromImage(
-          nowPresetImageAndPrivateOption
-        )
+        setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData)
       );
-      dispatch(
-        setNowPresetValueActions.setValueFromPrivacyOption(
-          nowPresetImageAndPrivateOption
-        )
-      );
-      dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
+
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetTags));
     } catch (e) {
-      console.log(`프리셋 image , privacyOption 호출 에러`);
+      alertSnackBarMessage({
+        message: `프리셋데이터 호출 에러: ${e}`,
+        type: SnackBarMessageType.ERROR,
+      });
     }
 
-    setPresetstate();
+    // setPresetstate(); 문제있는부분?
   };
 
-  const setPresetstate = () => {
-    setNowHandlePresetData({
-      ...nowHandlePresetData,
-      userId: nowPresetDataState.userId,
-      presetId: nowPresetDataState.presetId,
-      presetTitle: nowPresetDataState.presetTitle,
-      areaSize: nowPresetDataState.areaSize,
-      soundSamples: nowPresetDataState.soundSamples,
-      thumbnailImg: nowPresetDataState.thumbnailImg,
-      PrivacyOption: nowPresetDataState.PrivacyOption,
-      tags: nowPresetDataState.tags,
-    });
-  };
-
-  // useEffect(() => {
-  //   if (urlParams.presetId === undefined) {
-  //     // console.log("create page");
-  //     return;
-  //   }
-
-  //   // console.log("update page");
-  //   if (nowPresetDataState.presetTitle === ''){
-  //     getInitialDataForUpdate();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
+  // useEffect(() => { 문제있는부분?
   //   setPresetstate();
   // }, [nowPresetDataState]);
 
   useEffect(() => {
     if (urlParams.presetId === undefined) {
-      console.log("create page");
+      // console.log("create page");
       return;
     }
 
-    console.log("update page");
-    getInitialDataForUpdate(); // redux state값이 비어있다면 이것으로 값을 가져오게끔 해야함
+    // console.log("update page");
+    if (nowPresetDataState.presetTitle === "") {
+      getInitialDataForUpdate();
+    }
   }, []);
 
   return (

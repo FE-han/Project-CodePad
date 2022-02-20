@@ -110,7 +110,6 @@ export default function Metronome() {
 
   useEffect(() => {
     return () => {
-      console.log("메트로눔 닫기");
       dispatch(actions.clearAllPlays());
     };
   }, []);

@@ -8,7 +8,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonColors } from "../../../utils/CommonStyle";
 import { PrivacyType } from "../../../utils/CommonValue";
 import { NowPresetValueState } from "../../../modules/actions/setNowPresetValueSlice";
@@ -19,6 +19,9 @@ import {
 } from "../../../utils/setPresetFormData";
 import { postPresetSoundSampleData } from "../../../api/CreatePreset/postPresetSoundSampleData";
 import { useNavigate } from "react-router";
+import alertSnackBarMessage, {
+  SnackBarMessageType,
+} from "../../../utils/snackBarMessage";
 
 const PresetInfoStyles = makeStyles({
   root: {
@@ -82,6 +85,13 @@ export default function PresetInfo({
   const [presetTitle, setPresetTitle] = useState<string>("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (nowHandlePresetData.presetTitle !== "") {
+      setPrivacy(nowHandlePresetData.PrivacyOption);
+      setPresetTitle(nowHandlePresetData.presetTitle);
+    }
+  }, [nowHandlePresetData]);
+
   const handlePresetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPresetTitle = event.target.value;
     setPresetTitle(newPresetTitle);
@@ -94,8 +104,8 @@ export default function PresetInfo({
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const value = target.value as PrivacyType;
+    console.log(event.target.value);
     setPrivacy(value);
-    // setInitialPresetData
     setInitialPresetData({
       ...nowHandlePresetData,
       PrivacyOption: value,
@@ -127,10 +137,24 @@ export default function PresetInfo({
           responses.push([formDataKey, data, status]);
         })
       );
-      console.log("sound저장결과", responses);
+
+      alertSnackBarMessage({
+        message: `프리셋 등록 성공!`,
+        type: SnackBarMessageType.SUCCESS,
+      });
+
       navigate(`/mypresets/${presetId}`);
     } catch (error) {
-      console.log("Preset 생성 에러발생", error);
+      alertSnackBarMessage({
+        message: `Preset 등록에 실패했습니다.`,
+        type: SnackBarMessageType.ERROR,
+      });
+    }
+  };
+
+  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.confirm("작성을 취소하시겠습니까?")) {
+      navigate(-1);
     }
   };
 
@@ -170,7 +194,11 @@ export default function PresetInfo({
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2} className={classes.btnContainer}>
-        <Button variant="outlined" startIcon={<ClearIcon />}>
+        <Button
+          variant="outlined"
+          startIcon={<ClearIcon />}
+          onClick={handleCancelClick}
+        >
           CANCLE
         </Button>
         <Button
@@ -178,8 +206,14 @@ export default function PresetInfo({
           startIcon={<SaveIcon />}
           onClick={() => {
             console.log(nowHandlePresetData);
+            if (nowHandlePresetData.presetTitle === "") {
+              alertSnackBarMessage({
+                message: `Preset Title을 입력해주세요.`,
+                type: SnackBarMessageType.ERROR,
+              });
+              return;
+            }
             postPresetDataWithOutSoundFile(nowHandlePresetData);
-            // navigate(`/mypresets/84zDZNkkraThZuq1D-UAJ`);
           }}
         >
           SAVE
