@@ -93,7 +93,6 @@ const CommentsContainer = () => {
     } else {
       setIsError(true);
     }
-    setIsLoaded(false);
   };
 
   const getNewItem = async () => {
@@ -119,11 +118,12 @@ const CommentsContainer = () => {
 
   useEffect(() => {
     if (
-      config.pageNum !== ScrollValues.defaultPageNum ||
-      config.presetId === ""
-    )
-      return;
-    getNewItem();
+      config.pageNum === ScrollValues.defaultPageNum &&
+      config.presetId !== ""
+    ) {
+      getNewItem();
+    }
+    setIsLoaded(false);
   }, [config]);
 
   useEffect(() => {
