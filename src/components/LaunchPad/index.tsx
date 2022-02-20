@@ -193,7 +193,6 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
   useEffect(() => {
     return () => {
       const toStopList = alreadyPlayedSoundSamples;
-      console.log(toStopList);
 
       for (const ele of toStopList.keys()) {
         stopBufferSource(ele, alreadyPlayedSoundSamples.get(ele));
@@ -210,10 +209,16 @@ export function LaunchPad({ presetData, sampleSoundMap }: LaunchPadProps) {
 
       dispatch(loopSoundGroupActions.clearAllPlays());
       // dispatch(soundButtonsActions.resetSampleSoundButtonState());
-
-      console.log("페이지 나감", nowPlayingSampleSounds);
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log("===sampleSoundMap==", sampleSoundMap);
+  //   const [keys] = sampleSoundMap.keys();
+  //   const [url] = sampleSoundMap.values();
+
+  //   console.log([keys], [url]);
+  // }, [sampleSoundMap]);
 
   return (
     <>

@@ -135,40 +135,18 @@ export function DefaultPresetsPage() {
     (state) => state.getMyPresetListSlice
   );
 
-  const [defaultPresetList, setDefaultPresetList] = useState([]);
-  const [nowPresetListPage, setNowPresetListPage] = useState(1);
-  const [nowSelectedDefaultPreset, setNowSelectedDefaultPreset] =
-    useState<NowSelectedDefaultPreset>({
-      presetId: "",
-      title: "",
-      thumbnailURL: "",
-    });
-
-  const getMyPresetListData = async (nowPresetListPage: number) => {
-    const params: GetDefaultPresetParams = {
-      page: nowPresetListPage,
-      limit: 5,
-    };
-
-    const res = await getDefaultPresetList(params);
-    console.log(res);
-    setDefaultPresetList(res);
-  };
-
-  const getInitialPresetData = async (presetId?: string) => {
+  const getInitialPresetData = async (params: PresetParams) => {
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: presetId || urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
-    //일단 초기진입 상태에 대한 param값을 "enter"로 하고 작성
-    // setDefaultPresetData(newPresetData);
     try {
-      const nowPresetData: Preset = await getDefaultPreset({ presetId });
+      const nowPresetData: Preset = await getDefaultPreset(config);
 
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
-        defaultPresetData: defaultPresetData,
+        defaultPresetData: initialPresetGenerator(LaunchPadScale.DEFAULT),
         setDefaultPresetData: setDefaultPresetData,
       });
 
@@ -186,7 +164,6 @@ export function DefaultPresetsPage() {
         );
       });
       setSampleSoundMap(currentSampleSoundMap);
-      console.log("launchpadPresetData", state);
     } catch (err) {
       alertSnackBarMessage({
         message: `프리셋이 없거나, 가져오지 못했습니다.`,
@@ -197,15 +174,18 @@ export function DefaultPresetsPage() {
     }
   };
 
-  useEffect(() => {
-    // getPresetListInfoData();
-    getMyPresetListData(nowPresetListPage);
-    getInitialPresetData();
-  }, []);
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
 
   useEffect(() => {
-    getInitialPresetData();
-  }, []);
+    // getPresetListInfoData();
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -230,13 +210,8 @@ export function DefaultPresetsPage() {
         </div>
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage imageURL={nowSelectedDefaultPreset.thumbnailURL} />
-            <PresetList
-              createBtn={false}
-              presetList={defaultPresetList}
-              nowPresetListPage={nowPresetListPage}
-              setNowPresetListPage={setNowPresetListPage}
-            />
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
+            <PresetList createBtn={false} type={"defaultpresets"} />
           </div>
         </div>
         <div className={classes.community}></div>

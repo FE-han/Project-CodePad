@@ -3,9 +3,7 @@ import { makeStyles } from "@mui/styles";
 
 import LaunchpadHeaderContainer from "../../components/LaunchPad/LaunchPadHeaderContainer";
 import PresetToggleButton from "../../components/Preset/PresetToggleButton";
-import PresetList, {
-  NowSelectedMyPreset,
-} from "../../components/Preset/PresetList";
+import PresetList from "../../components/Preset/PresetList";
 import PresetImage from "../../components/Preset/PresetImage";
 import PaginationContainer from "../../components/Preset/PaginationContainer";
 import { initialPresetGenerator } from "../../components/LaunchPad/utils/initialPresetFormGenerator";
@@ -40,6 +38,8 @@ import {
 import alertSnackBarMessage, {
   SnackBarMessageType,
 } from "../../utils/snackBarMessage";
+import { actions as loopSoundGroupActions } from "../../modules/actions/LaunchPad/loopSoundGroupSlice";
+import { getAudioArrayBuffer } from "../../api/getAudioArrayBuffer";
 
 const MyPresetsPageStyles = makeStyles({
   root: {
@@ -151,51 +151,38 @@ export function MyPresetsPage() {
   const [sampleSoundMap, setSampleSoundMap] = useState(new Map());
 
   const presetId = useParams();
-  // const userId = useParams();
-
-  // const { presetList, isLoading } = useAppSelector(
-  //   (state) => state.getMyPresetListSlice
-  // );
-
-  // const state = useSelector((state) => state.getPresetListInfoDataActions.presetId)
-  // console.log(state)
-
-  // 리스트구역
-  const [myPresetList, setMyPresetList] = useState([]);
-  const [nowPresetListPage, setNowPresetListPage] = useState(1);
-  const [nowSelectedMyPreset, setNowSelectedMyPreset] =
-    useState<NowSelectedMyPreset>({
-      presetId: "",
-      reactions: { viewCount: 0, likeCount: 0, commentCount: 0 },
-      thumbnailImageURL: "",
-      title: "",
-    });
-
-  const getMyPresetListData = async (nowPresetListPage: number) => {
-    const params: GetMyPresetParams = {
-      page: nowPresetListPage,
-      limit: 5,
-    };
-
-    const res = await getMyPresetList(params);
-    console.log(res);
-    setMyPresetList(res);
-  };
-  //
 
   const urlParams = useParams<{ userId: string; presetId: string }>();
 
-  const getInitialPresetData = async () => {
+  //====
+  // const [audioCtx, setAudioCtx] = useState<any>([]);
+  // const makeAudioCtx = async (location: string, url: string) => {
+  //   const data: ArrayBuffer = await getAudioArrayBuffer(url);
+
+  //   const audioContext = new AudioContext();
+  //   const audioBuffer = await audioContext.decodeAudioData(data);
+
+  //   const source = audioContext.createBufferSource();
+  //   source.buffer = audioBuffer;
+  //   source.loop = true;
+  //   source.connect(audioContext.destination);
+  //   setAudioCtx([...audioCtx, [location, source]]);
+  //   console.log("제작중", audioCtx);
+  //   // return source;
+  // };
+  //====
+
+  const getInitialPresetData = async (params: PresetParams) => {
     const config: PresetParams = {
-      userId: urlParams.userId,
-      presetId: urlParams.presetId,
+      userId: params.userId || urlParams.userId,
+      presetId: params.presetId || urlParams.presetId,
     };
     try {
       const nowPresetData: Preset = await getPreset(config);
       dispatch(getPresetActions.getPresetDataFulfilled(nowPresetData));
       setPresetData({
         nowPresetData,
-        defaultPresetData: myPresetData,
+        defaultPresetData: initialPresetGenerator(LaunchPadScale.DEFAULT),
         setDefaultPresetData: setMyPresetData,
       });
       dispatch(
@@ -210,29 +197,109 @@ export function MyPresetsPage() {
           soundSample.soundSampleURL
         );
       });
+
+      //=========
+      // console.log("===sampleSoundMap==", sampleSoundMap);
+      // const [keys] = sampleSoundMap.keys();
+
+      // const ctxArray = new Array();
+
+      // for (const key of sampleSoundMap.keys()) {
+      //   ctxArray.push([key, sampleSoundMap.get(key)]);
+      // }
+      // console.log(ctxArray);
+
+      // const result = new Array();
+      // Promise.all(
+      //   ctxArray.map((ele) => {
+      //     makeAudioCtx(ele[0], ele[1]);
+      //   })
+      // );
+
+      // await console.log("결과물", audioCtx);
+
+      //=========
+
       setSampleSoundMap(currentSampleSoundMap);
       dispatch(setNowPresetValueActions.setValueFromPreset(nowPresetData)); //redux에 저장
-    } catch (err) {
-      alertSnackBarMessage({
-        message: `프리셋이 없거나, 가져오지 못했습니다.`,
-        type: SnackBarMessageType.ERROR,
-      });
-      dispatch(getPresetActions.getPresetDataRejected());
-      navigate("/");
-    }
+      dispatch(
+        setNowPresetValueActions.setValueFromPrivacyOption(nowPresetData)
+      );
+      dispatch(setNowPresetValueActions.setValueFromImage(nowPresetData));
 
-    const newPresetInfo = await getPresetInfo(urlParams.presetId);
-    dispatch(setNowPresetValueActions.setValueFromPrivacyOption(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromImage(newPresetInfo));
-    dispatch(setNowPresetValueActions.setValueFromTags(newPresetInfo));
+      // dispatch(setNowPresetValueActions.setValueFromTags(nowPresetData));
+    } catch (err) {
+      // alertSnackBarMessage({
+      //   message: `프리셋이 없거나, 가져오지 못했습니다.`,
+      //   type: SnackBarMessageType.ERROR,
+      // });
+      dispatch(getPresetActions.getPresetDataRejected());
+      // navigate("/");
+    }
   };
 
+  const state = useAppSelector((state) => state.getPresetSlice);
+
+  const selectedListDataState = useAppSelector(
+    (state) => state.getPresetDataFromListSlice
+  );
+
+  const [alreadyPlayedSoundSamples, setAlreadyPlayedSoundSamples] = useState(
+    new Map()
+  );
+
+  const stopBufferSource = async (
+    btnLocation: string,
+    sourcePromise: Promise<AudioBufferSourceNode | undefined>
+  ) => {
+    if (sourcePromise === undefined) return;
+    await sourcePromise.then((res) => {
+      if (res === undefined) return;
+      dispatch(
+        soundButtonsActions.changeButtonState({
+          location: btnLocation,
+          state: "STOP",
+        })
+      );
+      res.stop();
+
+      const newPlayedSoundSamples = alreadyPlayedSoundSamples;
+      newPlayedSoundSamples.delete(btnLocation);
+      setAlreadyPlayedSoundSamples(newPlayedSoundSamples);
+    });
+  };
+  const { nowBar, soundGroup, nowPlayingSampleSounds, nowWaitStopSampleSound } =
+    useAppSelector((state) => state.loopSoundGroupSlice);
+
   useEffect(() => {
-    getMyPresetListData(nowPresetListPage);
-    getInitialPresetData();
+    return () => {
+      const toStopList = alreadyPlayedSoundSamples;
+
+      for (const ele of toStopList.keys()) {
+        stopBufferSource(ele, alreadyPlayedSoundSamples.get(ele));
+        toStopList.delete(ele);
+
+        dispatch(loopSoundGroupActions.clearWaitStopQueue());
+        dispatch(
+          soundButtonsActions.changeButtonState({
+            location: nowWaitStopSampleSound,
+            state: "WAIT_STOP",
+          })
+        );
+      }
+
+      dispatch(loopSoundGroupActions.clearAllPlays());
+      // dispatch(soundButtonsActions.resetSampleSoundButtonState());
+    };
   }, []);
 
-  const state = useAppSelector((state) => state.getPresetSlice);
+  useEffect(() => {
+    const params: PresetParams = {
+      userId: selectedListDataState.userId,
+      presetId: selectedListDataState.presetId,
+    };
+    getInitialPresetData(params);
+  }, [selectedListDataState]);
 
   return (
     <div className={classes.root}>
@@ -259,13 +326,8 @@ export function MyPresetsPage() {
 
         <div className={classes.presetList}>
           <div className="presetListContainer">
-            <PresetImage imageURL={nowSelectedMyPreset.thumbnailImageURL} />
-            <PresetList
-              createBtn={true}
-              presetList={myPresetList}
-              nowPresetListPage={nowPresetListPage}
-              setNowPresetListPage={setNowPresetListPage}
-            />
+            <PresetImage imageURL={selectedListDataState.thumbnailURL} />
+            <PresetList createBtn={true} type={"mypresets"} />
           </div>
         </div>
         <div className={classes.community}>

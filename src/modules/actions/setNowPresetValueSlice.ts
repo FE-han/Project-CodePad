@@ -45,7 +45,7 @@ export const setNowPresetValueSlice = createSlice({
   initialState,
   reducers: {
     setValueFromPreset: (state, action: PayloadAction<Preset>) => {
-      state.presetTitle = action.payload!.presetTitle || "untitled";
+      state.presetTitle = action.payload!.presetTitle || "";
       state.userId = action.payload!.userId || "ErrorUserId";
       state.presetId = action.payload.presetId || "unsaved";
       state.areaSize = action.payload.areaSize || LaunchPadScale.DEFAULT;
@@ -60,20 +60,14 @@ export const setNowPresetValueSlice = createSlice({
       state.soundSamples = canSaveFileForm;
     },
 
-    setValueFromImage: (
-      state,
-      action: PayloadAction<Pick<NowPresetValueState, "thumbnailImg">>
-    ) => {
+    setValueFromImage: (state, action: PayloadAction<any>) => {
       state.thumbnailImg = {
-        thumbnailImgURL: action.payload.thumbnailImg.thumbnailImgURL,
-        thumbnailImgFile: action.payload.thumbnailImg.thumbnailImgFile,
+        thumbnailImgURL: action.payload.thumbnailURL,
+        thumbnailImgFile: undefined,
       };
     },
-    setValueFromPrivacyOption: (
-      state,
-      action: PayloadAction<Pick<NowPresetValueState, "PrivacyOption">>
-    ) => {
-      state.PrivacyOption = action.payload.PrivacyOption;
+    setValueFromPrivacyOption: (state, action: PayloadAction<any>) => {
+      state.PrivacyOption = action.payload.isPrivate ? "PRIVATE" : "PUBLIC";
     },
     setValueFromTags: (
       state,

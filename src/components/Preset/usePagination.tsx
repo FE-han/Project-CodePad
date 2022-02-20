@@ -7,7 +7,6 @@ function usePagination(data: any, itemsPerPage: any) {
   function currentData() {
     const begin = (currPage - 1) * itemsPerPage;
     const end = begin + itemsPerPage;
-    // console.log(data)
     return data.slice(begin, end);
   }
 
