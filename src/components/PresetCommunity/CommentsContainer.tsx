@@ -31,7 +31,7 @@ const commentsContainerStyles = makeStyles({
   commentList: {
     border: `1px solid gray`,
     padding: "7px",
-    height: "74px",
+    height: "133px",
     overflow: "auto",
   },
   commentInput: {
@@ -118,12 +118,16 @@ const CommentsContainer = () => {
   }, [presetId]);
 
   useEffect(() => {
-    if (config.pageNum !== ScrollValues.defaultPageNum) return;
+    if (
+      config.pageNum !== ScrollValues.defaultPageNum ||
+      config.presetId === ""
+    )
+      return;
     getNewItem();
   }, [config]);
 
   useEffect(() => {
-    if (!isLoaded || isError || isDone) return;
+    if (!isLoaded || isError || isDone || config.presetId === "") return;
 
     getMoreItem();
 
