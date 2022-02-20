@@ -14,7 +14,7 @@ function initialSoundSampleGenerator(location: string) {
 export function initialPresetGenerator(scale: LaunchPadScale) {
   const LaunchPadLength = Math.sqrt(scale);
   const initialPreset: Preset = {
-    presetTitle: "untitled",
+    presetTitle: "",
     userId: "unknownMan",
     presetId: "unsaved",
     areaSize: scale,
@@ -42,7 +42,7 @@ export function initialEditPresetGenerator(scale: LaunchPadScale) {
   const LaunchPadLength = Math.sqrt(scale);
   const initialPreset: NowPresetValueState = {
     userId: "",
-    presetTitle: "untitled",
+    presetTitle: "",
     presetId: "unsaved",
     areaSize: scale,
     soundSamples: [],
