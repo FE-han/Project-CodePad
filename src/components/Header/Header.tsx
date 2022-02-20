@@ -83,6 +83,7 @@ export default function Header() {
   }
 
   const handleLogout = () => {
+    localStorage.removeItem("visitedPresetIdList");
     handleMenuClose();
     logout().then((res) => {
       if (res.isLogout) {
