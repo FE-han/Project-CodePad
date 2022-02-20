@@ -119,23 +119,28 @@ const CommentsContainer = () => {
 
   useEffect(() => {
     if (
-      config.pageNum !== ScrollValues.defaultPageNum ||
-      config.presetId === ""
-    )
-      return;
-    getNewItem();
+      config.pageNum === ScrollValues.defaultPageNum &&
+      config.presetId !== ""
+    ) {
+      getNewItem();
+    }
+    setIsLoaded(false);
   }, [config]);
 
   useEffect(() => {
-    if (!isLoaded || isError || isDone || config.presetId === "") return;
+    if (!isLoaded || isError || isDone) return;
+    if (config.presetId === "") {
+      setIsLoaded(false);
+      return;
+    } else {
+      getMoreItem();
 
-    getMoreItem();
-
-    const newPageNum = config.pageNum + 1;
-    setConfig((prev) => {
-      return { ...prev, pageNum: newPageNum };
-    });
-    setIsLoaded(false);
+      const newPageNum = config.pageNum + 1;
+      setConfig((prev) => {
+        return { ...prev, pageNum: newPageNum };
+      });
+      setIsLoaded(false);
+    }
   }, [isLoaded]);
 
   const onIntersect = (
