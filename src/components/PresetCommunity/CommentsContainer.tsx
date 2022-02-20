@@ -31,7 +31,7 @@ const commentsContainerStyles = makeStyles({
   commentList: {
     border: `1px solid gray`,
     padding: "7px",
-    height: "74px",
+    height: "133px",
     overflow: "auto",
   },
   commentInput: {
@@ -93,19 +93,48 @@ const CommentsContainer = () => {
     } else {
       setIsError(true);
     }
-
     setIsLoaded(false);
   };
 
+  const getNewItem = async () => {
+    const res = await makeCommentScrollList(config);
+    if (res.success) {
+      const newData = res.data;
+      setCommentList((arr) => []);
+      setCommentList((arr) => [...newData]);
+    }
+  };
+
   useEffect(() => {
-    if (!isLoaded || isError || isDone) return;
+    setConfig((prev) => {
+      return {
+        ...prev,
+        presetId,
+        pageNum: ScrollValues.defaultPageNum,
+        limitNum: ScrollValues.limitNum,
+      };
+    });
+    handleCancleBtn();
+  }, [presetId]);
+
+  useEffect(() => {
+    if (
+      config.pageNum !== ScrollValues.defaultPageNum ||
+      config.presetId === ""
+    )
+      return;
+    getNewItem();
+  }, [config]);
+
+  useEffect(() => {
+    if (!isLoaded || isError || isDone || config.presetId === "") return;
 
     getMoreItem();
+
     const newPageNum = config.pageNum + 1;
     setConfig((prev) => {
       return { ...prev, pageNum: newPageNum };
     });
-    setIsLoaded(false);
   }, [isLoaded]);
 
   const onIntersect = (
@@ -144,7 +173,7 @@ const CommentsContainer = () => {
       //alert("send Error");
     }
   };
-  const handleSendBtn = () => {
+  const handleCancleBtn = () => {
     setText("");
     setIsUpdate(false);
     setBtnDisabled(true);
@@ -255,7 +284,7 @@ const CommentsContainer = () => {
           variant="outlined"
           size="small"
           disabled={btnDisabled}
-          onClick={handleSendBtn}
+          onClick={handleCancleBtn}
         >
           cancle
         </Button>
