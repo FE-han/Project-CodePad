@@ -87,18 +87,23 @@ const CommunityContentsScrollList = (props: {
   });
 
   const getMoreItem = async () => {
-    const res = await makePresetScrollList(config);
+    try{
+      const res = await makePresetScrollList(config);
 
-    if (res.success) {
-      if (res.data.length > 0) {
-        setItemLists((arr) => arr.concat(res.data));
+      if (res.success) {
+        if (res.data.length > 0) {
+          setItemLists((arr) => arr.concat(res.data));
+        } else {
+          setIsDone(true);
+        }
       } else {
-        setIsDone(true);
+        setIsError(true);
       }
-    } else {
-      setIsError(true);
+      setIsLoaded(false);
+    } catch(e) {
+      console.log(e);
     }
-    setIsLoaded(false);
+    
   };
 
   useEffect(() => {
